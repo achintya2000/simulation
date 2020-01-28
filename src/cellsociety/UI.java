@@ -11,7 +11,7 @@ import static javafx.application.Application.launch;
 /**
  * Feel free to completely change this code or delete it entirely. 
  */
-public class Main extends Application {
+public class UI extends Application {
 
     public static void main (String[] args) {
         launch(args);
