@@ -29,10 +29,10 @@ public class UI extends Application {
     private static final int SIMULATIONWINDOWSIZE = 500;
     private static Group group;
     private static Rectangle SimulationWINDOW = new Rectangle(MARGIN * 2, 200 +MARGIN, SIMULATIONWINDOWSIZE, SIMULATIONWINDOWSIZE);
-    private static List<Node> myMenuText;
+    private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
     private static Rectangle myOpenMenuButton;
     private static List<Node> mySimulationsMenu;
-    private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
+
 
 
 /**
@@ -66,47 +66,13 @@ public class UI extends Application {
         primaryStage.setScene(scene);
         addNodeToGroup(SimulationWINDOW);
         displayGrid();
-        //showMenu();
-        //addMenu();
         showOpenMenuButton();
         setSimulationsMenu();
-
-
-
+        
         //Displaying the contents of the stage
         primaryStage.show();
 
     }
-
-    private static void handleMouseInput(double x, double y) throws FileNotFoundException {
-        if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
-            addCollecitontoGroup(mySimulationsMenu);
-            removeOpenMenuButton();
-
-        }
-        if(!mySimulationsMenuBar.contains(x,y)){
-            removeCollectionFromGroup(mySimulationsMenu);
-            showOpenMenuButton();
-        }
-    }
-
-    private static void addNodeToGroup(Node node){
-        if(!group.getChildren().contains(node)){
-            group.getChildren().add(node);
-        }
-    }
-    private static void addCollecitontoGroup(Collection<Node> nodes){
-        if(!group.getChildren().contains(nodes)){
-            group.getChildren().addAll(nodes);
-        }
-    }
-    private static void removeNodeFromGroup(Node node){
-         group.getChildren().remove(node);
-    }
-    private static void removeCollectionFromGroup(Collection<Node> nodes){
-         group.getChildren().removeAll(nodes);
-    }
-
 
     private static List<String> readText(String fname) throws FileNotFoundException {
         List<String> ret = new ArrayList<>();
@@ -142,23 +108,6 @@ public class UI extends Application {
     }
 
 
-    private static void addMenu() throws FileNotFoundException {
-        myMenuText = new ArrayList<>();
-        int i = 0;
-        Rectangle menuBar = new Rectangle(0,0, WIDTH, 80);
-        menuBar.setFill(Color.LIGHTGRAY);
-        addNodeToGroup(menuBar);
-        List<String> strings = readText("Resources/Start.txt");
-       for(String string : strings ){
-           Text text = new Text(string);
-           text.setFill(Color.BLACK);
-           text.setX(MARGIN*4 + i * 200);
-           text.setY(80 / 2);
-           myMenuText.add(text);
-           i++;
-       }
-       addCollecitontoGroup(myMenuText);
-    }
 
     private static void displayGrid(){
         ArrayGrid grid = new ArrayGrid(10);
@@ -190,6 +139,35 @@ public class UI extends Application {
                 return Color.PURPLE;
         }
         return Color.INDIGO;
+    }
+
+    private static void handleMouseInput(double x, double y) throws FileNotFoundException {
+        if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
+            addCollecitontoGroup(mySimulationsMenu);
+            removeOpenMenuButton();
+
+        }
+        if(!mySimulationsMenuBar.contains(x,y)){
+            removeCollectionFromGroup(mySimulationsMenu);
+            showOpenMenuButton();
+        }
+    }
+
+    private static void addNodeToGroup(Node node){
+        if(!group.getChildren().contains(node)){
+            group.getChildren().add(node);
+        }
+    }
+    private static void addCollecitontoGroup(Collection<Node> nodes){
+        if(!group.getChildren().contains(nodes)){
+            group.getChildren().addAll(nodes);
+        }
+    }
+    private static void removeNodeFromGroup(Node node){
+        group.getChildren().remove(node);
+    }
+    private static void removeCollectionFromGroup(Collection<Node> nodes){
+        group.getChildren().removeAll(nodes);
     }
 }
 
