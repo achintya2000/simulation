@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -14,15 +16,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
+import javafx.scene.shape.Rectangle;
 
 
 /**
  * Feel free to completely change this code or delete it entirely.
  */
-public class UI extends Application {    private static final int HEIGHT = 800;
+public class UI extends Application {
+    private static final int HEIGHT = 800;
     private static final int WIDTH = 1000;
+    private static final int MARGIN = 20;
+    private static final int SIMULATIONWINDOWSIZE = 500;
     private static Group group;
-
+    private static Rectangle SimulationWINDOW = new Rectangle(MARGIN * 2, 200 +MARGIN, SIMULATIONWINDOWSIZE, SIMULATIONWINDOWSIZE);
+    private static List<Node> myMenuText;
+    private static Rectangle myOpenMenuButton;
+    private static List<Node> mySimulationsMenu;
+    private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
 
 
 /**
@@ -40,55 +50,146 @@ public class UI extends Application {    private static final int HEIGHT = 800;
         group = new Group();
         Scene scene = new Scene(group ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
-
-
+        SimulationWINDOW.setFill(Color.BLACK);
+        scene.setOnMouseClicked(e -> {
+            try {
+                handleMouseInput(e.getX(), e.getY());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         //Setting the title to Stage.
-        primaryStage.setTitle("Sample Application");
+        primaryStage.setTitle("Simulation");
 
         //Adding the scene to Stage
         primaryStage.setScene(scene);
-        addText();
+        addNodeToGroup(SimulationWINDOW);
+        displayGrid();
+        //showMenu();
+        //addMenu();
+        showOpenMenuButton();
+        setSimulationsMenu();
+
+
 
         //Displaying the contents of the stage
         primaryStage.show();
 
     }
 
+    private static void handleMouseInput(double x, double y) throws FileNotFoundException {
+        if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
+            addCollecitontoGroup(mySimulationsMenu);
+            removeOpenMenuButton();
+
+        }
+        if(!mySimulationsMenuBar.contains(x,y)){
+            removeCollectionFromGroup(mySimulationsMenu);
+            showOpenMenuButton();
+        }
+    }
+
     private static void addNodeToGroup(Node node){
-        group.getChildren().add(node);
+        if(!group.getChildren().contains(node)){
+            group.getChildren().add(node);
+        }
     }
     private static void addCollecitontoGroup(Collection<Node> nodes){
-        group.getChildren().addAll(nodes);
+        if(!group.getChildren().contains(nodes)){
+            group.getChildren().addAll(nodes);
+        }
     }
     private static void removeNodeFromGroup(Node node){
-        group.getChildren().remove(node);
+         group.getChildren().remove(node);
     }
     private static void removeCollectionFromGroup(Collection<Node> nodes){
-        group.getChildren().removeAll(nodes);
+         group.getChildren().removeAll(nodes);
     }
 
 
-    private static List<String> readText(String fname)  throws FileNotFoundException{
+    private static List<String> readText(String fname) throws FileNotFoundException {
         List<String> ret = new ArrayList<>();
         Scanner s = new Scanner(new File(fname));
         while (s.hasNext()){
-            ret.add(s.next());
+            ret.add(s.nextLine());
         }
         return ret;
     }
 
-    private static void addText() throws FileNotFoundException {
+    private static void setSimulationsMenu() throws FileNotFoundException {
+        mySimulationsMenu = new ArrayList<>();
+        mySimulationsMenuBar.setFill(Color.LIGHTGRAY);
+        mySimulationsMenu.add(mySimulationsMenuBar);
+        List<String> simulationsText = readText("Resources/SimulationMenuText.txt");
+        for(int i = 0; i < simulationsText.size(); i ++){
+            Text text = new Text(simulationsText.get(i));
+            text.setX(mySimulationsMenuBar.getBoundsInParent().getCenterX() - mySimulationsMenuBar.getBoundsInParent().getWidth()/2 +MARGIN);
+            text.setY(MARGIN + i * HEIGHT/8);
+            mySimulationsMenu.add(text);
+        }
+    }
+
+    private static void showOpenMenuButton(){
+        myOpenMenuButton = new Rectangle(WIDTH- MARGIN - 50, MARGIN, 50, 50);
+        myOpenMenuButton.setFill(new ImagePattern(new Image("open-menu.gif")));
+        addNodeToGroup(myOpenMenuButton);
+    }
+
+    private static void removeOpenMenuButton(){
+        removeNodeFromGroup(myOpenMenuButton);
+        myOpenMenuButton = new Rectangle();
+    }
+
+
+    private static void addMenu() throws FileNotFoundException {
+        myMenuText = new ArrayList<>();
         int i = 0;
+        Rectangle menuBar = new Rectangle(0,0, WIDTH, 80);
+        menuBar.setFill(Color.LIGHTGRAY);
+        addNodeToGroup(menuBar);
         List<String> strings = readText("Resources/Start.txt");
        for(String string : strings ){
            Text text = new Text(string);
            text.setFill(Color.BLACK);
-           text.setX(WIDTH/2 - text.getBoundsInLocal().getWidth()/2);
-           text.setY(i * HEIGHT/8);
-           addNodeToGroup(text);
+           text.setX(MARGIN*4 + i * 200);
+           text.setY(80 / 2);
+           myMenuText.add(text);
            i++;
        }
+       addCollecitontoGroup(myMenuText);
+    }
+
+    private static void displayGrid(){
+        ArrayGrid grid = new ArrayGrid(10);
+        int cellSize = SIMULATIONWINDOWSIZE/(ArrayGrid.myArray.length);
+        for(int r = 0; r < ArrayGrid.myArray.length; r ++){
+            for(int c= 0; c < ArrayGrid.myArray[0].length; c ++){
+                Rectangle cell = new Rectangle( SimulationWINDOW.getX()+ cellSize*c, SimulationWINDOW.getY()+ cellSize*r, cellSize, cellSize);
+                int num = ArrayGrid.myArray[r][c];
+                cell.setFill(getColor(num));
+                addNodeToGroup(cell);
+            }
+        }
+    }
+
+    private static Color getColor(int i){
+        int color = i % 5;
+        switch (color){
+            case 0:
+                return Color.RED;
+            case 1:
+                return Color.ORANGE;
+            case 2:
+                return Color.YELLOW;
+            case 3:
+                return Color.GREEN;
+            case 4:
+                return Color.BLUE;
+            case 5:
+                return Color.PURPLE;
+        }
+        return Color.INDIGO;
     }
 }
 
