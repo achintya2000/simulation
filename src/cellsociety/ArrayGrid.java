@@ -2,11 +2,12 @@ package cellsociety;
 
 public class ArrayGrid extends Grid {
 
-    private int mySize;
-    private int[][] myArray;
+    private static int mySize;
+    public static int[][] myArray;
 
     public ArrayGrid(int size) { // assume its a square
         mySize = size;
+        initialize();
     }
 
     @Override
