@@ -1,5 +1,5 @@
 Start
 Stop
 Pause
-Step Forward
-Step Backward
+Forward
+Backward

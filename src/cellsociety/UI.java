@@ -51,7 +51,6 @@ public class UI extends Application {
     private static void addNodeToGroup(Node node){
         group.getChildren().add(node);
     }
-
     private static void addCollecitontoGroup(Collection<Node> nodes){
         group.getChildren().addAll(nodes);
     }
@@ -74,7 +73,7 @@ public class UI extends Application {
 
     private static void addText() throws FileNotFoundException {
         int i = 0;
-        List<String> strings = readText("Start.txt");
+        List<String> strings = readText("Resources/Start.txt");
        for(String string : strings ){
            Text text = new Text(string);
            text.setFill(Color.BLACK);
