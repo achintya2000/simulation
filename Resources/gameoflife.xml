@@ -3,14 +3,12 @@
 <info>
 	<title>CS 308 Game of Life Configuration File</title>
 	<author>Group 19</author>
+	<simulation>Game of Life</simulation>
 </info>
 
 <config>
-	<simulation>Game of Life</simulation>
-	<global>	
-		<width>6</width>
-		<height>6</height>
-	</global>
+	<width>6</width>
+	<height>6</height>
 	<celltypes>
 		<dead>0</dead>
 		<live>1</live>

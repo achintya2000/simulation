@@ -19,9 +19,6 @@ import java.util.Scanner;
 import javafx.scene.shape.Rectangle;
 
 
-/**
- * Feel free to completely change this code or delete it entirely.
- */
 public class UI extends Application {
     private static final int HEIGHT = 800;
     private static final int WIDTH = 1000;
@@ -33,12 +30,9 @@ public class UI extends Application {
     private static Rectangle myOpenMenuButton;
     private static List<Node> mySimulationsMenu;
 
-
-
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
     public static void main (String[] args) {
+        Layout gameoflife = new Layout("config");
+        gameoflife.getInfo(new File("gameoflife.xml"));
         launch(args);
     }
 
