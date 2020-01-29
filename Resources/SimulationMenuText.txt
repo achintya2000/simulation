@@ -1,0 +1,6 @@
+Choose a Simulation
+Percolation
+Game of Life
+Predator and Prey
+Segregation
+Fire
