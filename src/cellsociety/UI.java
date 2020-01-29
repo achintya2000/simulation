@@ -15,15 +15,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-import static javafx.application.Application.launch;
 
 /**
  * Feel free to completely change this code or delete it entirely.
  */
-public class UI extends Application {
-    private static final int HEIGHT = 800;
+public class UI extends Application {    private static final int HEIGHT = 800;
     private static final int WIDTH = 1000;
     private static Group group;
+
+
+
+/**
+ * Feel free to completely change this code or delete it entirely. 
+ */
 
 
     public static void main (String[] args) {
@@ -32,9 +36,12 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         group = new Group();
         Scene scene = new Scene(group ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
+
+
 
         //Setting the title to Stage.
         primaryStage.setTitle("Sample Application");
@@ -84,4 +91,9 @@ public class UI extends Application {
        }
     }
 }
+
+
+
+
+
 
