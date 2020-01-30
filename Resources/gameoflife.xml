@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<info>
-	<title>CS 308 Game of Life Configuration File</title>
-	<author>Group 19</author>
+<config config="config">
+	<title>CS308 Sim</title>
+	<author>Team 19</author>
 	<simulation>Game of Life</simulation>
-</info>
-
-<config>
+	<!--<info>
+		<title>CS 308 Game of Life Configuration File</title>
+		<author>Group 19</author>
+		<simulation>Game of Life</simulation>
+	</info>
 	<width>6</width>
 	<height>6</height>
 	<celltypes>
@@ -27,5 +29,5 @@
 		</cell>
 	</layout>
 	<rules>
-	</rules>
+	</rules> -->
 </config>

@@ -32,7 +32,7 @@ public class UI extends Application {
 
     public static void main (String[] args) {
         Layout gameoflife = new Layout("config");
-        gameoflife.getInfo(new File("gameoflife.xml"));
+        System.out.println(gameoflife.getInfo(new File("./Resources/gameoflife.xml")));
         launch(args);
     }
 
