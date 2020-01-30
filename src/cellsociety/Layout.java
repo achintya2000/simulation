@@ -37,7 +37,7 @@ public class Layout {
         }
         // read data associated with the fields given by the object
         Map<String, String> results = new HashMap<>();
-        for (String field : List.of("title", "author", "simulation")) {
+        for (String field : List.of("title", "author", "simulation", "width", "height")) {
             results.put(field, getTextValue(root, field));
         }
         return results;

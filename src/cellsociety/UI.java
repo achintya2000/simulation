@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.util.Map;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -29,10 +30,11 @@ public class UI extends Application {
     private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
     private static Rectangle myOpenMenuButton;
     private static List<Node> mySimulationsMenu;
+    private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
 
     public static void main (String[] args) {
         Layout gameoflife = new Layout("config");
-        System.out.println(gameoflife.getInfo(new File("./Resources/gameoflife.xml")));
+        System.out.println(gameoflife.getInfo(new File(gameOfLifeConfiguration)));
         launch(args);
     }
 
