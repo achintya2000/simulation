@@ -1,6 +1,8 @@
-package cellsociety;
+package cellsociety.View;
 
-import java.util.Map;
+import cellsociety.Controller.XMLParser;
+import cellsociety.Model.ArrayGrid;
+import cellsociety.Controller.Simulation;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -35,7 +37,7 @@ public class UI extends Application {
     Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
 
     public static void main (String[] args) {
-        Layout gameoflife = new Layout("config");
+        XMLParser gameoflife = new XMLParser("config");
         System.out.println(gameoflife.getInfo(new File(gameOfLifeConfiguration)));
         launch(args);
     }
