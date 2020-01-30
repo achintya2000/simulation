@@ -1,5 +1,6 @@
-package cellsociety;
+package cellsociety.Controller;
 
+import cellsociety.Model.ArrayGrid;
 import java.io.File;
 import java.util.Map;
 
@@ -9,8 +10,8 @@ public class Simulation {
   public int GRID_WIDTH;
   public int GRID_HEIGHT;
 
-  Simulation(String filepath) {
-    Layout gameoflife = new Layout("config");
+  public Simulation(String filepath) {
+    XMLParser gameoflife = new XMLParser("config");
     Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
     SIMULATION_NAME = configuration.get("simulation");
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
