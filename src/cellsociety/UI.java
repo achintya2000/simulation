@@ -98,7 +98,7 @@ public class UI extends Application {
         removeNodeFromGroup(myOpenMenuButton);
         myOpenMenuButton = new Rectangle();
     }
-    
+
     private static void displayGrid(){
         ArrayGrid grid = new ArrayGrid(10);
         int cellSize = SIMULATIONWINDOWSIZE/(ArrayGrid.myArray.length);
@@ -133,7 +133,7 @@ public class UI extends Application {
 
     private static void handleMouseInput(double x, double y) throws FileNotFoundException {
         if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
-            addCollecitontoGroup(mySimulationsMenu);
+            addCollectiontoGroup(mySimulationsMenu);
             removeOpenMenuButton();
 
         }
@@ -148,7 +148,7 @@ public class UI extends Application {
             group.getChildren().add(node);
         }
     }
-    private static void addCollecitontoGroup(Collection<Node> nodes){
+    private static void addCollectiontoGroup(Collection<Node> nodes){
         if(!group.getChildren().contains(nodes)){
             group.getChildren().addAll(nodes);
         }
