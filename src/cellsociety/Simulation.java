@@ -5,15 +5,11 @@ import java.util.Map;
 
 public class Simulation {
 
-  private String SIMULATION_NAME;
-  private int GRID_WIDTH;
-  private int GRID_HEIGHT;
+  public String SIMULATION_NAME;
+  public int GRID_WIDTH;
+  public int GRID_HEIGHT;
 
-  Simulation() {
-
-  }
-
-  public void loadSimulationContents(String filepath) {
+  Simulation(String filepath) {
     Layout gameoflife = new Layout("config");
     Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
     SIMULATION_NAME = configuration.get("simulation");
@@ -21,5 +17,9 @@ public class Simulation {
     GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
   }
 
+  public ArrayGrid loadSimulationContents() {
+    ArrayGrid simulation = new ArrayGrid(GRID_HEIGHT);
+    return simulation;
+  }
 
 }

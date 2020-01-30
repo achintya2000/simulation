@@ -32,6 +32,8 @@ public class UI extends Application {
     private static List<Node> mySimulationsMenu;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
 
+    Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
+
     public static void main (String[] args) {
         Layout gameoflife = new Layout("config");
         System.out.println(gameoflife.getInfo(new File(gameOfLifeConfiguration)));
