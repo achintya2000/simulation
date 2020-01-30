@@ -30,16 +30,17 @@ public class Layout {
     /**
      * Get data contained in this XML file as an object
      */
-    public void getInfo (File dataFile) {
+    public Map<String, String> getInfo (File dataFile) {
         Element root = getRootElement(dataFile);
-        if (! isValidFile(root, "Config")) {
-            throw new XMLException(ERROR_MESSAGE, "Config");
+        if (! isValidFile(root, "config")) {
+            throw new XMLException(ERROR_MESSAGE, "config");
         }
         // read data associated with the fields given by the object
         Map<String, String> results = new HashMap<>();
-        for (String field : List.of("width", "height", "celltypes", "layout","rules")) {
+        for (String field : List.of("title", "author", "simulation", "width", "height")) {
             results.put(field, getTextValue(root, field));
         }
+        return results;
     }
 
     // get root element of an XML file
