@@ -21,10 +21,10 @@ import javafx.scene.shape.Rectangle;
 
 
 public class UI extends Application {
-    private static final int HEIGHT = 800;
-    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 800;
     private static final int MARGIN = 20;
-    private static final int SIMULATIONWINDOWSIZE = 500;
+    private static final int SIMULATIONWINDOWSIZE = 300;
     private static Group group;
     private static Rectangle SimulationWINDOW = new Rectangle(MARGIN * 2, 200 +MARGIN, SIMULATIONWINDOWSIZE, SIMULATIONWINDOWSIZE);
     private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
