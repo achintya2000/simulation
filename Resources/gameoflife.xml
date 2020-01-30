@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+	<title>CS 308 Game of Life Configuration File</title>
+	<author>Group 19</author>
+	<simulation>Game of Life</simulation>
+</info>
+
+<config>
+	<width>6</width>
+	<height>6</height>
+	<celltypes>
+		<dead>0</dead>
+		<live>1</live>
+	</celltypes>
+	<layout>
+		<cell type="live">
+			<c0>2,2</c0>
+			<c1>2,3</c1>
+			<c2>2,4</c2>
+			<c3>3,3</c3>
+			<c4>3,4</c4>
+			<c5>3,5</c5>
+		</cell>
+		<cell type="dead">
+			<default></default>
+		</cell>
+	</layout>
+	<rules>
+	</rules>
+</config>

@@ -2,13 +2,13 @@ package cellsociety;
 
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,9 +19,6 @@ import java.util.Scanner;
 import javafx.scene.shape.Rectangle;
 
 
-/**
- * Feel free to completely change this code or delete it entirely.
- */
 public class UI extends Application {
     private static final int HEIGHT = 800;
     private static final int WIDTH = 1000;
@@ -33,20 +30,14 @@ public class UI extends Application {
     private static Rectangle myOpenMenuButton;
     private static List<Node> mySimulationsMenu;
 
-
-
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
-
-
     public static void main (String[] args) {
+        Layout gameoflife = new Layout("config");
+        gameoflife.getInfo(new File("gameoflife.xml"));
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         group = new Group();
         Scene scene = new Scene(group ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
@@ -64,6 +55,7 @@ public class UI extends Application {
 
         //Adding the scene to Stage
         primaryStage.setScene(scene);
+
         addNodeToGroup(SimulationWINDOW);
         displayGrid();
         showOpenMenuButton();
@@ -106,7 +98,6 @@ public class UI extends Application {
         removeNodeFromGroup(myOpenMenuButton);
         myOpenMenuButton = new Rectangle();
     }
-
     
     private static void displayGrid(){
         ArrayGrid grid = new ArrayGrid(10);
@@ -168,10 +159,20 @@ public class UI extends Application {
     private static void removeCollectionFromGroup(Collection<Node> nodes){
         group.getChildren().removeAll(nodes);
     }
+
+
+
+
+    private static void addText() throws FileNotFoundException {
+        int i = 0;
+        List<String> strings = readText("Resources/Start.txt");
+       for(String string : strings ){
+           Text text = new Text(string);
+           text.setFill(Color.BLACK);
+           text.setX(WIDTH/2 - text.getBoundsInLocal().getWidth()/2);
+           text.setY(i * HEIGHT/8);
+           addNodeToGroup(text);
+           i++;
+       }
+    }
 }
-
-
-
-
-
-
