@@ -1,4 +1,6 @@
-package cellsociety;
+package cellsociety.Model;
+
+import cellsociety.Model.Grid;
 
 public class ArrayGrid extends Grid {
 
