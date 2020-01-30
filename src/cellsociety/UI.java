@@ -68,7 +68,7 @@ public class UI extends Application {
         displayGrid();
         showOpenMenuButton();
         setSimulationsMenu();
-        
+
         //Displaying the contents of the stage
         primaryStage.show();
 
@@ -107,8 +107,7 @@ public class UI extends Application {
         myOpenMenuButton = new Rectangle();
     }
 
-
-
+    
     private static void displayGrid(){
         ArrayGrid grid = new ArrayGrid(10);
         int cellSize = SIMULATIONWINDOWSIZE/(ArrayGrid.myArray.length);
