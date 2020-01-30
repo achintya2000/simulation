@@ -26,9 +26,9 @@ public class ArrayGrid extends Grid {
         //updates myArray by make a copy of the array as a reference
         // logic for update based on neighbors goes here
         // updates for game of life only with refactor to make more general
-
         myReferenceArray = new int[myArray.length][myArray[0].length];
-        System.arraycopy(myArray, 0, myReferenceArray, 0, myArray.length);    //makes new copy of myArray so the method has reference
+        System.arraycopy(myArray, 0, myReferenceArray, 0, myArray.length);//makes new copy of myArray so the method has reference
+
         for (int cellRow = 0; cellRow < myArray.length; cellRow++) {                        // loops through each row of myArray
             for (int cellCol = 0; cellCol < myArray[0].length; cellCol++) {                 // loops through each col of myArray
                 int aliveNeighbors = checkNeighbors(cellRow, cellCol, myReferenceArray);
