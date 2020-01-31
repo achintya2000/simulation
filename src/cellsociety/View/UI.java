@@ -3,6 +3,10 @@ package cellsociety.View;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Controller.Simulation;
+import java.sql.Time;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,6 +16,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -25,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 
 public class UI extends Application {
@@ -38,6 +44,9 @@ public class UI extends Application {
     private static Rectangle myOpenMenuButton;
     private static List<Node> mySimulationsMenu;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
+
+    private Timeline timeline;
+    private Text testing;
 
     Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
 
@@ -55,17 +64,22 @@ public class UI extends Application {
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");
 
-        //Adding the scene to Stage
-        primaryStage.setScene(makeScene());
-
         //addNodeToGroup(SimulationWINDOW);
         //displayGrid();
         //showOpenMenuButton();
         //setSimulationsMenu();
 
         //Displaying the contents of the stage
+        timeline = new Timeline(new KeyFrame(
+            Duration.millis(20), event -> {
+            testing.setText(String.valueOf(Math.random()));
+        }
+        ));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+        //Adding the scene to Stage
+        primaryStage.setScene(makeScene());
         primaryStage.show();
-
     }
 
     private static List<String> readText(String fname) throws FileNotFoundException {
@@ -78,7 +92,6 @@ public class UI extends Application {
     }
 
     private Scene makeScene() throws FileNotFoundException {
-
         BorderPane root = new BorderPane();
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
@@ -100,9 +113,13 @@ public class UI extends Application {
     private Node makeSimulationToolbar() throws FileNotFoundException {
         HBox toolbar = new HBox();
         ComboBox comboBox = new ComboBox();
+        testing = new Text();
+        testing.setFont(new Font(22));
+        testing.setText("yo");
         comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
         comboBox.getSelectionModel().selectFirst();
         toolbar.getChildren().add(comboBox);
+        toolbar.getChildren().add(testing);
         return toolbar;
     }
 
@@ -112,14 +129,18 @@ public class UI extends Application {
         slider.setMax(100);
         Button playButton = new Button();
         playButton.setText("Play");
+        playButton.setOnAction(e -> timeline.play());
         Button stopButton = new Button();
         stopButton.setText("Stop");
+        stopButton.setOnAction(e -> timeline.stop());
         HBox controls = new HBox();
         controls.getChildren().add(playButton);
         controls.getChildren().add(stopButton);
         controls.getChildren().add(slider);
         return controls;
     }
+
+
 
 
 //    private static void setSimulationsMenu() throws FileNotFoundException {
