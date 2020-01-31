@@ -13,19 +13,7 @@ public abstract class Simulation {
   public int GRID_HEIGHT;
   public Grid simulationGrid;
 
-  public Simulation(String filepath) {
-    XMLParser gameoflife = new XMLParser("config");
-    Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
-    SIMULATION_NAME = configuration.get("simulation");
-    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-    Grid myGrid = new ArrayGrid(GRID_HEIGHT);
-  }
-
-  public ArrayGrid loadSimulationContents() {
-    ArrayGrid simulation = new ArrayGrid(GRID_HEIGHT);
-    return simulation;
-  }
+  abstract void loadSimulationContents(String filepath);
 
   abstract void updateGrid();
 

@@ -1,5 +1,6 @@
 package cellsociety.View;
 
+import cellsociety.Controller.GameOfLife;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Controller.Simulation;
@@ -48,11 +49,9 @@ public class UI extends Application {
     private Timeline timeline;
     private Text testing;
 
-    //Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
+    GameOfLife gameOfLife = new GameOfLife();
 
     public static void main (String[] args) {
-        XMLParser gameoflife = new XMLParser("config");
-        System.out.println(gameoflife.getInfo(new File(gameOfLifeConfiguration)));
         launch(args);
     }
 
@@ -60,7 +59,7 @@ public class UI extends Application {
     public void start(Stage primaryStage) throws Exception {
         group = new Group();
 
-
+        gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");
 
