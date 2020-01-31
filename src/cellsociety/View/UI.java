@@ -34,10 +34,10 @@ import javafx.util.Duration;
 
 
 public class UI extends Application {
-    private static final int HEIGHT = 800;
-    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 800;
     private static final int MARGIN = 20;
-    private static final int SIMULATIONWINDOWSIZE = 500;
+    private static final int SIMULATIONWINDOWSIZE = 300;
     private static Group group;
     private static Rectangle SimulationWINDOW = new Rectangle(MARGIN * 2, 200 +MARGIN, SIMULATIONWINDOWSIZE, SIMULATIONWINDOWSIZE);
     private static Rectangle mySimulationsMenuBar = new Rectangle(WIDTH - 200,0,200 , HEIGHT);
@@ -48,7 +48,7 @@ public class UI extends Application {
     private Timeline timeline;
     private Text testing;
 
-    Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
+    //Simulation simulationManager = new Simulation(gameOfLifeConfiguration);
 
     public static void main (String[] args) {
         XMLParser gameoflife = new XMLParser("config");
@@ -141,8 +141,6 @@ public class UI extends Application {
     }
 
 
-
-
 //    private static void setSimulationsMenu() throws FileNotFoundException {
 //        mySimulationsMenu = new ArrayList<>();
 //        mySimulationsMenuBar.setFill(Color.LIGHTGRAY);
@@ -212,12 +210,13 @@ public class UI extends Application {
 //        }
 //    }
 
+
     private static void addNodeToGroup(Node node){
         if(!group.getChildren().contains(node)){
             group.getChildren().add(node);
         }
     }
-    private static void addCollecitontoGroup(Collection<Node> nodes){
+    private static void addCollectiontoGroup(Collection<Node> nodes){
         if(!group.getChildren().contains(nodes)){
             group.getChildren().addAll(nodes);
         }
