@@ -14,8 +14,8 @@ public class Percolation extends Simulation {
 
     @Override
     void loadSimulationContents(String filepath) {
-        XMLParser Percolation = new XMLParser("config");
-        Map<String, String> configuration = percolation.getInfo(new File(filepath));
+        XMLParser gameoflife = new XMLParser("config"); //will have to change to percolation when file is made
+        Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
         SIMULATION_NAME = configuration.get("simulation");
         GRID_WIDTH = Integer.parseInt(configuration.get("width"));
         GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
