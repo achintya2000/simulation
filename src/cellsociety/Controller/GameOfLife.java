@@ -2,11 +2,19 @@ package cellsociety.Controller;
 
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
+import java.io.File;
+import java.util.Map;
 
 public class GameOfLife extends Simulation {
 
-    public GameOfLife(String filepath) {
-        super(filepath);
+    public void loadSimulationContents(String filepath) {
+        XMLParser gameoflife = new XMLParser("config");
+        Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
+        SIMULATION_NAME = configuration.get("simulation");
+        GRID_WIDTH = Integer.parseInt(configuration.get("width"));
+        GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+        System.out.println(configuration);
+
         simulationGrid = new ArrayGrid(GRID_WIDTH);
     }
 
