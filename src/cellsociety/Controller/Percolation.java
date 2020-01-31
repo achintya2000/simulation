@@ -32,4 +32,4 @@ public boolean closeToWater(int r, int c){
     public boolean canFlow(int r, int c){
         return (Grid.getCurrentState() != 2); //cell does not flow water
     }
-} */
+}
