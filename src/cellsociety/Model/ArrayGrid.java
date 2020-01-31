@@ -72,6 +72,12 @@ public class ArrayGrid extends Grid {
     public int getCurrentState(int row, int col) {
         return myArray[row][col];
     }
+
+    @Override
+    public int[][] getGrid() {
+        return myArray;
+    }
+
     @Override
     public int getReferenceState(int row, int col) {
         return myReferenceArray[row][col];
