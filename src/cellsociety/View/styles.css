@@ -1,0 +1,4 @@
+.slider .track {
+    -fx-pref-height:20;
+    -fx-pref-width: 200;
+}

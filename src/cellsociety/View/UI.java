@@ -11,6 +11,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -43,6 +47,7 @@ public class UI extends Application {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
+    private double timestep = 1000;
 
     private Timeline timeline;
     private Text testing;
@@ -60,17 +65,7 @@ public class UI extends Application {
         gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;
-
-        //Displaying the contents of the stage
-        timeline = new Timeline(new KeyFrame(
-            Duration.millis(5000), event -> {
-            testing.setText(String.valueOf(Math.random()));
-            gameOfLife.updateGrid();
-            root.setCenter(buildGrid());
-        }
-        ));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        createTimeline(timestep);
         //Adding the scene to Stage
         primaryStage.setScene(makeScene());
         primaryStage.show();
@@ -89,8 +84,6 @@ public class UI extends Application {
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
-
-
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
         return scene;
@@ -109,16 +102,32 @@ public class UI extends Application {
         return toolbar;
     }
 
+    private void createTimeline(double milliseconds) {
+        if (timeline!= null) {
+            timeline.stop();
+        }
+        timeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), event -> {
+            testing.setText(String.valueOf(Math.random()));
+            gameOfLife.updateGrid();
+            root.setCenter(buildGrid());
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
     private Node makeSimulationControls() {
-        Slider slider = new Slider();
-        slider.setMin(0);
-        slider.setMax(100);
+        Slider slider = new Slider(100,5000, 100);
+
+        slider.setShowTickMarks(true);
+        slider.setShowTickLabels(true);
         Button playButton = new Button();
         playButton.setText("Play");
         playButton.setOnAction(e -> timeline.play());
         Button stopButton = new Button();
         stopButton.setText("Stop");
         stopButton.setOnAction(e -> timeline.stop());
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> createTimeline((double)newValue));
+
         HBox controls = new HBox();
         controls.getChildren().add(playButton);
         controls.getChildren().add(stopButton);
@@ -144,9 +153,7 @@ public class UI extends Application {
         uiGrid.setPrefColumns(gameOfLife.getSimulationCols());
         uiGrid.setPadding(new Insets(20, 75, 20, 75));
         uiGrid.prefRowsProperty();
-
         wrapper.getChildren().add(uiGrid);
-        System.out.println(uiGrid.getChildren());
         return wrapper;
     }
 
