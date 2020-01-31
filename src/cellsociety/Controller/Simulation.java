@@ -11,7 +11,7 @@ public abstract class Simulation {
   public String SIMULATION_NAME;
   public int GRID_WIDTH;
   public int GRID_HEIGHT;
-
+  public Grid simulationGrid;
 
   public Simulation(String filepath) {
     XMLParser gameoflife = new XMLParser("config");

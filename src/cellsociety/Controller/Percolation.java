@@ -2,7 +2,7 @@ package cellsociety.Controller;
 
 import cellsociety.Model.Grid;
 
-public class Percolation extends Simulation {
+/*public class Percolation extends Simulation {
     public Percolation(String filepath) {
         super(filepath);
     }
@@ -32,4 +32,4 @@ public boolean closeToWater(int r, int c){
     public boolean canFlow(int r, int c){
         return (Grid.getCurrentState() != 2); //cell does not flow water
     }
-}
+} */
