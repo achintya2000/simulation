@@ -48,7 +48,6 @@ public class UI extends Application {
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private double timestep = 1000;
-    public static final String STYLESHEET = "style.css";
 
     private Timeline timeline;
     private Text testing;
@@ -86,7 +85,6 @@ public class UI extends Application {
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         scene.setFill(Color.WHITE);
         return scene;
     }
