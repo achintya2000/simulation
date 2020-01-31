@@ -43,7 +43,6 @@ public class UI extends Application {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
-
     private Timeline timeline;
     private Text testing;
 
@@ -89,8 +88,6 @@ public class UI extends Application {
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
-
-
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
         return scene;
