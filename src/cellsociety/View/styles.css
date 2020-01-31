@@ -1,4 +1,31 @@
-.slider .track {
-    -fx-pref-height:20;
-    -fx-pref-width: 200;
+.root{
+    -fx-background: #c1c8e4;
 }
+
+.slider .track {
+    -fx-pref-height:5;
+}
+.text-field {
+    font-family: 'Open Sans', sans-serif;
+    -fx-text-fill: white;
+}
+.button{
+    -fx-background-color: #c1c8e4;
+    -fx-border-color: white;
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+.button:hover{
+    -fx-background-color: white;
+    -fx-border-color: #c1c8e4;
+    -fx-text-fill: #8694ca;
+}
+.button .text-field {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+
+

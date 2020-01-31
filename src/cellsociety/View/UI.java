@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,7 +45,7 @@ import javafx.util.Duration;
 
 
 public class UI extends Application {
-    private static final int HEIGHT = 600;
+    private static final int HEIGHT = 800;
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private double timestep = 1000;
@@ -65,7 +66,8 @@ public class UI extends Application {
         gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;
-        createTimeline(timestep);
+        createTimeline(timestep, Timeline.INDEFINITE);
+        timeline.stop();
         //Adding the scene to Stage
         primaryStage.setScene(makeScene());
         primaryStage.show();
@@ -85,6 +87,7 @@ public class UI extends Application {
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
+        root.getStylesheets().add(getClass().getResource("styles.css").toString());
         scene.setFill(Color.WHITE);
         return scene;
     }
@@ -102,7 +105,7 @@ public class UI extends Application {
         return toolbar;
     }
 
-    private void createTimeline(double milliseconds) {
+    private void createTimeline(double milliseconds, int cycleCount) {
         if (timeline!= null) {
             timeline.stop();
         }
@@ -111,49 +114,68 @@ public class UI extends Application {
             gameOfLife.updateGrid();
             root.setCenter(buildGrid());
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(cycleCount);
         timeline.play();
     }
 
-    private Node makeSimulationControls() {
+    private Node makeSimulationControls() throws FileNotFoundException {
+        Scanner s = new Scanner(new File("Resources/Start.txt"));
+        String[] buttonText = new String[3];
+        int i = 0;
+        while (s.hasNext()){
+            buttonText[i] = s.nextLine();
+            i++;
+        }
         Slider slider = new Slider(100,5000, 100);
-
-        slider.setShowTickMarks(true);
-        slider.setShowTickLabels(true);
         Button playButton = new Button();
-        playButton.setText("Play");
-        playButton.setOnAction(e -> timeline.play());
+        playButton.setText(buttonText[0]);
+        playButton.setOnAction(e -> {
+            createTimeline(timestep,Timeline.INDEFINITE);
+        });
         Button stopButton = new Button();
-        stopButton.setText("Stop");
+        stopButton.setText(buttonText[1]);
         stopButton.setOnAction(e -> timeline.stop());
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> createTimeline((double)newValue));
-
+        Button nextButton = new Button();
+        nextButton.setText(buttonText[2]);
+        nextButton.setOnAction(e -> {
+           createTimeline(1,1);
+        });
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        createTimeline((double)newValue,Timeline.INDEFINITE);
+        });
         HBox controls = new HBox();
+        stopButton.setAlignment(Pos.CENTER);
+        playButton.setAlignment(Pos.CENTER);
         controls.getChildren().add(playButton);
         controls.getChildren().add(stopButton);
+        controls.getChildren().add(nextButton);
         controls.getChildren().add(slider);
+        controls.setAlignment(Pos.CENTER);
+        controls.setSpacing(10);
         return controls;
     }
 
     private Node buildGrid() {
-
+        double sizeFactor = 500;
         HBox wrapper = new HBox();
         Grid currentGrid = gameOfLife.getGrid();
         TilePane uiGrid = new TilePane();
         Map<Integer, Color> colorMap = gameOfLife.getCellColorMap();
-
         System.out.println(gameOfLife.getSimulationCols());
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
-                uiGrid.getChildren().add(new Rectangle(30, 30, colorMap.get(gameOfLife.getGrid().getCurrentState(i, j))));
+                double tileSize = (sizeFactor/currentGrid.getSize()) - 10;
+                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(gameOfLife.getGrid().getCurrentState(i, j))));
             }
         }
         uiGrid.setHgap(10);
         uiGrid.setVgap(10);
+        uiGrid.setAlignment(Pos.CENTER);
         uiGrid.setPrefColumns(gameOfLife.getSimulationCols());
-        uiGrid.setPadding(new Insets(20, 75, 20, 75));
+        uiGrid.setPadding(new Insets(100, 75, 20, 75));
         uiGrid.prefRowsProperty();
         wrapper.getChildren().add(uiGrid);
+        wrapper.setAlignment(Pos.CENTER);
         return wrapper;
     }
 
