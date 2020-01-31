@@ -3,7 +3,9 @@ package cellsociety.Controller;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
+import javafx.scene.paint.Color;
 
 public class GameOfLife extends Simulation {
 
@@ -46,6 +48,17 @@ public class GameOfLife extends Simulation {
         return GRID_WIDTH;
     }
 
+    @Override
+    void initializeColorMap() {
+        cellColorMap.put(0, Color.WHITE);
+        cellColorMap.put(1, Color.BLACK);
+    }
+
+    @Override
+    public Map<Integer, Color> getCellColorMap() {
+        return cellColorMap;
+    }
+
     private int aliveNeighbors(int r, int c){
         int alive = 0;
         int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c);
@@ -58,4 +71,5 @@ public class GameOfLife extends Simulation {
         }
         return alive;
     }
+
 }

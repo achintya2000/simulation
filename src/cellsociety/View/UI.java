@@ -6,6 +6,7 @@ import cellsociety.Model.ArrayGrid;
 import cellsociety.Controller.Simulation;
 import cellsociety.Model.Grid;
 import java.sql.Time;
+import java.util.Map;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -145,9 +146,12 @@ public class UI extends Application {
     }
 
     private Node buildGrid() {
+
         HBox wrapper = new HBox();
         Grid currentGrid = gameOfLife.getGrid();
         TilePane uiGrid = new TilePane();
+        Map<Integer, Color> colorMap = gameOfLife.getCellColorMap();
+
         System.out.println(gameOfLife.getSimulationCols());
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
