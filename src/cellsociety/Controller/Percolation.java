@@ -56,6 +56,6 @@ import java.util.Map;
     }
 
     public boolean canFlow(int r, int c){
-        return (simulationGrid.getCurrentState(r,c) != 2); //cell does not flow water
+        return (simulationGrid.getReferenceState(r,c) != 2); //cell does not flow water
     }
 }*/
