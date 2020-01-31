@@ -51,14 +51,17 @@ public class GameOfLife extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
                 int aliveNeighbors = aliveNeighbors(r,c);
-                if(simulationGrid.getReferenceState(r,c) == 0 && aliveNeighbors == 3){           // a dead cell with exactly 3 neighbors comes back to life
-                    simulationGrid.updateCell(r,c,1);
-                }
-                else if(simulationGrid.getReferenceState(r,c) == 1 && aliveNeighbors < 2){       // an alive cell dies if less than 2 alive neighbors
+                if(simulationGrid.getReferenceState(r,c) == 1 && aliveNeighbors < 2){       // an alive cell dies if less than 2 alive neighbors
                     simulationGrid.updateCell(r,c,0);
+                }
+                else if(simulationGrid.getReferenceState(r,c) == 1 && aliveNeighbors >= 2 && aliveNeighbors <= 3){
+                    simulationGrid.updateCell(r,c,1);
                 }
                 else if(simulationGrid.getReferenceState(r,c) == 1 && aliveNeighbors > 3){       // an alive cell with more then 3 neighbors dies
                     simulationGrid.updateCell(r,c,0);
+                }
+                else if(simulationGrid.getReferenceState(r,c) == 0 && aliveNeighbors == 3){           // a dead cell with exactly 3 neighbors comes back to life
+                    simulationGrid.updateCell(r,c,1);
                 }
             }
         }

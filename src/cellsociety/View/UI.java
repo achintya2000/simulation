@@ -48,6 +48,7 @@ public class UI extends Application {
     private Text testing;
 
     GameOfLife gameOfLife = new GameOfLife();
+    BorderPane root = new BorderPane();
 
     public static void main (String[] args) {
         launch(args);
@@ -62,10 +63,10 @@ public class UI extends Application {
 
         //Displaying the contents of the stage
         timeline = new Timeline(new KeyFrame(
-            Duration.millis(1000), event -> {
+            Duration.millis(5000), event -> {
             testing.setText(String.valueOf(Math.random()));
             gameOfLife.updateGrid();
-            buildGrid();
+            root.setCenter(buildGrid());
         }
         ));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -85,7 +86,6 @@ public class UI extends Application {
     }
 
     private Scene makeScene() throws FileNotFoundException {
-        BorderPane root = new BorderPane();
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
