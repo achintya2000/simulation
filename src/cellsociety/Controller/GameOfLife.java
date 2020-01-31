@@ -35,6 +35,7 @@ public class GameOfLife extends Simulation {
         }
         simulationGrid = new ArrayGrid(GRID_WIDTH);
         initializeGrid(rows,cols,1);
+        initializeColorMap();
     }
 
     private void initializeGrid(int[] rows, int[] cols, int state) {
@@ -45,7 +46,7 @@ public class GameOfLife extends Simulation {
     }
 
     @Override
-    void updateGrid() {
+    public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
                 int aliveNeighbors = aliveNeighbors(r,c);
@@ -74,6 +75,7 @@ public class GameOfLife extends Simulation {
 
     @Override
     void initializeColorMap() {
+        cellColorMap = new HashMap<>();
         cellColorMap.put(0, Color.WHITE);
         cellColorMap.put(1, Color.BLACK);
     }

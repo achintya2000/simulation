@@ -62,7 +62,7 @@ public class UI extends Application {
 
         //Displaying the contents of the stage
         timeline = new Timeline(new KeyFrame(
-            Duration.millis(20), event -> {
+            Duration.millis(1000), event -> {
             testing.setText(String.valueOf(Math.random()));
         }
         ));
@@ -134,7 +134,7 @@ public class UI extends Application {
         System.out.println(gameOfLife.getSimulationCols());
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
-                uiGrid.getChildren().add(new Rectangle(30, 30, Color.GREEN));
+                uiGrid.getChildren().add(new Rectangle(30, 30, colorMap.get(gameOfLife.getGrid().getCurrentState(i, j))));
             }
         }
         uiGrid.setHgap(10);
