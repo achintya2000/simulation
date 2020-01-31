@@ -8,5 +8,5 @@ public abstract class Grid {
     public abstract void updateCell(int row, int col, int newState);
     public abstract int[] checkNeighbors(int row, int col);
     public abstract int getCurrentState(int row, int col);
-
+    public abstract int[][] getGrid();
 }

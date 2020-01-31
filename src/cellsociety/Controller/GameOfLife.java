@@ -3,6 +3,7 @@ package cellsociety.Controller;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class GameOfLife extends Simulation {
                 }
             }
         }
+        System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
     }
 
     @Override
@@ -89,7 +91,7 @@ public class GameOfLife extends Simulation {
         int alive = 0;
         int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c);
         int i = 0;
-        while (statusOfNeighbors[i] != -1){
+        while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1){
             if(statusOfNeighbors[i] == 1){
                 alive++;
             }
