@@ -36,6 +36,16 @@ public class GameOfLife extends Simulation {
         }
     }
 
+    @Override
+    public Grid getGrid() {
+        return simulationGrid;
+    }
+
+    @Override
+    public int getSimulationCols() {
+        return GRID_WIDTH;
+    }
+
     private int aliveNeighbors(int r, int c){
         int alive = 0;
         int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c);

@@ -17,4 +17,8 @@ public abstract class Simulation {
 
   abstract void updateGrid();
 
+  abstract Grid getGrid();
+
+  abstract int getSimulationCols();
+
 }

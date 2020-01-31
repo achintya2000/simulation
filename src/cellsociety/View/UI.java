@@ -4,18 +4,22 @@ import cellsociety.Controller.GameOfLife;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Controller.Simulation;
+import cellsociety.Model.Grid;
 import java.sql.Time;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -94,7 +98,8 @@ public class UI extends Application {
         BorderPane root = new BorderPane();
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
-        //root.setCenter(setSimulationsMenu());
+        root.setCenter(buildGrid());
+
 
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
         scene.setFill(Color.WHITE);
@@ -137,6 +142,27 @@ public class UI extends Application {
         controls.getChildren().add(stopButton);
         controls.getChildren().add(slider);
         return controls;
+    }
+
+    private Node buildGrid() {
+        HBox wrapper = new HBox();
+        Grid currentGrid = gameOfLife.getGrid();
+        TilePane uiGrid = new TilePane();
+        System.out.println(gameOfLife.getSimulationCols());
+        for (int i = 0; i < currentGrid.getSize(); i++) {
+            for (int j = 0; j < currentGrid.getSize(); j++) {
+                uiGrid.getChildren().add(new Rectangle(30, 30, Color.GREEN));
+            }
+        }
+        uiGrid.setHgap(10);
+        uiGrid.setVgap(10);
+        uiGrid.setPrefColumns(gameOfLife.getSimulationCols());
+        uiGrid.setPadding(new Insets(20, 75, 20, 75));
+        uiGrid.prefRowsProperty();
+
+        wrapper.getChildren().add(uiGrid);
+        System.out.println(uiGrid.getChildren());
+        return wrapper;
     }
 
 
