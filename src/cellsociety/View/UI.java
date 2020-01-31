@@ -64,7 +64,8 @@ public class UI extends Application {
         timeline = new Timeline(new KeyFrame(
             Duration.millis(1000), event -> {
             testing.setText(String.valueOf(Math.random()));
-            //gameOfLife.updateGrid();
+            gameOfLife.updateGrid();
+            buildGrid();
         }
         ));
         timeline.setCycleCount(Animation.INDEFINITE);
