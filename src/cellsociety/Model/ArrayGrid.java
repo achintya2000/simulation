@@ -47,7 +47,12 @@ public class ArrayGrid extends Grid {
     @Override
     public int[] checkNeighbors(int row, int col){
         if (row==0 && col==0) {
-            myReferenceArray = myArray;
+            myReferenceArray = new int[mySize][mySize];
+            for(int r = 0; r < mySize; r ++){
+                for(int c = 0; c < mySize; c++){
+                    myReferenceArray[r][c] = myArray[r][c];
+                }
+            }
         }
         int numNeighbors = 0;
         int[] neighbors = new int[8];
