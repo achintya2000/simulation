@@ -1,6 +1,5 @@
 package cellsociety.Controller;
 
-import cellsociety.XMLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

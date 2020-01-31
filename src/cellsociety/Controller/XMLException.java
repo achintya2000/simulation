@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Controller;
 
 /**
  * This class represents what might go wrong when using XML files.

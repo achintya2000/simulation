@@ -6,6 +6,11 @@ import cellsociety.Controller.Simulation;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -45,27 +50,18 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         group = new Group();
-        Scene scene = new Scene(group ,WIDTH, HEIGHT);
-        scene.setFill(Color.WHITE);
-        SimulationWINDOW.setFill(Color.BLACK);
-        scene.setOnMouseClicked(e -> {
-            try {
-                handleMouseInput(e.getX(), e.getY());
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        });
+
 
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");
 
         //Adding the scene to Stage
-        primaryStage.setScene(scene);
+        primaryStage.setScene(makeScene());
 
-        addNodeToGroup(SimulationWINDOW);
-        displayGrid();
-        showOpenMenuButton();
-        setSimulationsMenu();
+        //addNodeToGroup(SimulationWINDOW);
+        //displayGrid();
+        //showOpenMenuButton();
+        //setSimulationsMenu();
 
         //Displaying the contents of the stage
         primaryStage.show();
@@ -81,43 +77,88 @@ public class UI extends Application {
         return ret;
     }
 
-    private static void setSimulationsMenu() throws FileNotFoundException {
-        mySimulationsMenu = new ArrayList<>();
-        mySimulationsMenuBar.setFill(Color.LIGHTGRAY);
-        mySimulationsMenu.add(mySimulationsMenuBar);
-        List<String> simulationsText = readText("Resources/SimulationMenuText.txt");
-        for(int i = 0; i < simulationsText.size(); i ++){
-            Text text = new Text(simulationsText.get(i));
-            text.setX(mySimulationsMenuBar.getBoundsInParent().getCenterX() - mySimulationsMenuBar.getBoundsInParent().getWidth()/2 +MARGIN);
-            text.setY(MARGIN + i * HEIGHT/8);
-            mySimulationsMenu.add(text);
-        }
+    private Scene makeScene() throws FileNotFoundException {
+
+        BorderPane root = new BorderPane();
+        root.setTop(makeSimulationToolbar());
+        root.setBottom(makeSimulationControls());
+        //root.setCenter(setSimulationsMenu());
+
+        Scene scene = new Scene(root ,WIDTH, HEIGHT);
+        scene.setFill(Color.WHITE);
+        SimulationWINDOW.setFill(Color.BLACK);
+//        scene.setOnMouseClicked(e -> {
+//            try {
+//                handleMouseInput(e.getX(), e.getY());
+//            } catch (FileNotFoundException ex) {
+//                ex.printStackTrace();
+//            }
+//        });
+        return scene;
     }
 
-    private static void showOpenMenuButton(){
-        myOpenMenuButton = new Rectangle(WIDTH- MARGIN - 50, MARGIN, 50, 50);
-        myOpenMenuButton.setFill(new ImagePattern(new Image("open-menu.gif")));
-        addNodeToGroup(myOpenMenuButton);
+    private Node makeSimulationToolbar() throws FileNotFoundException {
+        HBox toolbar = new HBox();
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
+        comboBox.getSelectionModel().selectFirst();
+        toolbar.getChildren().add(comboBox);
+        return toolbar;
     }
 
-    private static void removeOpenMenuButton(){
-        removeNodeFromGroup(myOpenMenuButton);
-        myOpenMenuButton = new Rectangle();
+    private Node makeSimulationControls() {
+        Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(100);
+        Button playButton = new Button();
+        playButton.setText("Play");
+        Button stopButton = new Button();
+        stopButton.setText("Stop");
+        HBox controls = new HBox();
+        controls.getChildren().add(playButton);
+        controls.getChildren().add(stopButton);
+        controls.getChildren().add(slider);
+        return controls;
     }
 
 
-    private static void displayGrid(){
-        ArrayGrid grid = new ArrayGrid(10);
-        int cellSize = SIMULATIONWINDOWSIZE/(ArrayGrid.myArray.length);
-        for(int r = 0; r < ArrayGrid.myArray.length; r ++){
-            for(int c= 0; c < ArrayGrid.myArray[0].length; c ++){
-                Rectangle cell = new Rectangle( SimulationWINDOW.getX()+ cellSize*c, SimulationWINDOW.getY()+ cellSize*r, cellSize, cellSize);
-                int num = ArrayGrid.myArray[r][c];
-                cell.setFill(getColor(num));
-                addNodeToGroup(cell);
-            }
-        }
-    }
+//    private static void setSimulationsMenu() throws FileNotFoundException {
+//        mySimulationsMenu = new ArrayList<>();
+//        mySimulationsMenuBar.setFill(Color.LIGHTGRAY);
+//        mySimulationsMenu.add(mySimulationsMenuBar);
+//        List<String> simulationsText = readText("Resources/SimulationMenuText.txt");
+//        for(int i = 0; i < simulationsText.size(); i ++){
+//            Text text = new Text(simulationsText.get(i));
+//            text.setX(mySimulationsMenuBar.getBoundsInParent().getCenterX() - mySimulationsMenuBar.getBoundsInParent().getWidth()/2 +MARGIN);
+//            text.setY(MARGIN + i * HEIGHT/8);
+//            mySimulationsMenu.add(text);
+//        }
+//    }
+
+//    private static void showOpenMenuButton(){
+//        myOpenMenuButton = new Rectangle(WIDTH- MARGIN - 50, MARGIN, 50, 50);
+//        myOpenMenuButton.setFill(new ImagePattern(new Image("open-menu.gif")));
+//        addNodeToGroup(myOpenMenuButton);
+//    }
+//
+//    private static void removeOpenMenuButton(){
+//        removeNodeFromGroup(myOpenMenuButton);
+//        myOpenMenuButton = new Rectangle();
+//    }
+
+
+//    private static void displayGrid(){
+//        ArrayGrid grid = new ArrayGrid(10);
+//        int cellSize = SIMULATIONWINDOWSIZE/(ArrayGrid.myArray.length);
+//        for(int r = 0; r < ArrayGrid.myArray.length; r ++){
+//            for(int c= 0; c < ArrayGrid.myArray[0].length; c ++){
+//                Rectangle cell = new Rectangle( SimulationWINDOW.getX()+ cellSize*c, SimulationWINDOW.getY()+ cellSize*r, cellSize, cellSize);
+//                int num = ArrayGrid.myArray[r][c];
+//                cell.setFill(getColor(num));
+//                addNodeToGroup(cell);
+//            }
+//        }
+//    }
 
     private static Color getColor(int i){
         int color = i % 5;
@@ -138,17 +179,17 @@ public class UI extends Application {
         return Color.INDIGO;
     }
 
-    private static void handleMouseInput(double x, double y) throws FileNotFoundException {
-        if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
-            addCollecitontoGroup(mySimulationsMenu);
-            removeOpenMenuButton();
-
-        }
-        if(!mySimulationsMenuBar.contains(x,y)){
-            removeCollectionFromGroup(mySimulationsMenu);
-            showOpenMenuButton();
-        }
-    }
+//    private static void handleMouseInput(double x, double y) throws FileNotFoundException {
+//        if(myOpenMenuButton.contains(x,y) && ! group.getChildren().contains(mySimulationsMenu)){
+//            addCollecitontoGroup(mySimulationsMenu);
+//            removeOpenMenuButton();
+//
+//        }
+//        if(!mySimulationsMenuBar.contains(x,y)){
+//            removeCollectionFromGroup(mySimulationsMenu);
+//            showOpenMenuButton();
+//        }
+//    }
 
     private static void addNodeToGroup(Node node){
         if(!group.getChildren().contains(node)){
