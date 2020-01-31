@@ -30,14 +30,14 @@ public class XMLParser {
     /**
      * Get data contained in this XML file as an object
      */
-    public Map<String, String> getInfo (File dataFile) {
+    public Map<String, String> getInfo (File dataFile, List<String> xmlvals) { // add array of strings as input
         Element root = getRootElement(dataFile);
         if (! isValidFile(root, "config")) {
             throw new XMLException(ERROR_MESSAGE, "config");
         }
         // read data associated with the fields given by the object
         Map<String, String> results = new HashMap<>();
-        for (String field : List.of("title", "author", "simulation", "width", "height")) {
+        for (String field : xmlvals) {
             results.put(field, getTextValue(root, field));
         }
         return results;

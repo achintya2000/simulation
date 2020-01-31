@@ -4,30 +4,9 @@
 	<title>CS308 Sim</title>
 	<author>Team 19</author>
 	<simulation>Game of Life</simulation>
-	<info>
-		<title>CS 308 Game of Life Configuration File</title>
-		<author>Group 19</author>
-		<simulation>Game of Life</simulation>
-	</info>
 	<width>6</width>
 	<height>6</height>
-	<celltypes>
-		<dead>0</dead>
-		<live>1</live>
-	</celltypes>
-	<layout>
-		<cell type="live">
-			<c0>2,2</c0>
-			<c1>2,3</c1>
-			<c2>2,4</c2>
-			<c3>3,3</c3>
-			<c4>3,4</c4>
-			<c5>3,5</c5>
-		</cell>
-		<cell type="dead">
-			<default></default>
-		</cell>
-	</layout>
-	<rules>
-	</rules>
+	<numlive>6</numlive>
+	<live>[2,3][2,4][2,5][3,4][3,5][]</live>
+	<dead>default</dead>
 </config>

@@ -4,20 +4,44 @@ import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.scene.paint.Color;
 
 public class GameOfLife extends Simulation {
 
     public void loadSimulationContents(String filepath) {
+
         XMLParser gameoflife = new XMLParser("config");
-        Map<String, String> configuration = gameoflife.getInfo(new File(filepath));
+        List<String> xmlvals = List.of("title", "author", "simulation", "width", "height","numlive","live","dead");
+        Map<String, String> configuration = gameoflife.getInfo(new File("./Resources/gameoflife.xml"), xmlvals);
+        System.out.println(configuration);
+
         SIMULATION_NAME = configuration.get("simulation");
         GRID_WIDTH = Integer.parseInt(configuration.get("width"));
         GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-        System.out.println(configuration);
 
+        String liveCells = configuration.get("live");
+        String[] point = new String[2];
+        int k = 0;
+        int[] rows = new int[Integer.parseInt(configuration.get("numlive"))];
+        int[] cols = new int[Integer.parseInt(configuration.get("numlive"))];
+        while(liveCells.lastIndexOf("]") != liveCells.indexOf("]")) {
+            point = (liveCells.substring(liveCells.indexOf("[")+1, liveCells.indexOf("]"))).split(",");
+            rows[k] = Integer.parseInt(point[0]);
+            cols[k] = Integer.parseInt(point[1]);
+            liveCells = liveCells.substring(liveCells.indexOf("]")+1, liveCells.lastIndexOf("]")+1);
+            k = k + 1;
+        }
         simulationGrid = new ArrayGrid(GRID_WIDTH);
+        initializeGrid(rows,cols,1);
+    }
+
+    private void initializeGrid(int[] rows, int[] cols, int state) {
+        for (int i = 0; i < rows.length; i++) {
+            simulationGrid.updateCell(rows[i], cols[i], state);
+        }
+        simulationGrid.initializeDefaultCell(0);
     }
 
     @Override
