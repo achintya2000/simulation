@@ -17,7 +17,7 @@ public class GameOfLife extends Simulation {
                    Grid.updateCell(r,c,1);
                 }
                 else if(Grid.getCurrentState(cellRow,cellCol) == 1 && aliveNeighbors < 2){       // an alive cell dies if less than 2 alive neighbors
-                   Grid.updateCell(r,c,0)
+                   Grid.updateCell(r,c,0);
                 }
                 else if(Grid.getCurrentState(cellRow,cellCol) == 1 && aliveNeighbors > 3){       // an alive cell with more then 3 neighbors dies
                    Grid.updateCell(r,c,0);
