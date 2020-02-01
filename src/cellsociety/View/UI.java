@@ -63,7 +63,7 @@ public class UI extends Application {
 
         //Displaying the contents of the stage
         timeline = new Timeline(new KeyFrame(
-            Duration.millis(5000), event -> {
+            Duration.millis(1000), event -> {
             testing.setText(String.valueOf(Math.random()));
             gameOfLife.updateGrid();
             root.setCenter(buildGrid());
