@@ -1,5 +1,6 @@
 package cellsociety.View;
 
+import cellsociety.Controller.Fire;
 import cellsociety.Controller.GameOfLife;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Model.ArrayGrid;
@@ -48,12 +49,14 @@ public class UI extends Application {
     private static final int HEIGHT = 800;
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
+    private static String fireConfiguration = "./Resources/fire.xml";
     private double timestep = 1000;
 
     private Timeline timeline;
     private Text testing;
-
+    Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
+    Simulation simulationchoice;
     BorderPane root = new BorderPane();
 
     public static void main (String[] args) {
@@ -71,6 +74,19 @@ public class UI extends Application {
         //Adding the scene to Stage
         primaryStage.setScene(makeScene());
         primaryStage.show();
+    }
+
+    private void loadSimulationChoice(String simulation){
+        switch (simulation){
+            case "Game of Life":
+                simulationchoice = gameOfLife;
+                gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
+                break;
+            case "Fire":
+                fires.loadSimulationContents(fireConfiguration);
+                simulationchoice = gameOfLife;
+                break;
+        }
     }
 
     private static List<String> readText(String fname) throws FileNotFoundException {
@@ -100,6 +116,9 @@ public class UI extends Application {
         testing.setText("yo");
         comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
         comboBox.getSelectionModel().selectFirst();
+        comboBox.setOnAction(e -> {
+            loadSimulationChoice((String)comboBox.getSelectionModel().getSelectedItem());
+        });
         toolbar.getChildren().add(comboBox);
         toolbar.getChildren().add(testing);
         return toolbar;
