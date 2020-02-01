@@ -1,4 +1,4 @@
-Choose a Simulation
+Upload new Simulation
 Percolation
 Game of Life
 Predator and Prey

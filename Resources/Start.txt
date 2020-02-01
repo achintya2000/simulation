@@ -1,5 +1,3 @@
-Start
+Play
 Stop
-Pause
-Step Forward
-Backward
+Next
