@@ -126,7 +126,7 @@ public class UI extends Application {
             buttonText[i] = s.nextLine();
             i++;
         }
-        Slider slider = new Slider(100,5000, 100);
+        Slider slider = new Slider(100,1000, 100);
         Button playButton = new Button();
         playButton.setText(buttonText[0]);
         playButton.setOnAction(e -> {
@@ -140,12 +140,14 @@ public class UI extends Application {
         nextButton.setOnAction(e -> {
            createTimeline(1,1);
         });
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-        createTimeline((double)newValue,Timeline.INDEFINITE);
-        });
-        HBox controls = new HBox();
         stopButton.setAlignment(Pos.CENTER);
         playButton.setAlignment(Pos.CENTER);
+
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double value = 100000/(double)newValue;
+        createTimeline(value,Timeline.INDEFINITE);
+        });
+        HBox controls = new HBox();
         controls.getChildren().add(playButton);
         controls.getChildren().add(stopButton);
         controls.getChildren().add(nextButton);
