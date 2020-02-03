@@ -1,11 +1,7 @@
 package cellsociety.View;
 
-import cellsociety.Controller.Fire;
-import cellsociety.Controller.GameOfLife;
-import cellsociety.Controller.Segregation;
-import cellsociety.Controller.XMLParser;
+import cellsociety.Controller.*;
 import cellsociety.Model.ArrayGrid;
-import cellsociety.Controller.Simulation;
 import cellsociety.Model.Grid;
 import java.sql.Time;
 import java.util.Map;
@@ -52,14 +48,19 @@ public class UI extends Application {
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private static String fireConfiguration = "./Resources/fire.xml";
     private static String segregationConfiguration = "./Resources/segregation.xml";
+    private static String percolationConfiguration = "./Resources/percolation.xml";
     private double timestep = 1000;
 
     private Timeline timeline;
     private Text testing;
+//    private static final List<Simulation> PossibleSimulations = List.of(
+//            new Fire(), new Segregation(), new Percolation(), new GameOfLife() {
+//    });
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
-    Simulation simulationchoice;
+    Percolation percolation = new Percolation();
+    Simulation simulationchoice = gameOfLife;
     BorderPane root = new BorderPane();
 
     public static void main (String[] args) {
@@ -93,7 +94,11 @@ public class UI extends Application {
                 simulationchoice = segregation;
                 segregation.loadSimulationContents(segregationConfiguration);
                 break;
+            case "Percolation":
+                simulationchoice = percolation;
+                percolation.loadSimulationContents(percolationConfiguration);
         }
+        System.out.println(simulationchoice);
     }
 
     private static List<String> readText(String fname) throws FileNotFoundException {
@@ -124,7 +129,9 @@ public class UI extends Application {
         comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e -> {
+            timeline.stop();
             loadSimulationChoice((String)comboBox.getSelectionModel().getSelectedItem());
+            createTimeline(timestep,Timeline.INDEFINITE);
         });
         toolbar.getChildren().add(comboBox);
         toolbar.getChildren().add(testing);
@@ -184,12 +191,13 @@ public class UI extends Application {
     }
 
     private Node buildGrid() {
+        Simulation currentSimulation = simulationchoice;
         double sizeFactor = 500;
         HBox wrapper = new HBox();
         Grid currentGrid = simulationchoice.getGrid();
         TilePane uiGrid = new TilePane();
         Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
-        System.out.println(simulationchoice.getSimulationCols());
+
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
                 double tileSize = (sizeFactor/currentGrid.getSize()) - 10;
