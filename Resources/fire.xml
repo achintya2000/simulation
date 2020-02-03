@@ -7,10 +7,10 @@
 	<width>6</width>
 	<height>6</height>
 	<numtree>5</numtree>
-	<statetree>0</statetree>
+	<statetree>1</statetree>
 	<tree>[1,1][1,2][3,1][3,2][5,1][]</tree>
 	<numburning>5</numburning>
-	<stateburning>0</stateburning>
+	<stateburning>2</stateburning>
 	<burning>[0,1][0,2][2,1][2,2][4,1][]</burning>
 	<default>0</default>
 </config>
