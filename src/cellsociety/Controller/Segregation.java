@@ -15,6 +15,10 @@ public class Segregation extends Simulation {
   int[] rDelta = {0,0,1,-1,1,1,-1,-1};
   int[] cDelta = {1,-1,0,0,1,-1,1,-1};
 
+  private int empty = 0;
+  private int agent1 = 1;
+  private int agent2 = 2;
+
   @Override
   public void loadSimulationContents(String filepath) {
 
@@ -60,10 +64,10 @@ public class Segregation extends Simulation {
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
             simulationGrid.checkNeighbors(r, c, true);
-            if (simulationGrid.getReferenceState(r, c) == 1) {
-              movesLocation(r, c, 1);
-            } else if (simulationGrid.getReferenceState(r, c) == 2) {
-              movesLocation(r, c, 2);
+            if (simulationGrid.getReferenceState(r, c) == agent1) {
+              movesLocation(r, c, agent1);
+            } else if (simulationGrid.getReferenceState(r, c) == agent2) {
+              movesLocation(r, c, agent2);
             }
         }
       }
@@ -82,9 +86,9 @@ public class Segregation extends Simulation {
   @Override
   void initializeColorMap() {
     cellColorMap = new HashMap<>();
-    cellColorMap.put(0, Color.WHITE);
-    cellColorMap.put(1, Color.BLUE);
-    cellColorMap.put(2, Color.RED);
+    cellColorMap.put(empty, Color.WHITE);
+    cellColorMap.put(agent1, Color.BLUE);
+    cellColorMap.put(agent2, Color.RED);
   }
 
   @Override
@@ -104,7 +108,7 @@ public class Segregation extends Simulation {
         for (int i = 0; i < statusOfNeighbors.length; i++) {
           if (statusOfNeighbors[i] == 0) {
             if(simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
-              simulationGrid.updateCell(r, c, 0);
+              simulationGrid.updateCell(r, c, empty);
               simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], state);
               break;
             }
