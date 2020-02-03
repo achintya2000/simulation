@@ -82,8 +82,8 @@ public class Percolation extends Simulation {
     void initializeColorMap() {
         cellColorMap = new HashMap<>();
         cellColorMap.put(open, Color.WHITE);
-        cellColorMap.put(percolated, Color.BLACK);
-        cellColorMap.put(blocked, Color.BLUE);
+        cellColorMap.put(percolated, Color.BLUE);
+        cellColorMap.put(blocked, Color.BLACK);
     }
 
     @Override

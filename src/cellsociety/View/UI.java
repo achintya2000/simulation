@@ -53,9 +53,7 @@ public class UI extends Application {
 
     private Timeline timeline;
     private Text testing;
-//    private static final List<Simulation> PossibleSimulations = List.of(
-//            new Fire(), new Segregation(), new Percolation(), new GameOfLife() {
-//    });
+
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
