@@ -48,10 +48,12 @@ public class UI extends Application {
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private static String fireConfiguration = "./Resources/fire.xml";
     private static String segregationConfiguration = "./Resources/segregation.xml";
+    private static String percolationConfiguration = "./Resources/percolation.xml";
     private double timestep = 1000;
 
     private Timeline timeline;
     private Text testing;
+
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
@@ -90,7 +92,11 @@ public class UI extends Application {
                 simulationchoice = segregation;
                 segregation.loadSimulationContents(segregationConfiguration);
                 break;
+            case "Percolation":
+                simulationchoice = percolation;
+                percolation.loadSimulationContents(percolationConfiguration);
         }
+        System.out.println(simulationchoice);
     }
 
     private static List<String> readText(String fname) throws FileNotFoundException {
@@ -121,7 +127,9 @@ public class UI extends Application {
         comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e -> {
+            timeline.stop();
             loadSimulationChoice((String)comboBox.getSelectionModel().getSelectedItem());
+            createTimeline(timestep,Timeline.INDEFINITE);
         });
         toolbar.getChildren().add(comboBox);
         toolbar.getChildren().add(testing);
@@ -181,16 +189,16 @@ public class UI extends Application {
     }
 
     private Node buildGrid() {
+        Simulation currentSimulation = simulationchoice;
         double sizeFactor = 500;
         HBox wrapper = new HBox();
-        Grid currentGrid = segregation.getGrid();
+        Grid currentGrid = simulationchoice.getGrid();
         TilePane uiGrid = new TilePane();
-        Map<Integer, Color> colorMap = segregation.getCellColorMap();
-        System.out.println(segregation.getSimulationCols());
+        Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
                 double tileSize = (sizeFactor/currentGrid.getSize()) - 10;
-                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(segregation.getGrid().getCurrentState(i, j))));
+                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(simulationchoice.getGrid().getCurrentState(i, j))));
             }
         }
         uiGrid.setHgap(10);
