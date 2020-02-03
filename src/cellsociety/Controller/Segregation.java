@@ -105,15 +105,15 @@ public class Segregation extends Simulation {
         }
       }
       if (count/8.0 < moveProb) {
-        for (int i = 0; i < statusOfNeighbors.length; i++) {
-          if (statusOfNeighbors[i] == 0) {
-            if(simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
-              simulationGrid.updateCell(r, c, empty);
-              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], state);
+        for (int i = 0; i < simulationGrid.getSize(); i++) {
+          for (int j = 0; j < simulationGrid.getSize(); j++) {
+            if (simulationGrid.getCurrentState(i, j) == 0) {
+              simulationGrid.updateCell(i, j, state);
               break;
             }
           }
         }
+        simulationGrid.updateCell(r, c, 0);
       }
   }
 }
