@@ -59,6 +59,7 @@ public class UI extends Application {
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
+    
     Simulation simulationchoice;
     BorderPane root = new BorderPane();
 
