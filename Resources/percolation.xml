@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config config="config">
+	<title>CS308 Sim</title>
+	<author>Team 19</author>
+	<simulation>Percolation</simulation>
+	<width>6</width>
+	<height>6</height>
+	<numopen>8</numopen>
+	<stateopen>0</stateopen>
+	<open>[0,3][0,4][0,5][1,1][1,2][3,1][3,2][5,1][]</open>
+	<numpercolated>5</numpercolated>
+	<statepercolated>1</statepercolated>
+	<percolated>[0,1][0,2][2,1][2,2][4,1][]</percolated>
+	<default>2</default>
+</config>

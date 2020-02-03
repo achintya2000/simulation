@@ -1,11 +1,7 @@
 package cellsociety.View;
 
-import cellsociety.Controller.Fire;
-import cellsociety.Controller.GameOfLife;
-import cellsociety.Controller.Segregation;
-import cellsociety.Controller.XMLParser;
+import cellsociety.Controller.*;
 import cellsociety.Model.ArrayGrid;
-import cellsociety.Controller.Simulation;
 import cellsociety.Model.Grid;
 import java.sql.Time;
 import java.util.Map;
@@ -59,6 +55,7 @@ public class UI extends Application {
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
+    Percolation percolation = new Percolation();
     Simulation simulationchoice;
     BorderPane root = new BorderPane();
 
