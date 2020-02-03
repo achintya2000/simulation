@@ -18,7 +18,7 @@ public abstract class Simulation {
 
   abstract void loadSimulationContents(String filepath);
 
-  abstract void updateGrid();
+  public abstract void updateGrid();
 
   public abstract Grid getGrid();
 
