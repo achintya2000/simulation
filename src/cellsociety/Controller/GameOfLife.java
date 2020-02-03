@@ -96,7 +96,7 @@ public class GameOfLife extends Simulation {
 
     private int aliveNeighbors(int r, int c){
         int alive = 0;
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c);
+        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         int i = 0;
         while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1 ){
             if(statusOfNeighbors[i] == 1){
