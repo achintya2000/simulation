@@ -10,5 +10,5 @@ public abstract class Grid {
     public abstract int getCurrentState(int row, int col);
     public abstract int[][] getGrid();
     public abstract int getReferenceState(int row, int col);
-
+    public abstract boolean inBounds(int r, int c);
 }

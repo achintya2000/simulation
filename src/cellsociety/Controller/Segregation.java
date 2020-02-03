@@ -11,6 +11,10 @@ import javafx.scene.paint.Color;
 
 public class Segregation extends Simulation {
 
+  private static final float moveProb = (float) 0.30;
+  int[] rDelta = {0,0,1,-1,1,1,-1,-1};
+  int[] cDelta = {1,-1,0,0,1,-1,1,-1};
+
   @Override
   public void loadSimulationContents(String filepath) {
 
@@ -55,7 +59,12 @@ public class Segregation extends Simulation {
   public void updateGrid() {
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
-            
+            simulationGrid.checkNeighbors(r, c, true);
+            if (simulationGrid.getReferenceState(r, c) == 1) {
+              movesLocation(r, c, 1);
+            } else if (simulationGrid.getReferenceState(r, c) == 2) {
+              movesLocation(r, c, 2);
+            }
         }
       }
   }
@@ -66,7 +75,7 @@ public class Segregation extends Simulation {
   }
 
   @Override
-  int getSimulationCols() {
+  public int getSimulationCols() {
     return GRID_WIDTH;
   }
 
@@ -81,5 +90,26 @@ public class Segregation extends Simulation {
   @Override
   public Map<Integer, Color> getCellColorMap() {
     return cellColorMap;
+  }
+
+  private void movesLocation(int r, int c, int state) {
+      int[] statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
+      int count = 0;
+      for (int i = 0; i < statusOfNeighbors.length; i++) {
+        if (statusOfNeighbors[i] == state) {
+          count++;
+        }
+      }
+      if (count/8.0 < moveProb) {
+        for (int i = 0; i < statusOfNeighbors.length; i++) {
+          if (statusOfNeighbors[i] == 0) {
+            if(simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+              simulationGrid.updateCell(r, c, 0);
+              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], state);
+              break;
+            }
+          }
+        }
+      }
   }
 }

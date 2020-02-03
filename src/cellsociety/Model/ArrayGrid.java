@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Model.Grid;
+import java.util.Arrays;
 
 public class ArrayGrid extends Grid {
 
@@ -91,8 +92,8 @@ public class ArrayGrid extends Grid {
         return myReferenceArray[row][col];
     }
 
-    private boolean inBounds(int r, int c){
+    @Override
+    public boolean inBounds(int r, int c){
         return (r < myArray.length && r >= 0 && c < myArray[0].length && c >= 0);
     }
-
 }
