@@ -20,16 +20,12 @@ public abstract class Simulation {
 
   abstract void updateGrid();
 
-  public Grid getGrid(){
-    return simulationGrid;
-  }
+  public abstract Grid getGrid();
 
   abstract int getSimulationCols();
 
   abstract void initializeColorMap();
 
-  public Map<Integer, Color> getCellColorMap(){
-    return cellColorMap;
-  }
+  public abstract Map<Integer, Color> getCellColorMap();
 
 }
