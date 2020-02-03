@@ -60,7 +60,7 @@ public class Fire extends Simulation {
                 if(simulationGrid.getReferenceState(r,c)==2) {
                     simulationGrid.updateCell(r,c,0);
                 } else if (simulationGrid.getReferenceState(r,c)==1 && catchesFire(r,c)) {
-                    simulationGrid.updateCell(r,c,0);
+                    simulationGrid.updateCell(r,c,2);
                 } else if (simulationGrid.getReferenceState(r,c)==0) { // What do I do if cell is empty state?
                     if (growsTree(r,c)) {
                         simulationGrid.updateCell(r, c, 1);
