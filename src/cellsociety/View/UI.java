@@ -58,7 +58,7 @@ public class UI extends Application {
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
-    Simulation simulationchoice;
+    Simulation simulationchoice = gameOfLife;
     BorderPane root = new BorderPane();
 
     public static void main (String[] args) {
