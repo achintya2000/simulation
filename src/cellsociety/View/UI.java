@@ -60,7 +60,7 @@ public class UI extends Application {
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
-    Simulation simulationchoice = gameOfLife;
+    Simulation simulationchoice = segregation;
     BorderPane root = new BorderPane();
 
     public static void main (String[] args) {
@@ -69,7 +69,6 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
         segregation.loadSimulationContents(segregationConfiguration);
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;

@@ -22,7 +22,7 @@ public abstract class Simulation {
 
   public abstract Grid getGrid();
 
-  abstract int getSimulationCols();
+  public abstract int getSimulationCols();
 
   abstract void initializeColorMap();
 
