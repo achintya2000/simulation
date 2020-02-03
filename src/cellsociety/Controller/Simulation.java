@@ -28,8 +28,7 @@ public abstract class Simulation {
 
   abstract void initializeColorMap();
 
-  public Map<Integer, Color> getCellColorMap(){
-    return cellColorMap;
-  }
+  abstract Map<Integer, Color> getCellColorMap();
+
 
 }
