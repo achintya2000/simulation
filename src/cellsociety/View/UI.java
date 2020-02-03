@@ -142,7 +142,7 @@ public class UI extends Application {
         }
         timeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), event -> {
             testing.setText(String.valueOf(Math.random()));
-            segregation.updateGrid();
+            simulationchoice.updateGrid();
             root.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cycleCount);
@@ -195,6 +195,7 @@ public class UI extends Application {
         Grid currentGrid = simulationchoice.getGrid();
         TilePane uiGrid = new TilePane();
         Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
+
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
                 double tileSize = (sizeFactor/currentGrid.getSize()) - 10;
@@ -204,7 +205,7 @@ public class UI extends Application {
         uiGrid.setHgap(10);
         uiGrid.setVgap(10);
         uiGrid.setAlignment(Pos.CENTER);
-        uiGrid.setPrefColumns(segregation.getSimulationCols());
+        uiGrid.setPrefColumns(simulationchoice.getSimulationCols());
         uiGrid.setPadding(new Insets(100, 75, 20, 75));
         uiGrid.prefRowsProperty();
         wrapper.getChildren().add(uiGrid);

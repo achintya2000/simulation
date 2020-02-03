@@ -57,9 +57,10 @@ public class Percolation extends Simulation {
 
 
     @Override
-    void updateGrid() {
+    public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
+                simulationGrid.checkNeighbors(r, c, true);
                 if(canFlow(r,c) && closeToWater(r,c)){
                     simulationGrid.updateCell(r,c,percolated);
                 }

@@ -56,6 +56,7 @@ public class Fire extends Simulation {
     public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
+                simulationGrid.checkNeighbors(r, c, false);
                 if(simulationGrid.getReferenceState(r,c)==2) {
                     simulationGrid.updateCell(r,c,0);
                 } else if (simulationGrid.getReferenceState(r,c)==1 && catchesFire(r,c)) {
@@ -86,7 +87,8 @@ public class Fire extends Simulation {
     void initializeColorMap() {
         cellColorMap = new HashMap<>();
         cellColorMap.put(0, Color.WHITE);
-        cellColorMap.put(1, Color.BLACK);
+        cellColorMap.put(1, Color.GREEN);
+        cellColorMap.put(2, Color.ORANGE);
     }
 
     @Override

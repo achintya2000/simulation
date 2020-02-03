@@ -18,17 +18,14 @@ public abstract class Simulation {
 
   abstract void loadSimulationContents(String filepath);
 
-  abstract void updateGrid();
+  public abstract void updateGrid();
 
-  public Grid getGrid(){
-    return simulationGrid;
-  }
+  public abstract Grid getGrid();
 
-  abstract int getSimulationCols();
+  public abstract int getSimulationCols();
 
   abstract void initializeColorMap();
 
   public abstract Map<Integer, Color> getCellColorMap();
-
 
 }
