@@ -24,11 +24,6 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public void initializeCell(int row, int col, int state) {
-        myArray[row][col] = state;
-    }
-
-    @Override
     public void initializeDefaultCell(int state) {
         for (int i = 0; i < mySize; i++) {
             for (int j = 0; j < mySize; j++) {
