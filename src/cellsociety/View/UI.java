@@ -2,6 +2,7 @@ package cellsociety.View;
 
 import cellsociety.Controller.Fire;
 import cellsociety.Controller.GameOfLife;
+import cellsociety.Controller.Segregation;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Controller.Simulation;
@@ -50,12 +51,14 @@ public class UI extends Application {
     private static final int WIDTH = 800;
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private static String fireConfiguration = "./Resources/fire.xml";
+    private static String segregationConfiguration = "./Resources/segregation.xml";
     private double timestep = 1000;
 
     private Timeline timeline;
     private Text testing;
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
+    Segregation segregation = new Segregation();
     Simulation simulationchoice;
     BorderPane root = new BorderPane();
 
@@ -65,8 +68,8 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
+        segregation.loadSimulationContents(segregationConfiguration);
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;
         createTimeline(timestep, Timeline.INDEFINITE);
@@ -83,8 +86,12 @@ public class UI extends Application {
                 gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
                 break;
             case "Fire":
+                simulationchoice = fires;
                 fires.loadSimulationContents(fireConfiguration);
-                simulationchoice = gameOfLife;
+                break;
+            case "Segregation":
+                simulationchoice = segregation;
+                segregation.loadSimulationContents(segregationConfiguration);
                 break;
         }
     }
@@ -130,7 +137,7 @@ public class UI extends Application {
         }
         timeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), event -> {
             testing.setText(String.valueOf(Math.random()));
-            gameOfLife.updateGrid();
+            segregation.updateGrid();
             root.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cycleCount);
@@ -179,20 +186,20 @@ public class UI extends Application {
     private Node buildGrid() {
         double sizeFactor = 500;
         HBox wrapper = new HBox();
-        Grid currentGrid = gameOfLife.getGrid();
+        Grid currentGrid = segregation.getGrid();
         TilePane uiGrid = new TilePane();
-        Map<Integer, Color> colorMap = gameOfLife.getCellColorMap();
-        System.out.println(gameOfLife.getSimulationCols());
+        Map<Integer, Color> colorMap = segregation.getCellColorMap();
+        System.out.println(segregation.getSimulationCols());
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
                 double tileSize = (sizeFactor/currentGrid.getSize()) - 10;
-                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(gameOfLife.getGrid().getCurrentState(i, j))));
+                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(segregation.getGrid().getCurrentState(i, j))));
             }
         }
         uiGrid.setHgap(10);
         uiGrid.setVgap(10);
         uiGrid.setAlignment(Pos.CENTER);
-        uiGrid.setPrefColumns(gameOfLife.getSimulationCols());
+        uiGrid.setPrefColumns(segregation.getSimulationCols());
         uiGrid.setPadding(new Insets(100, 75, 20, 75));
         uiGrid.prefRowsProperty();
         wrapper.getChildren().add(uiGrid);
