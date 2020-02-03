@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 public class Fire extends Simulation {
 
     public static final float PROB_CATCH = .15F;
+    public static final float PROB_GROW = .15F;
 
     public void loadSimulationContents(String filepath) {
 
@@ -60,7 +61,11 @@ public class Fire extends Simulation {
                 } else if (simulationGrid.getReferenceState(r,c)==1 && catchesFire(r,c)) {
                     simulationGrid.updateCell(r,c,0);
                 } else if (simulationGrid.getReferenceState(r,c)==0) { // What do I do if cell is empty state?
-                    simulationGrid.updateCell(r,c,1);
+                    if (growsTree(r,c)) {
+                        simulationGrid.updateCell(r, c, 1);
+                    } else {
+                        simulationGrid.updateCell(r, c, 0);
+                    }
                 }
             }
         }
@@ -105,6 +110,15 @@ public class Fire extends Simulation {
             if (float_random < PROB_CATCH) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private boolean growsTree(int r, int c) {
+        Random rand = new Random();
+        float float_random = rand.nextFloat();
+        if (float_random < PROB_GROW) {
+            return true;
         }
         return false;
     }
