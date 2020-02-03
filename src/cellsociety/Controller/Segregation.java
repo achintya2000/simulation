@@ -101,11 +101,12 @@ public class Segregation extends Simulation {
         }
       }
       if (count/8.0 < moveProb) {
+        outerloop:
         for (int i = 0; i < simulationGrid.getSize(); i++) {
           for (int j = 0; j < simulationGrid.getSize(); j++) {
             if (simulationGrid.getCurrentState(i, j) == 0) {
               simulationGrid.updateCell(i, j, state);
-              break;
+              break outerloop;
             }
           }
         }
