@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -39,10 +40,7 @@ public class UI extends Application {
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
-    private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
-    private static String fireConfiguration = "./Resources/fire.xml";
     private static String segregationConfiguration = "./Resources/segregation.xml";
-    private static String percolationConfiguration = "./Resources/percolation.xml";
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
@@ -54,6 +52,7 @@ public class UI extends Application {
 
     private Simulation simulationchoice = segregation;
     BorderPane root = new BorderPane();
+    Stage PrimaryStage;
 
 
     public static void main (String[] args) {
@@ -66,6 +65,7 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        PrimaryStage = primaryStage;
         segregation.loadSimulationContents(new File(segregationConfiguration));
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;
@@ -73,23 +73,30 @@ public class UI extends Application {
         timeline.stop();
         //Adding the scene to Stage
         primaryStage.setScene(makeScene());
-        setComboBox(primaryStage);
         primaryStage.show();
     }
 
-    private void setComboBox(Stage primaryStage) throws FileNotFoundException {
+    public static void setErrorBox(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Bad Input");
+        alert.setHeaderText("Not an XML File");
+        alert.setContentText("Please choose another file");
+        alert.showAndWait();
+    }
+
+    private Node setComboBox() throws FileNotFoundException {
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e -> {
-            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
             String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
             timeline.stop();
             loadSimulationChoice(simulationChosen, selectedFile);
             createTimeline(timestep,Timeline.INDEFINITE);
             SimulationName.setText(simulationChosen);
-            root.getChildren().add(comboBox);
         });
+        return comboBox;
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile){
@@ -136,8 +143,7 @@ public class UI extends Application {
         SimulationName.setFont(new Font(22));
         SimulationName.setText("Segregation"); //default simulation
         SimulationName.setFill(Color.WHITE);
-
-
+        toolbar.getChildren().add(setComboBox());
         toolbar.getChildren().add(SimulationName);
         toolbar.setSpacing(MARGIN);
         return toolbar;

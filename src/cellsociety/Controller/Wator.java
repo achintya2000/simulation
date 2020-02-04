@@ -17,7 +17,7 @@ public class Wator extends Simulation{
   int[][] sharkEnergy;
 
   @Override
-  void loadSimulationContents(String filepath) {
+  public void loadSimulationContents(File file) {
     List<String> cellTypes = List.of("fish", "shark");
 
     List<String> xmlvals = new ArrayList<String>();
@@ -26,7 +26,7 @@ public class Wator extends Simulation{
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     XMLParser parser = new XMLParser("config");
-    Map<String, String> configuration = parser.getInfo(new File(filepath), xmlvals);
+    Map<String, String> configuration = parser.getInfo(file, xmlvals);
     System.out.println(configuration);
 
     SIMULATION_NAME = configuration.get("simulation");
