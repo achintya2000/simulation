@@ -41,7 +41,7 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public int[] checkNeighbors(int row, int col, boolean diagonals){
+    public int[] checkNeighbors(int row, int col, boolean diagonals, boolean atomic_update){
         if (row==0 && col==0) {
             myReferenceArray = new int[mySize][mySize];
             for(int r = 0; r < mySize; r ++){
@@ -61,8 +61,16 @@ public class ArrayGrid extends Grid {
            int neighborRow = row + rDelta[i];
            int neighborCol = col + cDelta[i];
            if (inBounds(neighborRow, neighborCol)) {
-               neighbors[numNeighbors] = getReferenceState(neighborRow,neighborCol);
+               if (atomic_update) { // Use to determine whether reference or current state needed
+                   neighbors[numNeighbors] = getReferenceState(neighborRow,neighborCol);
+               } else {
+                   neighbors[numNeighbors] = getCurrentState(neighborRow,neighborCol);
+               }
                numNeighbors = numNeighbors + 1;
+           } else {
+               if (!atomic_update) { // if its not in bounds, but we are doing wator which reequires exact placement, then fill it with a -1
+                   neighbors[numNeighbors] = -1;
+               }
            }
         }
         for (int i = 0; i < (8-numNeighbors); i ++) {
