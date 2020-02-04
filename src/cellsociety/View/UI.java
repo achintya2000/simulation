@@ -185,6 +185,7 @@ public class UI extends Application {
         playButton.setText(buttonText[0]);
         playButton.setOnAction(e -> {
             createTimeline(timestep,Timeline.INDEFINITE);
+            timeline.play();
         });
         Button stopButton = new Button();
         stopButton.setText(buttonText[1]);
