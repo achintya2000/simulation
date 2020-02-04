@@ -3,6 +3,8 @@ package cellsociety.View;
 import cellsociety.Controller.*;
 import cellsociety.Model.Grid;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 import javafx.animation.KeyFrame;
@@ -36,11 +38,11 @@ public class UI extends Application {
     private static final int WIDTH = 800;
     private static final int VIEWING_WINDOW_SIZE = 500;
     private static final int MARGIN = 10;
-    private static final int NUMBUTTONS = 3;
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
-    private static String segregationConfiguration = "./Resources/wator.xml";
+
+
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
@@ -51,12 +53,16 @@ public class UI extends Application {
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
     TilePane uiGrid = new TilePane();
+    private Properties prop = readPropertiesFile("Resources/English.properties");
 
     FileChooser fileChooser = new FileChooser();
 
-    private Simulation simulationchoice = wator;
+    private Simulation simulationchoice = fire;
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
+
+    public UI() throws IOException {
+    }
 
 
     public static void main (String[] args) {
@@ -70,10 +76,15 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
+
+        String segregationConfiguration = "./Resources/fire.xml";
+        fire.loadSimulationContents(new File(segregationConfiguration));
+
         wator.loadSimulationContents(new File(segregationConfiguration));
 
+
         //Setting the title to Stage.
-        primaryStage.setTitle("Simulation");
+        primaryStage.setTitle(prop.getProperty("title"));
         primaryStage.setScene(makeScene());
         primaryStage.show();
 
@@ -90,9 +101,12 @@ public class UI extends Application {
         alert.showAndWait();
     }
 
-    private Node setComboBox() throws FileNotFoundException {
+    private Node setComboBox(){
         ComboBox comboBox = new ComboBox();
-        comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
+        String[] choiceProperties = {"newSim", "percolation", "GameofLife", "wator", "segregation", "fire"};
+        for(String choice: choiceProperties){
+            comboBox.getItems().add(prop.getProperty(choice));
+        }
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
@@ -129,16 +143,8 @@ public class UI extends Application {
         simulationchoice.loadSimulationContents(xmlFile);
     }
 
-    private static List<String> readText(String fname) throws FileNotFoundException {
-        List<String> ret = new ArrayList<>();
-        Scanner s = new Scanner(new File(fname));
-        while (s.hasNext()){
-            ret.add(s.nextLine());
-        }
-        return ret;
-    }
 
-    private Scene makeScene() throws FileNotFoundException {
+    private Scene makeScene() throws IOException {
         root.setTop(makeSimulationToolbar());
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
@@ -154,7 +160,7 @@ public class UI extends Application {
 
         SimulationName = new Text();
         SimulationName.setFont(new Font(22));
-        SimulationName.setText("Segregation"); //default simulation
+        SimulationName.setText(prop.getProperty("fire")); //default simulation
         SimulationName.setFill(Color.WHITE);
         toolbar.getChildren().add(setComboBox());
         toolbar.getChildren().add(SimulationName);
@@ -173,25 +179,18 @@ public class UI extends Application {
         timeline.setCycleCount(cycleCount);
     }
 
-    private Node makeSimulationControls() throws FileNotFoundException {
-        Scanner s = new Scanner(new File("Resources/Start.txt"));
-        String[] buttonText = new String[NUMBUTTONS];
-        int i = 0;
-        while (s.hasNext()){
-            buttonText[i] = s.nextLine();
-            i++;
-        }
+    private Node makeSimulationControls() {
         Button playButton = new Button();
-        playButton.setText(buttonText[0]);
+        playButton.setText(prop.getProperty("play"));
         playButton.setOnAction(e -> {
             createTimeline(timestep,Timeline.INDEFINITE);
             timeline.play();
         });
         Button stopButton = new Button();
-        stopButton.setText(buttonText[1]);
+        stopButton.setText(prop.getProperty("stop"));
         stopButton.setOnAction(e -> timeline.stop());
         Button nextButton = new Button();
-        nextButton.setText(buttonText[2]);
+        nextButton.setText(prop.getProperty("next"));
         nextButton.setOnAction(e -> {
            createTimeline(1,1);
            timeline.play();
@@ -241,4 +240,18 @@ public class UI extends Application {
         return wrapper;
     }
 
+    public static Properties readPropertiesFile(String fileName) throws IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        try {
+            prop.load(fis);
+        } catch(IOException fnfe) {
+            fnfe.printStackTrace();
+        } finally {
+            fis.close();
+        }
+        return prop;
+    }
 }
+
+
