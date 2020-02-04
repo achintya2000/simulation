@@ -45,17 +45,21 @@ public class UI extends Application {
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
-
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
-    Simulation simulationchoice = segregation;
+    private Simulation simulationchoice = segregation;
     BorderPane root = new BorderPane();
+
 
     public static void main (String[] args) {
         launch(args);
     }
+
+    /**
+     * start() loads the default simulation, creates the inital timeline, calls makeScene which creates a new scene
+     * **/
 
     @Override
     public void start(Stage primaryStage) throws Exception {
