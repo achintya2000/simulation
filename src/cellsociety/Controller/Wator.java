@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javafx.scene.paint.Color;
 
 public class Wator extends Simulation{
@@ -16,6 +17,7 @@ public class Wator extends Simulation{
   int[] rDelta = {0,0,1,-1};
   int[] cDelta = {1,-1,0,0};
   int[][] sharkEnergy;
+  Random rand = new Random();
 
   @Override
   public void loadSimulationContents(File file) {
@@ -74,10 +76,10 @@ public class Wator extends Simulation{
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         simulationGrid.checkNeighbors(r, c, false);
-        if (simulationGrid.getReferenceState(r, c) == 1) {
-          fishGoesTo(r, c);
-        } else if (simulationGrid.getReferenceState(r, c) == 2) {
+        if (simulationGrid.getReferenceState(r, c) == 2) {
           sharkGoesTo(r, c);
+        } else if (simulationGrid.getReferenceState(r, c) == 1) {
+          fishGoesTo(r, c);
         }
       }
     }
@@ -100,6 +102,7 @@ public class Wator extends Simulation{
   private void sharkGoesTo(int r, int c) {
       if (sharkEnergy[r][c] > 0) {
         int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
+
         for (int i = 0; i < neighbors.length && i < 4; i++) {
           if (neighbors[i] == 1) {
             if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
@@ -137,7 +140,7 @@ public class Wator extends Simulation{
 
   private void fishGoesTo(int r, int c) {
     int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
-    System.out.println(Arrays.toString(neighbors));
+
     for (int i = 0; i < neighbors.length && i < 4; i++) {
       if (neighbors[i] == 0) {
         if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
@@ -173,4 +176,5 @@ public class Wator extends Simulation{
   public Map<Integer, Color> getCellColorMap() {
     return cellColorMap;
   }
+
 }
