@@ -38,10 +38,11 @@ public class Percolation extends Simulation {
         initializeGrid(cellTypes, configuration);
 
         initializeColorMap();
+        System.out.println();
     }
 
     private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
-        String[] point = new String[2];
+        String[] point;
         for (String celltype : cellTypes) {
             String cellLocations = configuration.get(celltype);
             int k = 0;
