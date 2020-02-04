@@ -11,6 +11,11 @@ import javafx.scene.paint.Color;
 
 public class Wator extends Simulation{
 
+  private int chronon = 0;
+  int[] rDelta = {0,0,1,-1};
+  int[] cDelta = {1,-1,0,0};
+  int[][] sharkEnergy;
+
   @Override
   void loadSimulationContents(String filepath) {
     List<String> cellTypes = List.of("fish", "shark");
@@ -27,6 +32,8 @@ public class Wator extends Simulation{
     SIMULATION_NAME = configuration.get("simulation");
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
     GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+
+    sharkEnergy = new int[GRID_WIDTH][GRID_WIDTH];
 
     simulationGrid = new ArrayGrid(GRID_WIDTH);
     initializeGrid(cellTypes, configuration);
@@ -48,17 +55,26 @@ public class Wator extends Simulation{
       }
     }
     simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
+
+    for (int r = 0; r < simulationGrid.getSize(); r++) {
+      for (int c = 0; c < simulationGrid.getSize(); c++) {
+        if (simulationGrid.getCurrentState(r, c) == 2) {
+          sharkEnergy[r][c] = 5;
+        }
+      }
+    }
   }
 
   @Override
   public void updateGrid() {
+    chronon++;
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         simulationGrid.checkNeighbors(r, c, false);
         if (simulationGrid.getReferenceState(r, c) == 1) {
           fishGoesTo(r, c);
         } else if (simulationGrid.getReferenceState(r, c) == 2) {
-          sharkGoesTo();
+          sharkGoesTo(r, c);
         }
       }
     }
@@ -66,15 +82,31 @@ public class Wator extends Simulation{
 
   @Override
   public Grid getGrid() {
-    return null;
+    return simulationGrid;
   }
 
-  private void sharkGoesTo() {
-
+  private void sharkGoesTo(int r, int c) {
+      if (sharkEnergy[r][c] > 0) {
+        int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
+        for (int i = 0; i < neighbors.length; i++) {
+          if (neighbors[i] == 1) {
+            
+          }
+        }
+      }
   }
 
   private void fishGoesTo(int r, int c) {
-
+    int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
+    for (int i = 0; i < neighbors.length; i++) {
+      if (neighbors[i] == 0) {
+        if (chronon % 5 != 0) {
+          simulationGrid.updateCell(r, c, 0);
+        }
+        simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+        break;
+      }
+    }
   }
 
   @Override
