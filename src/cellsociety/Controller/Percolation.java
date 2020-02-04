@@ -20,6 +20,7 @@ public class Percolation extends Simulation {
     public void loadSimulationContents(File file) {
         // Change below to list of cell types to change for each sim
         List<String> cellTypes = List.of("open","percolated");
+        // See above
 
         List<String> xmlvals = new ArrayList<String>();
         xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
@@ -99,6 +100,7 @@ public class Percolation extends Simulation {
             if(statusOfNeighbors[i] == percolated){
                return true;
             }
+            i++;
         }
         return false;
     }

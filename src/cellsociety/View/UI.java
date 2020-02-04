@@ -44,11 +44,13 @@ public class UI extends Application {
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
+
     Fire fires = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
+
     FileChooser fileChooser = new FileChooser();
 
     private Simulation simulationchoice = segregation;
