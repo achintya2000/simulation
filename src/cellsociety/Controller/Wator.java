@@ -68,6 +68,7 @@ public class Wator extends Simulation{
   @Override
   public void updateGrid() {
     chronon++;
+
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         simulationGrid.checkNeighbors(r, c, false);
@@ -75,6 +76,9 @@ public class Wator extends Simulation{
           fishGoesTo(r, c);
         } else if (simulationGrid.getReferenceState(r, c) == 2) {
           sharkGoesTo(r, c);
+        }
+        if (sharkEnergy[r][c] != 0) {
+          sharkEnergy[r][c]--;
         }
       }
     }
@@ -90,9 +94,28 @@ public class Wator extends Simulation{
         int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
         for (int i = 0; i < neighbors.length; i++) {
           if (neighbors[i] == 1) {
-            
+            if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
+              sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
+              sharkEnergy[r][c] = 0;
+
+              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 2);
+              simulationGrid.updateCell(r, c, 0);
+            }
           }
         }
+        for (int i = 0; i < neighbors.length; i++) {
+          if (neighbors[i] == 0) {
+            if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
+              if (chronon % 5 != 0) {
+                simulationGrid.updateCell(r, c, 0);
+              }
+              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 2);
+              break;
+            }
+          }
+        }
+      } else {
+        simulationGrid.updateCell(r, c, 0);
       }
   }
 
@@ -100,11 +123,13 @@ public class Wator extends Simulation{
     int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
     for (int i = 0; i < neighbors.length; i++) {
       if (neighbors[i] == 0) {
-        if (chronon % 5 != 0) {
-          simulationGrid.updateCell(r, c, 0);
+        if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+          if (chronon % 5 != 0) {
+            simulationGrid.updateCell(r, c, 0);
+          }
+          simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+          break;
         }
-        simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-        break;
       }
     }
   }
