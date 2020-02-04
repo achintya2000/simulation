@@ -48,6 +48,7 @@ public class UI extends Application {
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
+    Wator wator = new Wator();
     FileChooser fileChooser = new FileChooser();
 
     private Simulation simulationchoice = segregation;
@@ -112,6 +113,8 @@ public class UI extends Application {
                 break;
             case "Percolation":
                 simulationchoice = percolation;
+            case "Wator":
+                simulationchoice = wator;
         }
         simulationchoice.loadSimulationContents(xmlFile);
     }

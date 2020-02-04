@@ -4,6 +4,7 @@ import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class Wator extends Simulation{
   private void sharkGoesTo(int r, int c) {
       if (sharkEnergy[r][c] > 0) {
         int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
-        for (int i = 0; i < neighbors.length; i++) {
+        for (int i = 0; i < neighbors.length && i < 4; i++) {
           if (neighbors[i] == 1) {
             if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
               sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
@@ -103,14 +104,21 @@ public class Wator extends Simulation{
             }
           }
         }
-        for (int i = 0; i < neighbors.length; i++) {
+        for (int i = 0; i < neighbors.length && i < 4; i++) {
           if (neighbors[i] == 0) {
             if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
-              if (chronon % 5 != 0) {
+              if (chronon % 5 == 0) {
+                sharkEnergy[r + rDelta[i]][c + cDelta[i]] = 5;
+                simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+                break;
+              } else {
+                sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
+                sharkEnergy[r][c] = 0;
+
                 simulationGrid.updateCell(r, c, 0);
+                simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+                break;
               }
-              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 2);
-              break;
             }
           }
         }
@@ -121,14 +129,20 @@ public class Wator extends Simulation{
 
   private void fishGoesTo(int r, int c) {
     int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
-    for (int i = 0; i < neighbors.length; i++) {
+    System.out.println(Arrays.toString(neighbors));
+    for (int i = 0; i < neighbors.length && i < 4; i++) {
       if (neighbors[i] == 0) {
         if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
-          if (chronon % 5 != 0) {
-            simulationGrid.updateCell(r, c, 0);
+          if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+            if (chronon % 5 == 0) {
+              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+              break;
+            } else {
+              simulationGrid.updateCell(r, c, 0);
+              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
+              break;
+            }
           }
-          simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-          break;
         }
       }
     }
