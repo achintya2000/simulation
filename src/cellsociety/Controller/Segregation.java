@@ -27,6 +27,7 @@ public class Segregation extends Simulation {
     for (String celltype : cellTypes) {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
+
     XMLParser parser = new XMLParser("config");
     Map<String, String> configuration = parser.getInfo(file, xmlvals);
     System.out.println(configuration);
