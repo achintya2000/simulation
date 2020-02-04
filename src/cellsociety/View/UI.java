@@ -40,7 +40,7 @@ public class UI extends Application {
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
-    private static String segregationConfiguration = "./Resources/fire.xml";
+    private static String segregationConfiguration = "./Resources/wator.xml";
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
@@ -53,7 +53,7 @@ public class UI extends Application {
 
     FileChooser fileChooser = new FileChooser();
 
-    private Simulation simulationchoice = fire;
+    private Simulation simulationchoice = wator;
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
 
@@ -69,7 +69,7 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
-        fire.loadSimulationContents(new File(segregationConfiguration));
+        wator.loadSimulationContents(new File(segregationConfiguration));
 
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");
