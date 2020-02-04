@@ -9,6 +9,10 @@
     font-family: 'Open Sans', sans-serif;
     -fx-text-fill: white;
 }
+.combo-box.button{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
 .combo-box .list-cell
 {
     -fx-background-color: white;
