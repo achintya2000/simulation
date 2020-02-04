@@ -12,7 +12,7 @@ public class Fire extends Simulation {
     public static final float PROB_CATCH = .15F;
     public static final float PROB_GROW = .15F;
 
-    public void loadSimulationContents(String filepath) {
+    public void loadSimulationContents(File file) {
 
         // Change below to list of cell types to change for each sim
         List<String> cellTypes = List.of("tree","burning");
@@ -24,7 +24,7 @@ public class Fire extends Simulation {
             xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
         }
         XMLParser parser = new XMLParser("config");
-        Map<String, String> configuration = parser.getInfo(new File(filepath), xmlvals);
+        Map<String, String> configuration = parser.getInfo(file, xmlvals);
         System.out.println(configuration);
 
         SIMULATION_NAME = configuration.get("simulation");
@@ -60,7 +60,7 @@ public class Fire extends Simulation {
                 if(simulationGrid.getReferenceState(r,c)==2) {
                     simulationGrid.updateCell(r,c,0);
                 } else if (simulationGrid.getReferenceState(r,c)==1 && catchesFire(r,c)) {
-                    simulationGrid.updateCell(r,c,0);
+                    simulationGrid.updateCell(r,c,2);
                 } else if (simulationGrid.getReferenceState(r,c)==0) { // What do I do if cell is empty state?
                     if (growsTree(r,c)) {
                         simulationGrid.updateCell(r, c, 1);

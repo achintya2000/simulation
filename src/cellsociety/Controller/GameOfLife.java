@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class GameOfLife extends Simulation {
 
 
-    public void loadSimulationContents(String filepath) {
+    public void loadSimulationContents(File file) {
 
         // Change below to list of cell types to change for each sim
         List<String> cellTypes = List.of("live");
@@ -22,8 +22,7 @@ public class GameOfLife extends Simulation {
             xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
         }
         XMLParser parser = new XMLParser("config");
-        Map<String, String> configuration = parser.getInfo(new File(filepath), xmlvals);
-        System.out.println(configuration);
+        Map<String, String> configuration = parser.getInfo(file, xmlvals);
 
         SIMULATION_NAME = configuration.get("simulation");
         GRID_WIDTH = Integer.parseInt(configuration.get("width"));
@@ -69,7 +68,6 @@ public class GameOfLife extends Simulation {
                 }
             }
         }
-        System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
     }
 
     @Override

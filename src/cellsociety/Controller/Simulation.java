@@ -16,7 +16,7 @@ public abstract class Simulation {
   public Grid simulationGrid;
   public Map<Integer, Color> cellColorMap;
 
-  abstract void loadSimulationContents(String filepath);
+  public abstract void loadSimulationContents(File file);
 
   public abstract void updateGrid();
 

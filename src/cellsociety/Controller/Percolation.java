@@ -17,7 +17,7 @@ public class Percolation extends Simulation {
     private int percolated = 1;
     private int blocked = 2;
 
-    public void loadSimulationContents(String filepath) {
+    public void loadSimulationContents(File file) {
         // Change below to list of cell types to change for each sim
         List<String> cellTypes = List.of("open","percolated");
 
@@ -27,7 +27,7 @@ public class Percolation extends Simulation {
             xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
         }
         XMLParser parser = new XMLParser("config");
-        Map<String, String> configuration = parser.getInfo(new File(filepath), xmlvals);
+        Map<String, String> configuration = parser.getInfo(file, xmlvals);
         System.out.println(configuration);
 
         SIMULATION_NAME = configuration.get("simulation");
@@ -82,8 +82,8 @@ public class Percolation extends Simulation {
     void initializeColorMap() {
         cellColorMap = new HashMap<>();
         cellColorMap.put(open, Color.WHITE);
-        cellColorMap.put(percolated, Color.BLACK);
-        cellColorMap.put(blocked, Color.BLUE);
+        cellColorMap.put(percolated, Color.BLUE);
+        cellColorMap.put(blocked, Color.BLACK);
     }
 
     @Override
