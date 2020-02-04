@@ -4,13 +4,13 @@
 	<title>CS308 Sim</title>
 	<author>Team 19</author>
 	<simulation>Fire</simulation>
-	<width>6</width>
-	<height>6</height>
+	<width>8</width>
+	<height>8</height>
 	<numtree>5</numtree>
 	<statetree>1</statetree>
 	<tree>[1,1][1,2][3,1][3,2][5,1][]</tree>
-	<numburning>5</numburning>
+	<numburning>9</numburning>
 	<stateburning>2</stateburning>
-	<burning>[0,1][0,2][2,1][2,2][4,1][]</burning>
+	<burning>[0,1][0,2][2,1][2,2][4,1][5,2][5,3][5,4][5,5][]</burning>
 	<default>0</default>
 </config>

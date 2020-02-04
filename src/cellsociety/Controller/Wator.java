@@ -39,6 +39,8 @@ public class Wator extends Simulation{
     simulationGrid = new ArrayGrid(GRID_WIDTH);
     initializeGrid(cellTypes, configuration);
 
+    System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
+
     initializeColorMap();
   }
 
@@ -77,11 +79,17 @@ public class Wator extends Simulation{
         } else if (simulationGrid.getReferenceState(r, c) == 2) {
           sharkGoesTo(r, c);
         }
+      }
+    }
+
+    for (int r = 0; r < simulationGrid.getSize(); r++) {
+      for (int c = 0; c < simulationGrid.getSize(); c++) {
         if (sharkEnergy[r][c] != 0) {
           sharkEnergy[r][c]--;
         }
       }
     }
+
   }
 
   @Override
@@ -100,6 +108,7 @@ public class Wator extends Simulation{
 
               simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 2);
               simulationGrid.updateCell(r, c, 0);
+              break;
             }
           }
         }

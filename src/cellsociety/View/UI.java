@@ -2,7 +2,9 @@ package cellsociety.View;
 
 import cellsociety.Controller.*;
 import cellsociety.Model.Grid;
-import java.util.Map;
+
+import java.util.*;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -24,9 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.text.Text;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -40,18 +40,18 @@ public class UI extends Application {
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
-    private static String segregationConfiguration = "./Resources/segregation.xml";
+    private static String segregationConfiguration = "./Resources/fire.xml";
     private double timestep = 1000;
     private Timeline timeline;
     private Text SimulationName;
-    Fire fires = new Fire();
+    Fire fire = new Fire();
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
     FileChooser fileChooser = new FileChooser();
 
-    private Simulation simulationchoice = segregation;
+    private Simulation simulationchoice = fire;
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
 
@@ -67,14 +67,16 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
-        segregation.loadSimulationContents(new File(segregationConfiguration));
+        fire.loadSimulationContents(new File(segregationConfiguration));
+
         //Setting the title to Stage.
-        primaryStage.setTitle("Simulation");;
-        createTimeline(timestep, Timeline.INDEFINITE);
-        timeline.stop();
-        //Adding the scene to Stage
+        primaryStage.setTitle("Simulation");
         primaryStage.setScene(makeScene());
         primaryStage.show();
+
+        //createTimeline(timestep, Timeline.INDEFINITE);
+        //timeline.stop();
+        //Adding the scene to Stage
     }
 
     public static void setErrorBox(){
@@ -92,10 +94,13 @@ public class UI extends Application {
         comboBox.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
             String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
-            timeline.stop();
+            if (timeline != null) {
+                timeline.stop();
+            }
             loadSimulationChoice(simulationChosen, selectedFile);
             createTimeline(timestep,Timeline.INDEFINITE);
             SimulationName.setText(simulationChosen);
+            buildGrid();
         });
         return comboBox;
     }
@@ -106,7 +111,7 @@ public class UI extends Application {
                 simulationchoice = gameOfLife;
                 break;
             case "Fire":
-                simulationchoice = fires;
+                simulationchoice = fire;
                 break;
             case "Segregation":
                 simulationchoice = segregation;
@@ -163,7 +168,7 @@ public class UI extends Application {
             root.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cycleCount);
-        timeline.play();
+        //timeline.play();
     }
 
     private Node makeSimulationControls() throws FileNotFoundException {
@@ -213,7 +218,7 @@ public class UI extends Application {
         Grid currentGrid = simulationchoice.getGrid();
         TilePane uiGrid = new TilePane();
         Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
-
+        System.out.println(Arrays.deepToString(simulationchoice.getGrid().getGrid()));
         for (int i = 0; i < currentGrid.getSize(); i++) {
             for (int j = 0; j < currentGrid.getSize(); j++) {
                 double tileSize = (VIEWING_WINDOW_SIZE /currentGrid.getSize()) - MARGIN;
