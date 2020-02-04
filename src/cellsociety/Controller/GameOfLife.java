@@ -3,47 +3,50 @@ package cellsociety.Controller;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javafx.scene.paint.Color;
 
 public class GameOfLife extends Simulation {
 
-    public void loadSimulationContents(String filepath) {
 
-        XMLParser gameoflife = new XMLParser("config");
-        List<String> xmlvals = List.of("title", "author", "simulation", "width", "height","numlive","live","dead");
-        Map<String, String> configuration = gameoflife.getInfo(new File("./Resources/gameoflife.xml"), xmlvals);
-        System.out.println(configuration);
+    public void loadSimulationContents(File file) {
+
+        // Change below to list of cell types to change for each sim
+        List<String> cellTypes = List.of("live");
+        // See above
+
+        List<String> xmlvals = new ArrayList<String>();
+        xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
+        for (String celltype : cellTypes) {
+            xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
+        }
+        XMLParser parser = new XMLParser("config");
+        Map<String, String> configuration = parser.getInfo(file, xmlvals);
 
         SIMULATION_NAME = configuration.get("simulation");
         GRID_WIDTH = Integer.parseInt(configuration.get("width"));
         GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
 
-        String liveCells = configuration.get("live");
-        String[] point = new String[2];
-        int k = 0;
-        int[] rows = new int[Integer.parseInt(configuration.get("numlive"))];
-        int[] cols = new int[Integer.parseInt(configuration.get("numlive"))];
-        while(liveCells.lastIndexOf("]") != liveCells.indexOf("]")) {
-            point = (liveCells.substring(liveCells.indexOf("[")+1, liveCells.indexOf("]"))).split(",");
-            rows[k] = Integer.parseInt(point[0]);
-            cols[k] = Integer.parseInt(point[1]);
-            liveCells = liveCells.substring(liveCells.indexOf("]")+1, liveCells.lastIndexOf("]")+1);
-            k = k + 1;
-        }
         simulationGrid = new ArrayGrid(GRID_WIDTH);
-        initializeGrid(rows,cols,1);
+        initializeGrid(cellTypes, configuration);
+
         initializeColorMap();
     }
 
-    private void initializeGrid(int[] rows, int[] cols, int state) {
-        for (int i = 0; i < rows.length; i++) {
-            simulationGrid.updateCell(rows[i], cols[i], state);
+    private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
+        String[] point = new String[2];
+        for (String celltype : cellTypes) {
+            String cellLocations = configuration.get(celltype);
+            int k = 0;
+            while(cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
+                point = (cellLocations.substring(cellLocations.indexOf("[")+1, cellLocations.indexOf("]"))).split(",");
+                simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(configuration.get("state"+celltype)));
+                cellLocations = cellLocations.substring(cellLocations.indexOf("]")+1, cellLocations.lastIndexOf("]")+1);
+                k = k + 1;
+            }
         }
-        simulationGrid.initializeDefaultCell(0);
+        simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
     }
 
     @Override
@@ -65,7 +68,6 @@ public class GameOfLife extends Simulation {
                 }
             }
         }
-        System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
     }
 
     @Override
@@ -92,7 +94,7 @@ public class GameOfLife extends Simulation {
 
     private int aliveNeighbors(int r, int c){
         int alive = 0;
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c);
+        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         int i = 0;
         while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1 ){
             if(statusOfNeighbors[i] == 1){

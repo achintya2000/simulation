@@ -1,0 +1,49 @@
+.root{
+    -fx-background-color: linear-gradient(to bottom right, #b49be1 , #d6eef8 ,#c1c8e4);
+}
+
+.slider .track {
+    -fx-pref-height:5;
+}
+.text-field {
+    font-family: 'Open Sans', sans-serif;
+    -fx-text-fill: white;
+}
+.combo-box.button{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.combo-box .list-cell
+{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 5em;
+}
+.combo-box .list-cell:hover{
+    -fx-background-color: #c1c8e4;
+    -fx-text-fill: white;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 5em;
+}
+
+.button{
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+.button:hover{
+    -fx-background-color: white;
+    -fx-border-color: #c1c8e4;
+    -fx-text-fill: #8694ca;
+}
+.button .text-field {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+
+

@@ -1,6 +1,6 @@
-Choose a Simulation
+Choose new Simulation
 Percolation
 Game of Life
-Predator and Prey
+Wator
 Segregation
 Fire

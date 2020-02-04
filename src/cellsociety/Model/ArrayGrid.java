@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Model.Grid;
+import java.util.Arrays;
 
 public class ArrayGrid extends Grid {
 
@@ -24,11 +25,6 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public void initializeCell(int row, int col, int state) {
-        myArray[row][col] = state;
-    }
-
-    @Override
     public void initializeDefaultCell(int state) {
         for (int i = 0; i < mySize; i++) {
             for (int j = 0; j < mySize; j++) {
@@ -45,7 +41,7 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public int[] checkNeighbors(int row, int col){
+    public int[] checkNeighbors(int row, int col, boolean diagonals){
         if (row==0 && col==0) {
             myReferenceArray = new int[mySize][mySize];
             for(int r = 0; r < mySize; r ++){
@@ -59,6 +55,9 @@ public class ArrayGrid extends Grid {
         int[] rDelta = {0,0,1,-1,1,1,-1,-1};
         int[] cDelta = {1,-1,0,0,1,-1,1,-1};
         for(int i = 0; i < rDelta.length; i ++) {
+            if (!diagonals && i > 3) {
+                break;
+            }
            int neighborRow = row + rDelta[i];
            int neighborCol = col + cDelta[i];
            if (inBounds(neighborRow, neighborCol)) {
@@ -88,8 +87,8 @@ public class ArrayGrid extends Grid {
         return myReferenceArray[row][col];
     }
 
-    private boolean inBounds(int r, int c){
+    @Override
+    public boolean inBounds(int r, int c){
         return (r < myArray.length && r >= 0 && c < myArray[0].length && c >= 0);
     }
-
 }
