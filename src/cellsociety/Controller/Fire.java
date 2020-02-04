@@ -101,7 +101,7 @@ public class Fire extends Simulation {
         int i = 0;
         int burning = 0;
         while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1 ){
-            if(statusOfNeighbors[i] == 1){
+            if(statusOfNeighbors[i] == 2){
                 burning++;
             }
             i++;
