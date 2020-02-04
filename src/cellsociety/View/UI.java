@@ -50,6 +50,7 @@ public class UI extends Application {
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
+    TilePane uiGrid = new TilePane();
 
     FileChooser fileChooser = new FileChooser();
 
@@ -100,9 +101,9 @@ public class UI extends Application {
                 timeline.stop();
             }
             loadSimulationChoice(simulationChosen, selectedFile);
+            root.setCenter(buildGrid());
             createTimeline(timestep,Timeline.INDEFINITE);
             SimulationName.setText(simulationChosen);
-            buildGrid();
         });
         return comboBox;
     }
@@ -170,7 +171,6 @@ public class UI extends Application {
             root.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cycleCount);
-        //timeline.play();
     }
 
     private Node makeSimulationControls() throws FileNotFoundException {
@@ -194,6 +194,7 @@ public class UI extends Application {
         nextButton.setText(buttonText[2]);
         nextButton.setOnAction(e -> {
            createTimeline(1,1);
+           timeline.play();
         });
         stopButton.setAlignment(Pos.CENTER);
         playButton.setAlignment(Pos.CENTER);
@@ -212,14 +213,15 @@ public class UI extends Application {
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double value = DIVISONFACTOR/(double)newValue;
             createTimeline(value,Timeline.INDEFINITE);
+            timeline.play();
         });
         return slider;
     }
 
     private Node buildGrid() {
         HBox wrapper = new HBox();
+        uiGrid = new TilePane();
         Grid currentGrid = simulationchoice.getGrid();
-        TilePane uiGrid = new TilePane();
         Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
         System.out.println(Arrays.deepToString(simulationchoice.getGrid().getGrid()));
         for (int i = 0; i < currentGrid.getSize(); i++) {
