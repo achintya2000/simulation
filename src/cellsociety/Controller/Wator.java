@@ -40,7 +40,6 @@ public class Wator extends Simulation{
     initializeGrid(cellTypes, configuration);
 
     initializeColorMap();
-    System.out.println();
   }
 
   private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {

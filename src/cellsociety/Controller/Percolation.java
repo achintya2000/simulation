@@ -96,7 +96,7 @@ public class Percolation extends Simulation {
     public boolean closeToWater(int r, int c){
         int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         int i = 0;
-        while (statusOfNeighbors[i] != -1){
+        while (i < 8 && statusOfNeighbors[i] != -1){
             if(statusOfNeighbors[i] == percolated){
                return true;
             }

@@ -115,8 +115,10 @@ public class UI extends Application {
                 break;
             case "Percolation":
                 simulationchoice = percolation;
+                break;
             case "Wator":
                 simulationchoice = wator;
+                break;
         }
         simulationchoice.loadSimulationContents(xmlFile);
     }
