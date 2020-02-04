@@ -62,7 +62,7 @@ public class Segregation extends Simulation {
   public void updateGrid() {
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
-            simulationGrid.checkNeighbors(r, c, true);
+            simulationGrid.checkNeighbors(r, c, true, true);
             if (simulationGrid.getReferenceState(r, c) == agent1) {
               movesLocation(r, c, agent1);
             } else if (simulationGrid.getReferenceState(r, c) == agent2) {
@@ -96,7 +96,7 @@ public class Segregation extends Simulation {
   }
 
   private void movesLocation(int r, int c, int state) {
-      int[] statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
+      int[] statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true, true);
       int count = 0;
       for (int i = 0; i < statusOfNeighbors.length; i++) {
         if (statusOfNeighbors[i] == state) {
