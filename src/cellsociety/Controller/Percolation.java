@@ -62,7 +62,7 @@ public class Percolation extends Simulation {
     public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
-                simulationGrid.checkNeighbors(r, c, true);
+                simulationGrid.checkNeighbors(r, c, true, true);
                 if(canFlow(r,c) && closeToWater(r,c)){
                     simulationGrid.updateCell(r,c,percolated);
                 }
@@ -95,7 +95,7 @@ public class Percolation extends Simulation {
 
 
     public boolean closeToWater(int r, int c){
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
+        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true, true);
         int i = 0;
         while (i < 8 && statusOfNeighbors[i] != -1){
             if(statusOfNeighbors[i] == percolated){
