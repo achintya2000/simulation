@@ -17,6 +17,10 @@ public class Wator extends Simulation{
   int[] rDelta = {0,0,1,-1};
   int[] cDelta = {1,-1,0,0};
   int[][] sharkEnergy;
+  private int empty = 0;
+  private int fish = 1;
+  private int shark = 2;
+  private int shark_lives = 3;
   Random rand = new Random();
 
   @Override
@@ -36,12 +40,9 @@ public class Wator extends Simulation{
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
     GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
 
-    sharkEnergy = new int[GRID_WIDTH][GRID_WIDTH];
-
     simulationGrid = new ArrayGrid(GRID_WIDTH);
+    sharkEnergy = new int[GRID_WIDTH][GRID_WIDTH];
     initializeGrid(cellTypes, configuration);
-
-    System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
 
     initializeColorMap();
   }
@@ -62,8 +63,8 @@ public class Wator extends Simulation{
 
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
-        if (simulationGrid.getCurrentState(r, c) == 2) {
-          sharkEnergy[r][c] = 5;
+        if (simulationGrid.getCurrentState(r, c) == shark) {
+          sharkEnergy[r][c] = shark_lives;
         }
       }
     }
@@ -75,10 +76,14 @@ public class Wator extends Simulation{
 
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
-        simulationGrid.checkNeighbors(r, c, false);
-        if (simulationGrid.getReferenceState(r, c) == 2) {
-          sharkGoesTo(r, c);
-        } else if (simulationGrid.getReferenceState(r, c) == 1) {
+        simulationGrid.checkNeighbors(r, c, false, false);
+        if (simulationGrid.getCurrentState(r, c) == shark) { // Must use current state because sharks can move during updates
+          if (sharkEnergy[r][c] <= 0) {
+            simulationGrid.updateCell(r, c, empty);
+          } else {
+            sharkGoesTo(r, c);
+          }
+        } else if (simulationGrid.getCurrentState(r, c) == fish) { // Must use current state because fish can move during updates
           fishGoesTo(r, c);
         }
       }
@@ -100,63 +105,61 @@ public class Wator extends Simulation{
   }
 
   private void sharkGoesTo(int r, int c) {
-      if (sharkEnergy[r][c] > 0) {
-        int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
+    boolean fisheaten = false; // if fish not eaten after forst loop, shark has moved
+    int[] neighbors = simulationGrid.checkNeighbors(r, c, false, false);
 
-        for (int i = 0; i < neighbors.length && i < 4; i++) {
-          if (neighbors[i] == 1) {
-            if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
-              sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
-              sharkEnergy[r][c] = 0;
-
-              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 2);
-              simulationGrid.updateCell(r, c, 0);
-              break;
-            }
-          }
-        }
-        for (int i = 0; i < neighbors.length && i < 4; i++) {
-          if (neighbors[i] == 0) {
-            if (simulationGrid.inBounds(r+rDelta[i], c+cDelta[i])) {
-              if (chronon % 5 == 0) {
-                sharkEnergy[r + rDelta[i]][c + cDelta[i]] = 5;
-                simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-                break;
-              } else {
-                sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
-                sharkEnergy[r][c] = 0;
-
-                simulationGrid.updateCell(r, c, 0);
-                simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-                break;
-              }
-            }
-          }
-        }
-      } else {
-        simulationGrid.updateCell(r, c, 0);
-      }
-  }
-
-  private void fishGoesTo(int r, int c) {
-    int[] neighbors = simulationGrid.checkNeighbors(r, c, false);
-
+    // Below determines if there are any fish around the shark, if they are, they are eaten
     for (int i = 0; i < neighbors.length && i < 4; i++) {
-      if (neighbors[i] == 0) {
+      if (neighbors[i] == fish) { // take first neighbor that is fish
         if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+          sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c]++;
+          sharkEnergy[r][c] = 0;
+          simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], shark);
+          simulationGrid.updateCell(r, c, empty);
+          fisheaten=true;
+          if (chronon % 5 == 0) {
+            sharkEnergy[r][c] = shark_lives;
+            simulationGrid.updateCell(r,c, shark);
+          }
+          break;
+        }
+      }
+    }
+    // If the shark did not move to eat the fish, and a nearby location is empty, move
+    if (!fisheaten) {
+      for (int i = 0; i < neighbors.length && i < 4; i++) {
+        if (neighbors[i] == empty) {
           if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+            sharkEnergy[r + rDelta[i]][c + cDelta[i]] = sharkEnergy[r][c];
+            sharkEnergy[r][c] = 0;
+            simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], shark);
+            simulationGrid.updateCell(r, c, empty);
             if (chronon % 5 == 0) {
-              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-              break;
-            } else {
-              simulationGrid.updateCell(r, c, 0);
-              simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], 1);
-              break;
+              sharkEnergy[r][c] = shark_lives;
+              simulationGrid.updateCell(r,c, shark);
             }
+            break;
           }
         }
       }
     }
+  }
+
+  private void fishGoesTo(int r, int c) {
+    int[] neighbors = simulationGrid.checkNeighbors(r, c, false, false);
+
+    for (int i = 0; i < neighbors.length && i < 4; i++) {
+      if (neighbors[i] == empty) {
+        if (simulationGrid.inBounds(r + rDelta[i], c + cDelta[i])) {
+          simulationGrid.updateCell(r + rDelta[i], c + cDelta[i], fish);
+          if (chronon % 5 != 0) { // Put fish in new spot
+            simulationGrid.updateCell(r, c, empty);
+          }
+          break;
+        }
+      }
+    }
+
   }
 
   @Override

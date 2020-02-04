@@ -56,7 +56,7 @@ public class Fire extends Simulation {
     public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
-                simulationGrid.checkNeighbors(r, c, false);
+                simulationGrid.checkNeighbors(r, c, false, true);
                 if(simulationGrid.getReferenceState(r,c)==2) {
                     simulationGrid.updateCell(r,c,0);
                 } else if (simulationGrid.getReferenceState(r,c)==1 && catchesFire(r,c)) {
@@ -97,7 +97,7 @@ public class Fire extends Simulation {
     }
 
     private boolean catchesFire(int r, int c) {
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,false);
+        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,false, true);
         int i = 0;
         int burning = 0;
         while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1 ){
