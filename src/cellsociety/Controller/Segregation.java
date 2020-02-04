@@ -18,7 +18,7 @@ public class Segregation extends Simulation {
   private int agent2 = 2;
 
   @Override
-  public void loadSimulationContents(String filepath) {
+  public void loadSimulationContents(File file) {
 
     List<String> cellTypes = List.of("agent1", "agent2");
 
@@ -28,7 +28,7 @@ public class Segregation extends Simulation {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     XMLParser parser = new XMLParser("config");
-    Map<String, String> configuration = parser.getInfo(new File(filepath), xmlvals);
+    Map<String, String> configuration = parser.getInfo(file, xmlvals);
     System.out.println(configuration);
 
     SIMULATION_NAME = configuration.get("simulation");

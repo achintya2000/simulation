@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
@@ -37,7 +38,7 @@ public class UI extends Application {
     private static final int NUMBUTTONS = 3;
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
-    private static final int DIVISONFACTOR = 10000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
     private static String gameOfLifeConfiguration = "./Resources/gameoflife.xml";
     private static String fireConfiguration = "./Resources/fire.xml";
     private static String segregationConfiguration = "./Resources/segregation.xml";
@@ -49,6 +50,8 @@ public class UI extends Application {
     GameOfLife gameOfLife = new GameOfLife();
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
+    FileChooser fileChooser = new FileChooser();
+
     private Simulation simulationchoice = segregation;
     BorderPane root = new BorderPane();
 
@@ -63,34 +66,47 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        segregation.loadSimulationContents(segregationConfiguration);
+        segregation.loadSimulationContents(new File(segregationConfiguration));
         //Setting the title to Stage.
         primaryStage.setTitle("Simulation");;
         createTimeline(timestep, Timeline.INDEFINITE);
         timeline.stop();
         //Adding the scene to Stage
         primaryStage.setScene(makeScene());
+        setComboBox(primaryStage);
         primaryStage.show();
     }
 
-    private void loadSimulationChoice(String simulation){
+    private void setComboBox(Stage primaryStage) throws FileNotFoundException {
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
+        comboBox.getSelectionModel().selectFirst();
+        comboBox.setOnAction(e -> {
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
+            timeline.stop();
+            loadSimulationChoice(simulationChosen, selectedFile);
+            createTimeline(timestep,Timeline.INDEFINITE);
+            SimulationName.setText(simulationChosen);
+            root.getChildren().add(comboBox);
+        });
+    }
+
+    private void loadSimulationChoice(String simulation, File xmlFile){
         switch (simulation){
             case "Game of Life":
                 simulationchoice = gameOfLife;
-                gameOfLife.loadSimulationContents(gameOfLifeConfiguration);
                 break;
             case "Fire":
                 simulationchoice = fires;
-                fires.loadSimulationContents(fireConfiguration);
                 break;
             case "Segregation":
                 simulationchoice = segregation;
-                segregation.loadSimulationContents(segregationConfiguration);
                 break;
             case "Percolation":
                 simulationchoice = percolation;
-                percolation.loadSimulationContents(percolationConfiguration);
         }
+        simulationchoice.loadSimulationContents(xmlFile);
     }
 
     private static List<String> readText(String fname) throws FileNotFoundException {
@@ -112,23 +128,16 @@ public class UI extends Application {
         return scene;
     }
 
+
     private Node makeSimulationToolbar() throws FileNotFoundException {
         HBox toolbar = new HBox();
-        ComboBox comboBox = new ComboBox();
+
         SimulationName = new Text();
         SimulationName.setFont(new Font(22));
         SimulationName.setText("Segregation"); //default simulation
         SimulationName.setFill(Color.WHITE);
-        comboBox.getItems().addAll(readText("Resources/SimulationMenuText.txt"));
-        comboBox.getSelectionModel().selectFirst();
-        comboBox.setOnAction(e -> {
-            String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
-            timeline.stop();
-            loadSimulationChoice(simulationChosen);
-            createTimeline(timestep,Timeline.INDEFINITE);
-            SimulationName.setText(simulationChosen);
-        });
-        toolbar.getChildren().add(comboBox);
+
+
         toolbar.getChildren().add(SimulationName);
         toolbar.setSpacing(MARGIN);
         return toolbar;
