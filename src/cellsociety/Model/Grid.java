@@ -1,7 +1,6 @@
 package cellsociety.Model;
 
 public abstract class Grid {
-
     public abstract int getSize();
     public abstract void initializeDefaultCell(int state);
     public abstract void updateCell(int row, int col, int newState);
