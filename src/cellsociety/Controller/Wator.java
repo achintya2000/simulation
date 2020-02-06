@@ -45,22 +45,10 @@ public class Wator extends Simulation{
     initializeGrid(cellTypes, configuration);
 
     initializeColorMap();
+    createSharkEnergyGrid();
   }
 
-  protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
-    String[] point = new String[2];
-    for (String celltype : cellTypes) {
-      String cellLocations = configuration.get(celltype);
-      int k = 0;
-      while(cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
-        point = (cellLocations.substring(cellLocations.indexOf("[")+1, cellLocations.indexOf("]"))).split(",");
-        simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(configuration.get("state"+celltype)));
-        cellLocations = cellLocations.substring(cellLocations.indexOf("]")+1, cellLocations.lastIndexOf("]")+1);
-        k = k + 1;
-      }
-    }
-    simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
-
+  private void createSharkEnergyGrid() {
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         if (simulationGrid.getCurrentState(r, c) == shark) {
