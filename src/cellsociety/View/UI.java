@@ -78,9 +78,9 @@ public class UI extends Application {
         PrimaryStage = primaryStage;
 
         String segregationConfiguration = "./Resources/fire.xml";
-        fire.loadSimulationContents(new File(segregationConfiguration));
+        fire.loadSimulationContents(new File(segregationConfiguration), "segregation");
 
-        wator.loadSimulationContents(new File(segregationConfiguration));
+        wator.loadSimulationContents(new File(segregationConfiguration), "segregation");
 
 
         //Setting the title to Stage.
@@ -123,24 +123,30 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile){
+        String simName = "";
         switch (simulation){
             case "Game of Life":
                 simulationchoice = gameOfLife;
+                simName = "gameoflife";
                 break;
             case "Fire":
                 simulationchoice = fire;
+                simName = "fire";
                 break;
             case "Segregation":
                 simulationchoice = segregation;
+                simName = "segregation";
                 break;
             case "Percolation":
                 simulationchoice = percolation;
+                simName = "percolation";
                 break;
             case "Wator":
                 simulationchoice = wator;
+                simName = "wator";
                 break;
         }
-        simulationchoice.loadSimulationContents(xmlFile);
+        simulationchoice.loadSimulationContents(xmlFile,simName);
     }
 
 

@@ -24,27 +24,8 @@ public class Wator extends Simulation{
   Random rand = new Random();
 
   @Override
-  public void loadSimulationContents(File file) {
-    List<String> cellTypes = List.of("fish", "shark");
-
-    List<String> xmlvals = new ArrayList<String>();
-    xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
-    for (String celltype : cellTypes) {
-      xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
-    }
-    XMLParser parser = new XMLParser("config");
-    Map<String, String> configuration = parser.getInfo(file, xmlvals);
-    System.out.println(configuration);
-
-    SIMULATION_NAME = configuration.get("simulation");
-    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-
-    simulationGrid = new ArrayGrid(GRID_WIDTH);
+  protected void init() {
     sharkEnergy = new int[GRID_WIDTH][GRID_WIDTH];
-    initializeGrid(cellTypes, configuration);
-
-    initializeColorMap();
     createSharkEnergyGrid();
   }
 
