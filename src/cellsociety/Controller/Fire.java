@@ -9,8 +9,8 @@ import javafx.scene.paint.Color;
 
 public class Fire extends Simulation {
 
-    public static final float PROB_CATCH = .15F;
-    public static final float PROB_GROW = .15F;
+    private static final float PROB_CATCH = .15F;
+    private static final float PROB_GROW = .15F;
 
     public void loadSimulationContents(File file) {
 

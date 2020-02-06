@@ -14,14 +14,13 @@ import javafx.scene.paint.Color;
 public class Wator extends Simulation{
 
   private int chronon = 0;
-  int[] rDelta = {0,0,1,-1};
-  int[] cDelta = {1,-1,0,0};
-  int[][] sharkEnergy;
+  private int[] rDelta = {0,0,1,-1};
+  private int[] cDelta = {1,-1,0,0};
+  private int[][] sharkEnergy;
   private int empty = 0;
   private int fish = 1;
   private int shark = 2;
   private int shark_lives = 3;
-  Random rand = new Random();
 
   @Override
   public void loadSimulationContents(File file) {
