@@ -4,6 +4,7 @@ import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,38 @@ public abstract class Simulation {
   protected int GRID_HEIGHT;
   protected Grid simulationGrid;
   protected Map<Integer, Color> cellColorMap;
+
+  public void loadSimulationContents(File simFile, String simName) {
+    File infoFile = new File("./Resources/simInfo.xml");
+
+    List<String> numTypesRequest = new ArrayList<String>();
+    numTypesRequest.addAll(List.of(simName+"numtypes"));
+    XMLParser metaParser = new XMLParser("config");
+    Map<String, String> numTypesFromFile = metaParser.getInfo(infoFile, numTypesRequest);
+    int numtypes = Integer.parseInt(numTypesFromFile.get(simName+"numtypes"));
+
+    List<String> cellTypes = new ArrayList<String>();
+    for (int i = 0; i < numtypes-1; i ++) {
+      cellTypes.add("celltype"+i);
+    }
+
+    List<String> xmlvals = new ArrayList<String>();
+    xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
+    for (String celltype : cellTypes) {
+      xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
+    }
+    XMLParser simParser = new XMLParser("config");
+    Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
+
+    SIMULATION_NAME = configuration.get("simulation");
+    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
+    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+
+    simulationGrid = new ArrayGrid(GRID_WIDTH);
+    initializeGrid(cellTypes, configuration);
+    initializeColorMap();
+    init();
+  }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
     String[] point = new String[2];
@@ -38,12 +71,12 @@ public abstract class Simulation {
 
   protected abstract void initializeColorMap();
 
-  public abstract void loadSimulationContents(File file);
-
   public abstract void updateGrid();
 
   public abstract int getSimulationCols();
 
   public abstract Map<Integer, Color> getCellColorMap();
+
+  protected abstract void init();
 
 }

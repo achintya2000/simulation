@@ -1,13 +1,21 @@
 package cellsociety.Model;
 
 import cellsociety.Model.Grid;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ArrayGrid extends Grid {
 
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
     private static int[][] myArray;
     private static int[][] myReferenceArray;
+    private List<Integer> neighborIndices = new ArrayList<Integer>();
+    // NW N NE
+    // W  c E
+    // SW S SE
+    // NW N NE W E SW S SE
 
     public ArrayGrid(int size) { // assume its a square
         mySize = size;
@@ -41,7 +49,7 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public int[] checkNeighbors(int row, int col, boolean diagonals, boolean atomic_update){
+    public int[] checkNeighbors(int row, int col, boolean diagonals, boolean atomicUpdate){
         if (row==0 && col==0) {
             myReferenceArray = new int[mySize][mySize];
             for(int r = 0; r < mySize; r ++){
@@ -61,14 +69,14 @@ public class ArrayGrid extends Grid {
            int neighborRow = row + rDelta[i];
            int neighborCol = col + cDelta[i];
            if (inBounds(neighborRow, neighborCol)) {
-               if (atomic_update) { // Use to determine whether reference or current state needed
+               if (atomicUpdate) { // Use to determine whether reference or current state needed
                    neighbors[numNeighbors] = getReferenceState(neighborRow,neighborCol);
                } else {
                    neighbors[numNeighbors] = getCurrentState(neighborRow,neighborCol);
                }
                numNeighbors = numNeighbors + 1;
            } else {
-               if (!atomic_update) { // if its not in bounds, but we are doing wator which reequires exact placement, then fill it with a -1
+               if (!atomicUpdate) { // if its not in bounds, but we are doing wator which reequires exact placement, then fill it with a -1
                    neighbors[numNeighbors] = -1;
                }
            }
@@ -78,6 +86,17 @@ public class ArrayGrid extends Grid {
             numNeighbors = numNeighbors + 1;
         }
        return neighbors;
+    }
+
+    // Call below in initializeGrid method of each simulation
+
+    private void removeNeighbors(String neighbors) {
+        for(int i=0; i < 8; i++) {
+            neighborIndices.add(i);
+        }
+    }
+
+    private void addNeighbors(String neighbors) {
     }
 
     @Override

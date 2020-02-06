@@ -6,8 +6,8 @@
 	<simulation>Game of Life</simulation>
 	<width>6</width>
 	<height>6</height>
-	<numlive>6</numlive>
-	<statelive>1</statelive>
-	<live>[2,1][2,2][2,3][3,2][3,3][3,4][]</live>
+	<numcelltype0>6</numcelltype0>
+	<statecelltype0>1</statecelltype0>
+	<celltype0>[2,1][2,2][2,3][3,2][3,3][3,4][]</celltype0>
 	<default>0</default>
 </config>
