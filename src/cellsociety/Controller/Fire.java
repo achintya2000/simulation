@@ -40,21 +40,16 @@ public class Fire extends Simulation {
     }
 
     @Override
-    protected void initializeColorMap() {
-        cellColorMap = new HashMap<>();
-        cellColorMap.put(0, Color.WHITE);
-        cellColorMap.put(1, Color.GREEN);
-        cellColorMap.put(2, Color.ORANGE);
-    }
-
-    @Override
     public Map<Integer, Color> getCellColorMap() {
         return cellColorMap;
     }
 
     @Override
     protected void init() {
-
+        cellColorMap = new HashMap<>();
+        cellColorMap.put(0, Color.WHITE);
+        cellColorMap.put(1, Color.GREEN);
+        cellColorMap.put(2, Color.ORANGE);
     }
 
     private boolean catchesFire(int r, int c) {

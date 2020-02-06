@@ -24,6 +24,10 @@ public class Wator extends Simulation{
 
   @Override
   protected void init() {
+    cellColorMap = new HashMap<>();
+    cellColorMap.put(0, Color.BLACK);
+    cellColorMap.put(1, Color.GREEN);
+    cellColorMap.put(2, Color.BLUE);
     sharkEnergy = new int[GRID_WIDTH][GRID_WIDTH];
     createSharkEnergyGrid();
   }
@@ -130,13 +134,6 @@ public class Wator extends Simulation{
     return GRID_WIDTH;
   }
 
-  @Override
-  protected void initializeColorMap() {
-    cellColorMap = new HashMap<>();
-    cellColorMap.put(0, Color.BLACK);
-    cellColorMap.put(1, Color.GREEN);
-    cellColorMap.put(2, Color.BLUE);
-  }
 
   @Override
   public Map<Integer, Color> getCellColorMap() {

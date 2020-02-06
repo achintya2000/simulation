@@ -37,21 +37,16 @@ public class Segregation extends Simulation {
   }
 
   @Override
-  protected void initializeColorMap() {
-    cellColorMap = new HashMap<>();
-    cellColorMap.put(empty, Color.WHITE);
-    cellColorMap.put(agent1, Color.BLUE);
-    cellColorMap.put(agent2, Color.RED);
-  }
-
-  @Override
   public Map<Integer, Color> getCellColorMap() {
     return cellColorMap;
   }
 
   @Override
   protected void init() {
-
+    cellColorMap = new HashMap<>();
+    cellColorMap.put(empty, Color.WHITE);
+    cellColorMap.put(agent1, Color.BLUE);
+    cellColorMap.put(agent2, Color.RED);
   }
 
   private void movesLocation(int r, int c, int state) {

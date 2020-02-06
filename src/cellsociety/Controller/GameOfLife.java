@@ -36,20 +36,15 @@ public class GameOfLife extends Simulation {
     }
 
     @Override
-    protected void initializeColorMap() {
-        cellColorMap = new HashMap<>();
-        cellColorMap.put(0, Color.WHITE);
-        cellColorMap.put(1, Color.BLACK);
-    }
-
-    @Override
     public Map<Integer, Color> getCellColorMap() {
         return cellColorMap;
     }
 
     @Override
     protected void init() {
-
+        cellColorMap = new HashMap<>();
+        cellColorMap.put(0, Color.WHITE);
+        cellColorMap.put(1, Color.BLACK);
     }
 
     private int aliveNeighbors(int r, int c){

@@ -46,7 +46,6 @@ public abstract class Simulation {
 
     simulationGrid = new ArrayGrid(GRID_WIDTH);
     initializeGrid(cellTypes, configuration);
-    initializeColorMap();
     init();
   }
 
@@ -68,8 +67,6 @@ public abstract class Simulation {
   public Color getGridColor(int r, int c) {
     return cellColorMap.get(simulationGrid.getCurrentState(r, c));
   }
-
-  protected abstract void initializeColorMap();
 
   public abstract void updateGrid();
 
