@@ -56,11 +56,6 @@ public class GameOfLife extends Simulation {
     }
 
     @Override
-    public Grid getGrid() {
-        return simulationGrid;
-    }
-
-    @Override
     public int getSimulationCols() {
         return GRID_WIDTH;
     }

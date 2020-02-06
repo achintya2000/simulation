@@ -87,11 +87,6 @@ public class Wator extends Simulation{
 
   }
 
-  @Override
-  public Grid getGrid() {
-    return simulationGrid;
-  }
-
   private void sharkGoesTo(int r, int c) {
     boolean fisheaten = false; // if fish not eaten after forst loop, shark has moved
     int[] neighbors = simulationGrid.checkNeighbors(r, c, false, false);

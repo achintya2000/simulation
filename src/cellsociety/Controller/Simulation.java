@@ -11,11 +11,11 @@ import javafx.scene.paint.Color;
 
 public abstract class Simulation {
 
-  public String SIMULATION_NAME;
-  public int GRID_WIDTH;
-  public int GRID_HEIGHT;
-  public Grid simulationGrid;
-  public Map<Integer, Color> cellColorMap;
+  protected String SIMULATION_NAME;
+  protected int GRID_WIDTH;
+  protected int GRID_HEIGHT;
+  protected Grid simulationGrid;
+  protected Map<Integer, Color> cellColorMap;
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
     String[] point = new String[2];
@@ -32,13 +32,15 @@ public abstract class Simulation {
     simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
   }
 
+  public Color getGridColor(int r, int c) {
+    return cellColorMap.get(simulationGrid.getCurrentState(r, c));
+  }
+
   protected abstract void initializeColorMap();
 
   public abstract void loadSimulationContents(File file);
 
   public abstract void updateGrid();
-
-  public abstract Grid getGrid();
 
   public abstract int getSimulationCols();
 
