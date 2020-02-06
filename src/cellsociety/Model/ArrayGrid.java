@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class ArrayGrid extends Grid {
 
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
-    public static int[][] myArray;
+    private static int[][] myArray;
     private static int[][] myReferenceArray;
 
     public ArrayGrid(int size) { // assume its a square

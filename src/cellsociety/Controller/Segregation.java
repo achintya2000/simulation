@@ -43,21 +43,6 @@ public class Segregation extends Simulation {
     System.out.println();
   }
 
-  private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
-    String[] point = new String[2];
-    for (String celltype : cellTypes) {
-      String cellLocations = configuration.get(celltype);
-      int k = 0;
-      while(cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
-        point = (cellLocations.substring(cellLocations.indexOf("[")+1, cellLocations.indexOf("]"))).split(",");
-        simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(configuration.get("state"+celltype)));
-        cellLocations = cellLocations.substring(cellLocations.indexOf("]")+1, cellLocations.lastIndexOf("]")+1);
-        k = k + 1;
-      }
-    }
-    simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
-  }
-
   @Override
   public void updateGrid() {
       for (int r = 0; r < simulationGrid.getSize(); r++) {
@@ -73,17 +58,12 @@ public class Segregation extends Simulation {
   }
 
   @Override
-  public Grid getGrid() {
-    return simulationGrid;
-  }
-
-  @Override
   public int getSimulationCols() {
     return GRID_WIDTH;
   }
 
   @Override
-  void initializeColorMap() {
+  protected void initializeColorMap() {
     cellColorMap = new HashMap<>();
     cellColorMap.put(empty, Color.WHITE);
     cellColorMap.put(agent1, Color.BLUE);

@@ -244,13 +244,11 @@ public class UI extends Application {
     private Node buildGrid() {
         HBox wrapper = new HBox();
         uiGrid = new TilePane();
-        Grid currentGrid = simulationchoice.getGrid();
-        Map<Integer, Color> colorMap = simulationchoice.getCellColorMap();
-        System.out.println(Arrays.deepToString(simulationchoice.getGrid().getGrid()));
-        for (int i = 0; i < currentGrid.getSize(); i++) {
-            for (int j = 0; j < currentGrid.getSize(); j++) {
-                double tileSize = (VIEWING_WINDOW_SIZE /currentGrid.getSize()) - MARGIN;
-                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, colorMap.get(simulationchoice.getGrid().getCurrentState(i, j))));
+
+        for (int i = 0; i < simulationchoice.getSimulationCols(); i++) {
+            for (int j = 0; j < simulationchoice.getSimulationCols(); j++) {
+                double tileSize = (VIEWING_WINDOW_SIZE / simulationchoice.getSimulationCols()) - MARGIN;
+                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, simulationchoice.getGridColor(i, j)));
             }
         }
         uiGrid.setHgap(MARGIN);

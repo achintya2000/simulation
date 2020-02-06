@@ -14,14 +14,13 @@ import javafx.scene.paint.Color;
 public class Wator extends Simulation{
 
   private int chronon = 0;
-  int[] rDelta = {0,0,1,-1};
-  int[] cDelta = {1,-1,0,0};
-  int[][] sharkEnergy;
+  private int[] rDelta = {0,0,1,-1};
+  private int[] cDelta = {1,-1,0,0};
+  private int[][] sharkEnergy;
   private int empty = 0;
   private int fish = 1;
   private int shark = 2;
   private int shark_lives = 3;
-  Random rand = new Random();
 
   @Override
   public void loadSimulationContents(File file) {
@@ -45,22 +44,10 @@ public class Wator extends Simulation{
     initializeGrid(cellTypes, configuration);
 
     initializeColorMap();
+    createSharkEnergyGrid();
   }
 
-  private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
-    String[] point = new String[2];
-    for (String celltype : cellTypes) {
-      String cellLocations = configuration.get(celltype);
-      int k = 0;
-      while(cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
-        point = (cellLocations.substring(cellLocations.indexOf("[")+1, cellLocations.indexOf("]"))).split(",");
-        simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(configuration.get("state"+celltype)));
-        cellLocations = cellLocations.substring(cellLocations.indexOf("]")+1, cellLocations.lastIndexOf("]")+1);
-        k = k + 1;
-      }
-    }
-    simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
-
+  private void createSharkEnergyGrid() {
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         if (simulationGrid.getCurrentState(r, c) == shark) {
@@ -97,11 +84,6 @@ public class Wator extends Simulation{
       }
     }
 
-  }
-
-  @Override
-  public Grid getGrid() {
-    return simulationGrid;
   }
 
   private void sharkGoesTo(int r, int c) {
@@ -168,7 +150,7 @@ public class Wator extends Simulation{
   }
 
   @Override
-  void initializeColorMap() {
+  protected void initializeColorMap() {
     cellColorMap = new HashMap<>();
     cellColorMap.put(0, Color.BLACK);
     cellColorMap.put(1, Color.GREEN);
