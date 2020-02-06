@@ -41,6 +41,27 @@ public class UI extends Application {
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private static final String RESOURCES = "cellsociety/View/Resources/";
+    // use Java's dot notation, like with import, for properties
+    private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
+    private static final String STYLESHEET = "styles.css";
+    private static final String DEFAULTSIMULATION = "./Resources/fire.xml";
+    private static final String gameoflife = "GameofLife";
+    private static final String GAMEOFLIFE = "Game of Life";
+    private static final String FIRE = "Fire";
+    private static final String PERCOLATION = "Percolation";
+    private static final String WATOR = "Wator";
+    private static final String SEGREGATION = "Segregation";
+    private static final String TITLE = "title";
+    private static final String BADINPUT = "badinput";
+    private static final String NOTXML = "notXML";
+    private static final String CHOOSEANOTHERFILE = "chooseother";
+    private static final String NEWSIM = "newSim";
+
+    private static final String PLAY = "play";
+    private static final String STOP = "stop";
+    private static final String NEXT = "next";
 
 
     private double timestep = 1000;
@@ -53,7 +74,7 @@ public class UI extends Application {
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
     TilePane uiGrid = new TilePane();
-    private Properties prop = readPropertiesFile("Resources/English.properties");
+    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
 
     FileChooser fileChooser = new FileChooser();
 
@@ -77,35 +98,32 @@ public class UI extends Application {
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
 
-        String segregationConfiguration = "./Resources/fire.xml";
+        String segregationConfiguration = DEFAULTSIMULATION;
         fire.loadSimulationContents(new File(segregationConfiguration));
 
         wator.loadSimulationContents(new File(segregationConfiguration));
 
 
         //Setting the title to Stage.
-        primaryStage.setTitle(prop.getProperty("title"));
+        primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
 
-        //createTimeline(timestep, Timeline.INDEFINITE);
-        //timeline.stop();
-        //Adding the scene to Stage
     }
 
-    public static void setErrorBox(){
+    public void setErrorBox(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Bad Input");
-        alert.setHeaderText("Not an XML File");
-        alert.setContentText("Please choose another file");
+        alert.setTitle(myResources.getString(BADINPUT));
+        alert.setHeaderText(myResources.getString(NOTXML));
+        alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
 
     private Node setComboBox(){
         ComboBox comboBox = new ComboBox();
-        String[] choiceProperties = {"newSim", "percolation", "GameofLife", "wator", "segregation", "fire"};
+        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE};
         for(String choice: choiceProperties){
-            comboBox.getItems().add(prop.getProperty(choice));
+            comboBox.getItems().add(myResources.getString(choice));
         }
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e -> {
@@ -124,23 +142,29 @@ public class UI extends Application {
 
     private void loadSimulationChoice(String simulation, File xmlFile){
         switch (simulation){
-            case "Game of Life":
+            case GAMEOFLIFE:
                 simulationchoice = gameOfLife;
                 break;
-            case "Fire":
+            case FIRE:
                 simulationchoice = fire;
                 break;
-            case "Segregation":
+            case SEGREGATION:
                 simulationchoice = segregation;
                 break;
-            case "Percolation":
+            case PERCOLATION:
                 simulationchoice = percolation;
                 break;
-            case "Wator":
+            case WATOR:
                 simulationchoice = wator;
                 break;
         }
-        simulationchoice.loadSimulationContents(xmlFile);
+        try{
+            simulationchoice.loadSimulationContents(xmlFile);
+        }
+        catch(XMLException e){
+            setErrorBox();
+        }
+
     }
 
 
@@ -149,7 +173,7 @@ public class UI extends Application {
         root.setBottom(makeSimulationControls());
         root.setCenter(buildGrid());
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
-        root.getStylesheets().add(getClass().getResource("styles.css").toString());
+        scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         scene.setFill(Color.WHITE);
         return scene;
     }
@@ -160,7 +184,7 @@ public class UI extends Application {
 
         SimulationName = new Text();
         SimulationName.setFont(new Font(22));
-        SimulationName.setText(prop.getProperty("fire")); //default simulation
+        SimulationName.setText(myResources.getString(FIRE)); //default simulation
         SimulationName.setFill(Color.WHITE);
         toolbar.getChildren().add(setComboBox());
         toolbar.getChildren().add(SimulationName);
@@ -181,19 +205,19 @@ public class UI extends Application {
 
     private Node makeSimulationControls() {
         Button playButton = new Button();
-        playButton.setText(prop.getProperty("play"));
+        playButton.setText(myResources.getString(PLAY));
         playButton.setOnAction(e -> {
             createTimeline(timestep,Timeline.INDEFINITE);
             timeline.play();
         });
         Button stopButton = new Button();
-        stopButton.setText(prop.getProperty("stop"));
+        stopButton.setText(myResources.getString(STOP));
         stopButton.setOnAction(e -> timeline.stop());
         Button nextButton = new Button();
-        nextButton.setText(prop.getProperty("next"));
+        nextButton.setText(myResources.getString(NEXT));
         nextButton.setOnAction(e -> {
-           createTimeline(1,1);
-           timeline.play();
+           createTimeline(1,1); // (1,1) means to create a new timeline with timestep 1 and cyclecount 1
+           timeline.play();                             // so that the next button makes grid only update once
         });
         stopButton.setAlignment(Pos.CENTER);
         playButton.setAlignment(Pos.CENTER);
@@ -240,18 +264,7 @@ public class UI extends Application {
         return wrapper;
     }
 
-    public static Properties readPropertiesFile(String fileName) throws IOException {
-        FileInputStream fis = new FileInputStream(fileName);
-        Properties prop = new Properties();
-        try {
-            prop.load(fis);
-        } catch(IOException fnfe) {
-            fnfe.printStackTrace();
-        } finally {
-            fis.close();
-        }
-        return prop;
-    }
+
 }
 
 
