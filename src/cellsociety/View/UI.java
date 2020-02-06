@@ -104,7 +104,6 @@ public class UI extends Application {
 
 
 
-
         //Setting the title to Stage.
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
@@ -168,12 +167,11 @@ public class UI extends Application {
 
         try{
             simulationchoice.loadSimulationContents(xmlFile,simName);
+
         }
         catch(XMLException e){
             setErrorBox();
         }
-
-
     }
 
 
