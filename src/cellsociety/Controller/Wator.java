@@ -47,7 +47,7 @@ public class Wator extends Simulation{
     initializeColorMap();
   }
 
-  private void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
+  protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration) {
     String[] point = new String[2];
     for (String celltype : cellTypes) {
       String cellLocations = configuration.get(celltype);
@@ -168,7 +168,7 @@ public class Wator extends Simulation{
   }
 
   @Override
-  void initializeColorMap() {
+  protected void initializeColorMap() {
     cellColorMap = new HashMap<>();
     cellColorMap.put(0, Color.BLACK);
     cellColorMap.put(1, Color.GREEN);
