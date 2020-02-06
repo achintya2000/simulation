@@ -53,7 +53,7 @@ public class XMLParser {
             return xmlDocument.getDocumentElement();
         }
         catch (SAXException | IOException e) {
-            UI.setErrorBox();
+           // UI.setErrorBox();
             throw new XMLException(e);
         }
     }

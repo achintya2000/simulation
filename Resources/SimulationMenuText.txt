@@ -1,6 +1,0 @@
-Choose new Simulation
-Percolation
-Game of Life
-Wator
-Segregation
-Fire
