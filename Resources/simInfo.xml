@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config config="config">
+    <title>CS308 Sim</title>
+    <author>Team 19</author>
+    <firenumtypes>3</firenumtypes>
+    <percolationnumtypes>3</percolationnumtypes>
+    <segregationnumtypes>3</segregationnumtypes>
+    <gameoflifenumtypes>2</gameoflifenumtypes>
+    <watornumtypes>3</watornumtypes>
+</config>

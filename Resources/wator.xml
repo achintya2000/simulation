@@ -6,11 +6,11 @@
   <simulation>Wator</simulation>
   <width>10</width>
   <height>10</height>
-  <numfish>15</numfish>
-  <statefish>1</statefish>
-  <fish>[0,1][0,2][2,1][2,2][4,1][4,8][5,7][5,9][6,5][6,3][7,8][8,3][8,4][9,3][9,4][]</fish>
-  <numshark>13</numshark>
-  <stateshark>2</stateshark>
-  <shark>[1,1][1,2][3,1][3,2][4,6][5,1][5,2][6,1][6,6][6,7][7,7][8,8][9,9][]</shark>
+  <numcelltype0>15</numcelltype0>
+  <statecelltype0>1</statecelltype0>
+  <celltype0>[0,1][0,2][2,1][2,2][4,1][4,8][5,7][5,9][6,5][6,3][7,8][8,3][8,4][9,3][9,4][]</celltype0>
+  <numcelltype1>13</numcelltype1>
+  <statecelltype1>2</statecelltype1>
+  <celltype1>[1,1][1,2][3,1][3,2][4,6][5,1][5,2][6,1][6,6][6,7][7,7][8,8][9,9][]</celltype1>
   <default>0</default>
 </config>

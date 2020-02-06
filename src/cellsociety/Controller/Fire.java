@@ -3,6 +3,7 @@ package cellsociety.Controller;
 import cellsociety.Model.ArrayGrid;
 import cellsociety.Model.Grid;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import javafx.scene.paint.Color;
@@ -11,31 +12,6 @@ public class Fire extends Simulation {
 
     private static final float PROB_CATCH = .15F;
     private static final float PROB_GROW = .15F;
-
-    public void loadSimulationContents(File file) {
-
-        // Change below to list of cell types to change for each sim
-        List<String> cellTypes = List.of("tree","burning");
-        // See above
-
-        List<String> xmlvals = new ArrayList<String>();
-        xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
-        for (String celltype : cellTypes) {
-            xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
-        }
-        XMLParser parser = new XMLParser("config");
-        Map<String, String> configuration = parser.getInfo(file, xmlvals);
-        System.out.println(configuration);
-
-        SIMULATION_NAME = configuration.get("simulation");
-        GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-        GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-
-        simulationGrid = new ArrayGrid(GRID_WIDTH);
-        initializeGrid(cellTypes, configuration);
-
-        initializeColorMap();
-    }
 
     @Override
     public void updateGrid() {
@@ -76,6 +52,11 @@ public class Fire extends Simulation {
         return cellColorMap;
     }
 
+    @Override
+    protected void init() {
+
+    }
+
     private boolean catchesFire(int r, int c) {
         int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,false, true);
         int i = 0;
@@ -104,5 +85,6 @@ public class Fire extends Simulation {
         }
         return false;
     }
+
 
 }

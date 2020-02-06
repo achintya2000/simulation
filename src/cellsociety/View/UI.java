@@ -98,10 +98,11 @@ public class UI extends Application {
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
 
-        String segregationConfiguration = DEFAULTSIMULATION;
-        fire.loadSimulationContents(new File(segregationConfiguration));
 
-        wator.loadSimulationContents(new File(segregationConfiguration));
+        String segregationConfiguration = DEFAULTSIMULATION;
+        fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase());
+
+
 
 
         //Setting the title to Stage.
@@ -141,29 +142,37 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile){
+        String simName = "";
         switch (simulation){
             case GAMEOFLIFE:
                 simulationchoice = gameOfLife;
+                simName = "gameoflife";
                 break;
             case FIRE:
                 simulationchoice = fire;
+                simName = "fire";
                 break;
             case SEGREGATION:
                 simulationchoice = segregation;
+                simName = "segregation";
                 break;
             case PERCOLATION:
                 simulationchoice = percolation;
+                simName = "percolation";
                 break;
             case WATOR:
                 simulationchoice = wator;
+                simName = "wator";
                 break;
         }
+
         try{
-            simulationchoice.loadSimulationContents(xmlFile);
+            simulationchoice.loadSimulationContents(xmlFile,simName);
         }
         catch(XMLException e){
             setErrorBox();
         }
+
 
     }
 

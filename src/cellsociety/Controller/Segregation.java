@@ -18,32 +18,6 @@ public class Segregation extends Simulation {
   private int agent2 = 2;
 
   @Override
-  public void loadSimulationContents(File file) {
-
-    List<String> cellTypes = List.of("agent1", "agent2");
-
-    List<String> xmlvals = new ArrayList<String>();
-    xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
-    for (String celltype : cellTypes) {
-      xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
-    }
-
-    XMLParser parser = new XMLParser("config");
-    Map<String, String> configuration = parser.getInfo(file, xmlvals);
-    System.out.println(configuration);
-
-    SIMULATION_NAME = configuration.get("simulation");
-    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-
-    simulationGrid = new ArrayGrid(GRID_WIDTH);
-    initializeGrid(cellTypes, configuration);
-
-    initializeColorMap();
-    System.out.println();
-  }
-
-  @Override
   public void updateGrid() {
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
@@ -73,6 +47,11 @@ public class Segregation extends Simulation {
   @Override
   public Map<Integer, Color> getCellColorMap() {
     return cellColorMap;
+  }
+
+  @Override
+  protected void init() {
+
   }
 
   private void movesLocation(int r, int c, int state) {
