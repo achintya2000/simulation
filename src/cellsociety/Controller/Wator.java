@@ -13,7 +13,9 @@ import javafx.scene.paint.Color;
 
 public class Wator extends Simulation{
 
-  private List<String> requestedNeighbors =  List.of("N","S","E","W");
+  private List<String> defaultNeighbors =  List.of("N","S","E","W");
+  private int square = 4;
+  private int defaultShape = square;
 
   private int chronon = 0;
   private int[][] sharkEnergy;
@@ -26,7 +28,6 @@ public class Wator extends Simulation{
 
   @Override
   protected void init() {
-    simulationGrid.setNeighbors(requestedNeighbors);
     cellColorMap = new HashMap<>();
     cellColorMap.put(0, Color.BLACK);
     cellColorMap.put(1, Color.GREEN);
@@ -39,19 +40,19 @@ public class Wator extends Simulation{
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         if (simulationGrid.getCurrentState(r, c) == shark) {
-          //sharkEnergy.updateCell(r,c,shark_lives);
           sharkEnergy[r][c] = shark_lives;
         } else {
-          //sharkEnergy.updateCell(r,c,1);
           sharkEnergy[r][c] = 0;
         }
       }
     }
-    //sharkEnergy.setNeighbors(requestedNeighbors);
   }
 
   @Override
   public void updateGrid() {
+    if (!simulationGrid.isNeighborhoodSet()) {
+      simulationGrid.setNeighbors(defaultNeighbors, defaultShape);
+    }
     chronon++;
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {

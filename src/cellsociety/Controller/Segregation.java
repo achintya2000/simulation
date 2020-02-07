@@ -13,7 +13,9 @@ public class Segregation extends Simulation {
 
   private static final float moveProb = (float) 0.30;
 
-  private List<String> requestedNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+  private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+  private int square = 4;
+  private int defaultShape = square;
 
   private int empty = 0;
   private int agent1 = 1;
@@ -21,6 +23,9 @@ public class Segregation extends Simulation {
 
   @Override
   public void updateGrid() {
+      if (!simulationGrid.isNeighborhoodSet()) {
+          simulationGrid.setNeighbors(defaultNeighbors, defaultShape);
+      }
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
             simulationGrid.checkNeighbors(r, c, true);
@@ -45,7 +50,6 @@ public class Segregation extends Simulation {
 
   @Override
   protected void init() {
-      simulationGrid.setNeighbors(requestedNeighbors);
       cellColorMap = new HashMap<>();
       cellColorMap.put(empty, Color.WHITE);
       cellColorMap.put(agent1, Color.BLUE);

@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class Percolation extends Simulation {
 
-    private List<String> requestedNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+    private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+    private int square = 4;
+    private int defaultShape = square;
 
     private int open = 0;
     private int percolated = 1;
@@ -20,6 +22,9 @@ public class Percolation extends Simulation {
 
     @Override
     public void updateGrid() {
+        if (!simulationGrid.isNeighborhoodSet()) {
+            simulationGrid.setNeighbors(defaultNeighbors, defaultShape);
+        }
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
                 simulationGrid.checkNeighbors(r, c,  true);
@@ -42,7 +47,6 @@ public class Percolation extends Simulation {
 
     @Override
     protected void init() {
-        simulationGrid.setNeighbors(requestedNeighbors);
         cellColorMap = new HashMap<>();
         cellColorMap.put(open, Color.WHITE);
         cellColorMap.put(percolated, Color.BLUE);

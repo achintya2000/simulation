@@ -9,8 +9,11 @@ public class ArrayGrid extends Grid {
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
     private static int[][] myArray;
     private static int[][] myReferenceArray;
-    private Map<String,Integer[]> allNeighbors = Map.of("NW",new Integer[] {1,-1},"N",new Integer[] {1,0},"NE",new Integer[] {1,1},"W",new Integer[] {0,-1},"E",new Integer[] {0,1},"SW",new Integer[] {-1,-1},"S",new Integer[] {-1,0},"SE",new Integer[] {-1,1});
+    private Map<String,Integer[]> allNeighbors = Map.ofEntries(Map.entry("NW",new Integer[] {1,-1}),Map.entry("N",new Integer[] {1,0}),Map.entry("NE",new Integer[] {1,1}),Map.entry("W",new Integer[] {0,-1}),Map.entry("E",new Integer[] {0,1}),Map.entry("SW",new Integer[] {-1,-1}),Map.entry("S",new Integer[] {-1,0}),Map.entry("SE",new Integer[] {-1,1}), Map.entry("NWW", new Integer[] {-2,1}),Map.entry("NEE",new Integer[] {2,1}),Map.entry("WW",new Integer[] {-2,0}) ,Map.entry("EE",new Integer[] {2,0}));
     private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
+    private int myShape = 0;
+    private int triangle = 3;
+    private boolean isNeighborhoodSet = false;
 
     public ArrayGrid(int size) { // assume its a square
         mySize = size;
@@ -44,10 +47,17 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public void setNeighbors(List<String> requestedNeighbors) {
+    public void setNeighbors(List<String> requestedNeighbors, int shape) {
+        isNeighborhoodSet = true;
+        myShape = shape;
         for (String neighbor: requestedNeighbors) {
             currentNeighbors.put(neighbor, allNeighbors.get(neighbor));
         }
+    }
+
+    @Override
+    public boolean isNeighborhoodSet() {
+        return isNeighborhoodSet;
     }
 
     @Override
@@ -67,6 +77,9 @@ public class ArrayGrid extends Grid {
         }
         Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
         for(String neighbor : currentNeighbors.keySet()) {
+            if (col % 2 != 0 && myShape == triangle) { // if odd col and triangle, then orientation is flipped
+                neighbor = neighbor.replace("N","S");
+            }
            int neighborRow = row + currentNeighbors.get(neighbor)[0];
            int neighborCol = col + currentNeighbors.get(neighbor)[1];
            if (inBounds(neighborRow, neighborCol)) {
