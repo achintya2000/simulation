@@ -2,20 +2,15 @@ package cellsociety.Model;
 
 import cellsociety.Model.Grid;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ArrayGrid extends Grid {
 
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
     private static int[][] myArray;
     private static int[][] myReferenceArray;
-    private List<Integer> neighborIndices = new ArrayList<Integer>();
-    // NW N NE
-    // W  c E
-    // SW S SE
-    // NW N NE W E SW S SE
+    private Map<String,Integer[]> allNeighbors = Map.of("NW",new Integer[] {1,-1},"N",new Integer[] {1,0},"NE",new Integer[] {1,1},"W",new Integer[] {0,-1},"E",new Integer[] {0,1},"SW",new Integer[] {-1,-1},"S",new Integer[] {-1,0},"SE",new Integer[] {-1,1});
+    private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
 
     public ArrayGrid(int size) { // assume its a square
         mySize = size;
@@ -49,7 +44,19 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public int[] checkNeighbors(int row, int col, boolean diagonals, boolean atomicUpdate){
+    public void setNeighbors(List<String> requestedNeighbors) {
+        for (String neighbor: requestedNeighbors) {
+            currentNeighbors.put(neighbor, allNeighbors.get(neighbor));
+        }
+    }
+
+    @Override
+    public Integer[] getOffset(String neighbor) {
+        return currentNeighbors.get(neighbor);
+    }
+
+    @Override
+    public  Map<String, Integer> checkNeighbors(int row, int col, boolean atomicUpdate){
         if (row==0 && col==0) {
             myReferenceArray = new int[mySize][mySize];
             for(int r = 0; r < mySize; r ++){
@@ -58,45 +65,19 @@ public class ArrayGrid extends Grid {
                 }
             }
         }
-        int numNeighbors = 0;
-        int[] neighbors = new int[8];
-        int[] rDelta = {0,0,1,-1,1,1,-1,-1};
-        int[] cDelta = {1,-1,0,0,1,-1,1,-1};
-        for(int i = 0; i < rDelta.length; i ++) {
-            if (!diagonals && i > 3) {
-                break;
-            }
-           int neighborRow = row + rDelta[i];
-           int neighborCol = col + cDelta[i];
+        Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
+        for(String neighbor : currentNeighbors.keySet()) {
+           int neighborRow = row + currentNeighbors.get(neighbor)[0];
+           int neighborCol = col + currentNeighbors.get(neighbor)[1];
            if (inBounds(neighborRow, neighborCol)) {
                if (atomicUpdate) { // Use to determine whether reference or current state needed
-                   neighbors[numNeighbors] = getReferenceState(neighborRow,neighborCol);
+                   statusOfNeighbors.put(neighbor,getReferenceState(neighborRow,neighborCol));
                } else {
-                   neighbors[numNeighbors] = getCurrentState(neighborRow,neighborCol);
-               }
-               numNeighbors = numNeighbors + 1;
-           } else {
-               if (!atomicUpdate) { // if its not in bounds, but we are doing wator which reequires exact placement, then fill it with a -1
-                   neighbors[numNeighbors] = -1;
+                   statusOfNeighbors.put(neighbor,getCurrentState(neighborRow,neighborCol));
                }
            }
         }
-        for (int i = 0; i < (8-numNeighbors); i ++) {
-            neighbors[numNeighbors] = -1;
-            numNeighbors = numNeighbors + 1;
-        }
-       return neighbors;
-    }
-
-    // Call below in initializeGrid method of each simulation
-
-    private void removeNeighbors(String neighbors) {
-        for(int i=0; i < 8; i++) {
-            neighborIndices.add(i);
-        }
-    }
-
-    private void addNeighbors(String neighbors) {
+        return statusOfNeighbors;
     }
 
     @Override

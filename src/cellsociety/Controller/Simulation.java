@@ -17,9 +17,9 @@ public abstract class Simulation {
   protected int GRID_HEIGHT;
   protected Grid simulationGrid;
   protected Map<Integer, Color> cellColorMap;
+  private File infoFile = new File("./Resources/simInfo.xml");
 
   public void loadSimulationContents(File simFile, String simName) {
-    File infoFile = new File("./Resources/simInfo.xml");
 
     List<String> numTypesRequest = new ArrayList<String>();
     numTypesRequest.addAll(List.of(simName+"numtypes"));

@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 
 public class GameOfLife extends Simulation {
 
+    private List<String> requestedNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+
     private int dead = 0;
     private int live = 1;
 
@@ -13,7 +15,7 @@ public class GameOfLife extends Simulation {
     public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
-                int aliveNeighbors = aliveNeighbors(r,c);
+                int aliveNeighbors = liveNeighbors(r,c);
                 if(simulationGrid.getReferenceState(r,c) == live && aliveNeighbors < 2){
                     simulationGrid.updateCell(r,c,dead);
                 }
@@ -42,20 +44,19 @@ public class GameOfLife extends Simulation {
 
     @Override
     protected void init() {
+        simulationGrid.setNeighbors(requestedNeighbors);
         cellColorMap = new HashMap<>();
         cellColorMap.put(dead, Color.WHITE);
         cellColorMap.put(live, Color.BLACK);
     }
 
-    private int aliveNeighbors(int r, int c){
+    private int liveNeighbors(int r, int c){
+        Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         int alive = 0;
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true, true);
-        int i = 0;
-        while (i < statusOfNeighbors.length && statusOfNeighbors[i] != -1 ){
-            if(statusOfNeighbors[i] == live){
+        for (String neighbor : statusOfNeighbors.keySet()) {
+            if(statusOfNeighbors.get(neighbor) == live){
                 alive++;
             }
-            i++;
         }
         return alive;
     }

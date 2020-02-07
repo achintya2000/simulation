@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class Percolation extends Simulation {
 
-    // Should be reading these in from file, would need to think about how to
+    private List<String> requestedNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
+
     private int open = 0;
     private int percolated = 1;
     private int blocked = 2;
@@ -21,7 +22,7 @@ public class Percolation extends Simulation {
     public void updateGrid() {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
-                simulationGrid.checkNeighbors(r, c, true, true);
+                simulationGrid.checkNeighbors(r, c,  true);
                 if(canFlow(r,c) && closeToWater(r,c)){
                     simulationGrid.updateCell(r,c,percolated);
                 }
@@ -41,6 +42,7 @@ public class Percolation extends Simulation {
 
     @Override
     protected void init() {
+        simulationGrid.setNeighbors(requestedNeighbors);
         cellColorMap = new HashMap<>();
         cellColorMap.put(open, Color.WHITE);
         cellColorMap.put(percolated, Color.BLUE);
@@ -49,13 +51,11 @@ public class Percolation extends Simulation {
 
 
     public boolean closeToWater(int r, int c){
-        int[] statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true, true);
-        int i = 0;
-        while (i < 8 && statusOfNeighbors[i] != -1){
-            if(statusOfNeighbors[i] == percolated){
-               return true;
+        Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
+        for (String neighbor : statusOfNeighbors.keySet()) {
+            if(statusOfNeighbors.get(neighbor) == percolated){
+                return true;
             }
-            i++;
         }
         return false;
     }
