@@ -98,6 +98,7 @@ public class UI extends Application {
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
 
+
         String segregationConfiguration = DEFAULTSIMULATION;
         fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase());
 
@@ -165,7 +166,8 @@ public class UI extends Application {
         }
 
         try{
-            simulationchoice.loadSimulationContents(xmlFile, simName);
+            simulationchoice.loadSimulationContents(xmlFile,simName);
+
         }
         catch(XMLException e){
             setErrorBox();
