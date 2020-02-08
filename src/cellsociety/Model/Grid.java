@@ -1,12 +1,18 @@
 package cellsociety.Model;
 
+import java.util.List;
+import java.util.Map;
+
 public abstract class Grid {
     public abstract int getSize();
     public abstract void initializeDefaultCell(int state);
     public abstract void updateCell(int row, int col, int newState);
-    public abstract int[] checkNeighbors(int row, int col, boolean diagonals, boolean atomic_update);
+    public abstract void setNeighbors(List<String> requestedNeighbors, int shape);
+    public abstract Map<String, Integer> checkNeighbors(int row, int col, boolean atomicUpdate);
+    public abstract Integer[] getOffset(String neighbor);
     public abstract int getCurrentState(int row, int col);
     public abstract int[][] getGrid();
+    public abstract boolean isNeighborhoodSet();
     public abstract int getReferenceState(int row, int col);
     public abstract boolean inBounds(int r, int c);
 }

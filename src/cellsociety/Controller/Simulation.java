@@ -12,14 +12,34 @@ import javafx.scene.paint.Color;
 
 public abstract class Simulation {
 
+  private static final int MIN_NEIGHBOR_EDGES = 2;
+  private static final int MAX_NEIGHBOR_EDGES = 9;
+  private static final int CIRCLE = 360;
+  private static final int TRIANGLE = 180;
+
   protected String SIMULATION_NAME;
   protected int GRID_WIDTH;
   protected int GRID_HEIGHT;
   protected Grid simulationGrid;
   protected Map<Integer, Color> cellColorMap;
+  private File infoFile = new File("./Resources/simInfo.xml");
+
+  public void setSimulationParameters(List<String> neighborhood, int shape) { // call after loadsimcontents!!
+    if (validShape(shape)) {
+      simulationGrid.setNeighbors(neighborhood,shape);
+    } else {
+      System.out.println("YIKES - This neighborhood/shape combination is invalid"); // come back and change to exception
+    }
+  }
+
+  private boolean validShape(int shape) {
+    if ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES ) {
+      return true;
+    }
+    return false;
+  }
 
   public void loadSimulationContents(File simFile, String simName) {
-    File infoFile = new File("./Resources/simInfo.xml");
 
     List<String> numTypesRequest = new ArrayList<String>();
     numTypesRequest.addAll(List.of(simName+"numtypes"));
@@ -46,7 +66,6 @@ public abstract class Simulation {
 
     simulationGrid = new ArrayGrid(GRID_WIDTH);
     initializeGrid(cellTypes, configuration);
-    initializeColorMap();
     init();
   }
 
@@ -68,8 +87,6 @@ public abstract class Simulation {
   public Color getGridColor(int r, int c) {
     return cellColorMap.get(simulationGrid.getCurrentState(r, c));
   }
-
-  protected abstract void initializeColorMap();
 
   public abstract void updateGrid();
 
