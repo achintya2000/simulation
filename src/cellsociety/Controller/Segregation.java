@@ -46,11 +46,6 @@ public class Segregation extends Simulation {
   }
 
   @Override
-  public Map<Integer, Color> getCellColorMap() {
-    return cellColorMap;
-  }
-
-  @Override
   protected void init() {
       cellColorMap = new HashMap<>();
       cellColorMap.put(empty, Color.WHITE);

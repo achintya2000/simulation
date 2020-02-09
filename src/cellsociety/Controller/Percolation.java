@@ -42,10 +42,6 @@ public class Percolation extends Simulation {
         return GRID_WIDTH;
     }
 
-    @Override
-    public Map<Integer, Color> getCellColorMap() {
-        return cellColorMap;
-    }
 
     @Override
     protected void init() {

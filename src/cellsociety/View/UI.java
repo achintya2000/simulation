@@ -32,8 +32,13 @@ import javafx.util.Duration;
 
 
 public class UI extends Application {
-    private static final int HEIGHT = 600;
-    private static final int WIDTH = 400;
+    private static final int HEIGHT = 800;
+    private static final int WIDTH = 800;
+    private static final int VIEWING_WINDOW_SIZE = 500;
+    private static final int MARGIN = 10;
+    private static final int MAXTIMESTEP = 1000;
+    private static final int MINTIMESTEP = 100;
+    private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
     private static final String RESOURCES = "cellsociety/View/Resources/";
     // use Java's dot notation, like with import, for properties
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
@@ -56,6 +61,7 @@ public class UI extends Application {
     private static final String PLAY = "play";
     private static final String STOP = "stop";
     private static final String NEXT = "next";
+    private static final boolean RANDOM_BOARD_GENERATION = true;
 
 
     private double timestep = 1000;
@@ -79,7 +85,6 @@ public class UI extends Application {
     public UI() throws IOException {
     }
 
-
     public static void main (String[] args) {
         launch(args);
     }
@@ -96,7 +101,13 @@ public class UI extends Application {
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
+
+        primaryStage.show();
+
     }
+
+
+
 
     private Scene makeScene() throws IOException {
         root.setLeft(setToolBox());
@@ -154,6 +165,7 @@ public class UI extends Application {
             myNewSimulation = simulationChosen;
         });
         return comboBox;
+
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile) {
