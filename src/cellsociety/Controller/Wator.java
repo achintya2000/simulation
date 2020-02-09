@@ -1,14 +1,8 @@
 package cellsociety.Controller;
 
-import cellsociety.Model.ArrayGrid;
-import cellsociety.Model.Grid;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import javafx.scene.paint.Color;
 
 public class Wator extends Simulation{

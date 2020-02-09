@@ -33,8 +33,7 @@ import javafx.util.Duration;
 public class UI extends Application {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 400;
- private static final String RESOURCES = "cellsociety/View/Resources/";
-    // use Java's dot notation, like with import, for properties
+    private static final String RESOURCES = "cellsociety/View/Resources/";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
     private static final String STYLESHEET = "styles.css";

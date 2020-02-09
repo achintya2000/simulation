@@ -1,9 +1,5 @@
 package cellsociety.Controller;
 
-import cellsociety.Model.ArrayGrid;
-import cellsociety.Model.Grid;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
