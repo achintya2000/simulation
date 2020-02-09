@@ -71,12 +71,7 @@ public class ArrayGrid extends Grid {
     @Override
     public  Map<String, Integer> checkNeighbors(int row, int col, boolean atomicUpdate){
         if (row==0 && col==0) {
-            myReferenceArray = new int[mySize][mySize];
-            for(int r = 0; r < mySize; r ++){
-                for(int c = 0; c < mySize; c++){
-                    myReferenceArray[r][c] = myArray[r][c];
-                }
-            }
+            copyArray();
         }
         Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
         for(String neighbor : currentNeighbors.keySet()) {
@@ -98,6 +93,15 @@ public class ArrayGrid extends Grid {
 
         }
         return statusOfNeighbors;
+    }
+
+    private void copyArray() {
+        myReferenceArray = new int[mySize][mySize];
+        for(int r = 0; r < mySize; r ++){
+            for(int c = 0; c < mySize; c++){
+                myReferenceArray[r][c] = myArray[r][c];
+            }
+        }
     }
 
     private int[] getValidNeighbors(int row, int col, String neighbor) {
