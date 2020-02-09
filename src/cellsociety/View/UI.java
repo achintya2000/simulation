@@ -141,7 +141,6 @@ public class UI extends Application {
     }
 
     private Node setComboBox(){
-
         ComboBox comboBox = new ComboBox();
         comboBox.getStyleClass().add("combobox");
         String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
@@ -198,7 +197,6 @@ public class UI extends Application {
                 setErrorBox();
             }
         }
-
 
     public void setErrorBox(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
