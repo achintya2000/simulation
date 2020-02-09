@@ -52,17 +52,12 @@ public class UI extends Application {
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
     private static final String BROWSE = "browse";
-    Fire fire = new Fire();
-    GameOfLife gameOfLife = new GameOfLife();
-    Segregation segregation = new Segregation();
-    Percolation percolation = new Percolation();
-    Wator wator = new Wator();
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
     FileChooser fileChooser = new FileChooser();
     private String myNewSimulation = "Fire";
-    private Simulation simulationchoice = fire;
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
+
     public UI() throws IOException {
     }
 
@@ -80,8 +75,6 @@ public class UI extends Application {
         PrimaryStage = primaryStage;
         String segregationConfiguration = DEFAULTSIMULATION;
         loadSimulationChoice(FIRE, new File(segregationConfiguration));
-        //fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase());
-        //Setting the title to Stage.
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
@@ -146,33 +139,36 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile){
+        Simulation simulation1 = new GameOfLife();
         String simName = "";
+        try{
         switch (simulation){
             case GAMEOFLIFE:
-                simulationchoice = gameOfLife;
+                simulation1 = new GameOfLife();
                 simName = "gameoflife";
+                ViewingWindow window =  new ViewingWindow(simulation1,xmlFile,simName);
                 break;
             case FIRE:
-                simulationchoice = fire;
+                simulation1 = new Fire();
                 simName = "fire";
+                ViewingWindow window2 =  new ViewingWindow(simulation1,xmlFile,simName);
                 break;
             case SEGREGATION:
-                simulationchoice = segregation;
+                simulation1 = new Segregation();
                 simName = "segregation";
+                ViewingWindow window3 =  new ViewingWindow(simulation1,xmlFile,simName);
                 break;
             case PERCOLATION:
-                simulationchoice = percolation;
+                simulation1 = new Percolation();
                 simName = "percolation";
+                ViewingWindow window4 =  new ViewingWindow(simulation1,xmlFile,simName);
                 break;
             case WATOR:
-                simulationchoice = wator;
+                simulation1 = new Wator();
                 simName = "wator";
+                ViewingWindow window5 =  new ViewingWindow(simulation1,xmlFile,simName);
                 break;
         }
-
-        try{
-            simulationchoice.loadSimulationContents(xmlFile,simName);
-            ViewingWindow window =  new ViewingWindow(simulationchoice);
 
         }
         catch(XMLException e){
@@ -186,7 +182,6 @@ public class UI extends Application {
         alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
-
 }
 
 

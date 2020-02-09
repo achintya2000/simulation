@@ -17,13 +17,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 public class ViewingWindow {
 
     private TilePane myGrid;
     private Simulation mySimulation;
-    private Animation myAnimation;
+    private Timeline myAnimation;
     private Stage myStage;
     private BorderPane myRoot;
     private Button myPlayButton;
@@ -50,20 +51,18 @@ public class ViewingWindow {
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
 
 
-    public ViewingWindow(Simulation simulation){
+    public ViewingWindow(Simulation simulation, File xml, String simname){
         mySimulation = simulation;
+        mySimulation.loadSimulationContents(xml, simname);
         myGrid = new TilePane();
         myStage = new Stage();
         myRoot = new BorderPane();
-        myAnimation = new Animation(timestep,Timeline.INDEFINITE,this);
+        myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
         myPlayButton = new Button();
         myNextButton = new Button();
         myStopButton = new Button();
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
         start();
-    }
-    public Animation getAnimation(){
-        return myAnimation;
     }
 
     private void start(){
@@ -80,23 +79,6 @@ public class ViewingWindow {
         scene.setFill(Color.WHITE);
         return scene;
     }
-
-    public void updateView(){
-        mySimulation.updateGrid();
-        myRoot.setCenter(buildGrid());
-    }
-
-//    private void createTimeline(double milliseconds, int cycleCount) {
-//        if (myTimeline != null) {
-//            myTimeline.stop();
-//        }
-//        myTimeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), event -> {
-//            mySimulation.updateGrid();
-//            myRoot.setCenter(buildGrid());
-//        }));
-//        myTimeline.setCycleCount(cycleCount);
-//    }
-
 
 
     private Node buildGrid() {
@@ -122,16 +104,14 @@ public class ViewingWindow {
 
     private Node makeSimulationControls() {
         myPlayButton.setText(myResources.getString(PLAY));
-        myPlayButton.setOnAction(e -> {
-            myAnimation = new Animation(timestep,Timeline.INDEFINITE,this);
-            myAnimation.play();
-        });
+        myPlayButton.setOnAction(e -> myAnimation.play());
         myStopButton = new Button();
         myStopButton.setText(myResources.getString(STOP));
-        myStopButton.setOnAction(e -> myAnimation.stop());
+        myStopButton.setOnAction(e -> myAnimation.pause());
         myNextButton.setText(myResources.getString(NEXT));
         myNextButton.setOnAction(e -> {
-            myAnimation = new Animation(1,1,this); // (1,1) means to create a new timeline with timestep 1 and cyclecount 1
+            myAnimation = createTimeline (1,1); //
+            // means to create a new timeline with timestep 1 and cyclecount 1
             myAnimation.play();                           // so that the next button makes grid only update once
         });
         myStopButton.setAlignment(Pos.CENTER);
@@ -142,17 +122,26 @@ public class ViewingWindow {
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
         controls.getChildren().add(makeSlider());
-        //controls.setAlignment(Pos.CENTER);
+        controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);
         return controls;
     }
-    
+
     private Node makeSlider(){
         mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double value = DIVISONFACTOR/(double)newValue;
-            myAnimation = new Animation(value,Timeline.INDEFINITE,this);
+            myAnimation = createTimeline(value,Timeline.INDEFINITE);
             myAnimation.play();
         });
         return mySlider;
+    }
+
+    private Timeline createTimeline(double timestep, int cyclecount){
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(timestep), actionEvent -> {
+            mySimulation.updateGrid();
+            myRoot.setCenter(buildGrid());
+        }));
+        timeline.setCycleCount(cyclecount);
+        return timeline;
     }
 }
