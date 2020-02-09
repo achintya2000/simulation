@@ -57,6 +57,7 @@ public class UI extends Application {
     private String myNewSimulation = "Fire";
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
+    List<ViewingWindow> myWindows = new ArrayList<>();
 
     public UI() throws IOException {
     }
@@ -147,29 +148,33 @@ public class UI extends Application {
                 simulation1 = new GameOfLife();
                 simName = "gameoflife";
                 ViewingWindow window =  new ViewingWindow(simulation1,xmlFile,simName);
+                myWindows.add(window);
                 break;
             case FIRE:
                 simulation1 = new Fire();
                 simName = "fire";
                 ViewingWindow window2 =  new ViewingWindow(simulation1,xmlFile,simName);
+                myWindows.add(window2);
                 break;
             case SEGREGATION:
                 simulation1 = new Segregation();
                 simName = "segregation";
                 ViewingWindow window3 =  new ViewingWindow(simulation1,xmlFile,simName);
+                myWindows.add(window3);
                 break;
             case PERCOLATION:
                 simulation1 = new Percolation();
                 simName = "percolation";
                 ViewingWindow window4 =  new ViewingWindow(simulation1,xmlFile,simName);
+                myWindows.add(window4);
                 break;
             case WATOR:
                 simulation1 = new Wator();
                 simName = "wator";
                 ViewingWindow window5 =  new ViewingWindow(simulation1,xmlFile,simName);
+                myWindows.add(window5);
                 break;
         }
-
         }
         catch(XMLException e){
             setErrorBox();
@@ -182,6 +187,8 @@ public class UI extends Application {
         alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
+
+
 }
 
 

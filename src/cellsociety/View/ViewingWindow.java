@@ -53,6 +53,7 @@ public class ViewingWindow {
 
     public ViewingWindow(Simulation simulation, File xml, String simname){
         mySimulation = simulation;
+        System.out.println(mySimulation);
         mySimulation.loadSimulationContents(xml, simname);
         myGrid = new TilePane();
         myStage = new Stage();
@@ -110,7 +111,8 @@ public class ViewingWindow {
         myStopButton.setOnAction(e -> myAnimation.pause());
         myNextButton.setText(myResources.getString(NEXT));
         myNextButton.setOnAction(e -> {
-            myAnimation = createTimeline (1,1); //
+            myAnimation.setCycleCount(1);
+            //myAnimation = createTimeline (1,1); //
             // means to create a new timeline with timestep 1 and cyclecount 1
             myAnimation.play();                           // so that the next button makes grid only update once
         });
