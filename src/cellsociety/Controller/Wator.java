@@ -77,13 +77,18 @@ public class Wator extends Simulation{
         }
       }
     }
-
   }
 
   private void sharkGoesTo(int r, int c) {
-    boolean fisheaten = false; // if fish not eaten after first loop, shark has moved
     Map<String,Integer> neighbors = simulationGrid.checkNeighbors(r, c, false);
+    boolean fishEaten = huntFish(neighbors,r,c);
+    if (!fishEaten) {
+      moveShark(neighbors,r,c);
+    }
+  }
 
+  private boolean huntFish(Map<String,Integer> neighbors, int r, int c) {
+    boolean fishEaten = false;
     // Below determines if there are any fish around the shark, if they are, they are eaten
     for (String neighbor: neighbors.keySet()) {
       if (neighbors.get(neighbor) == fish) { // take first neighbor that is fish
@@ -92,7 +97,7 @@ public class Wator extends Simulation{
           sharkEnergy[r][c] = 0;
           simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], shark);
           simulationGrid.updateCell(r, c, empty);
-          fisheaten=true;
+          fishEaten=true;
           if (chronon % 5 == 0) {
             sharkEnergy[r][c] = shark_lives;
             simulationGrid.updateCell(r,c, shark);
@@ -101,21 +106,23 @@ public class Wator extends Simulation{
         }
       }
     }
+    return fishEaten;
+  }
+
+  private void moveShark(Map<String,Integer> neighbors, int r, int c) {
     // If the shark did not move to eat the fish, and a nearby location is empty, move
-    if (!fisheaten) {
-      for (String neighbor: neighbors.keySet()) {
-        if (neighbors.get(neighbor) == empty) {
-          if (simulationGrid.inBounds(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1])) {
-            sharkEnergy[r+simulationGrid.getOffset(neighbor)[0]][c+simulationGrid.getOffset(neighbor)[1]]=sharkEnergy[r][c];
-            sharkEnergy[r][c]=0;
-            simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], shark);
-            simulationGrid.updateCell(r, c, empty);
-            if (chronon % 5 == 0) {
-              sharkEnergy[r][c] = shark_lives;
-              simulationGrid.updateCell(r,c, shark);
-            }
-            break;
+    for (String neighbor: neighbors.keySet()) {
+      if (neighbors.get(neighbor) == empty) {
+        if (simulationGrid.inBounds(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1])) {
+          sharkEnergy[r+simulationGrid.getOffset(neighbor)[0]][c+simulationGrid.getOffset(neighbor)[1]]=sharkEnergy[r][c];
+          sharkEnergy[r][c]=0;
+          simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], shark);
+          simulationGrid.updateCell(r, c, empty);
+          if (chronon % 5 == 0) {
+            sharkEnergy[r][c] = shark_lives;
+            simulationGrid.updateCell(r,c, shark);
           }
+          break;
         }
       }
     }
