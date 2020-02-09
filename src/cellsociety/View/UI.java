@@ -163,41 +163,36 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile) {
-        // = new GameOfLife();
+        Simulation sim = new GameOfLife();
         String simName = "";
         try {
             switch (simulation) {
                 case GAMEOFLIFE:
-                    Simulation gol = new GameOfLife();
+                    sim = new GameOfLife();
                     simName = "gameoflife";
-                    ViewingWindow window = new ViewingWindow(gol, xmlFile, simName);
                     break;
                 case FIRE:
-                    Simulation fir = new Fire();
+                    sim = new Fire();
                     simName = "fire";
-                    ViewingWindow window2 = new ViewingWindow(fir, xmlFile, simName);
                     break;
                 case SEGREGATION:
-                    Simulation seg = new Segregation();
+                    sim = new Segregation();
                     simName = "segregation";
-                    ViewingWindow window3 = new ViewingWindow(seg, xmlFile, simName);
                     break;
                 case PERCOLATION:
-                    Simulation perc = new Percolation();
+                    sim = new Percolation();
                     simName = "percolation";
-                    ViewingWindow window4 = new ViewingWindow(perc, xmlFile, simName);
                     break;
                 case WATOR:
-                    Simulation wat = new Wator();
+                    sim = new Wator();
                     simName = "wator";
-                    ViewingWindow window5 = new ViewingWindow(wat, xmlFile, simName);
                     break;
                 case RPS:
-                    Simulation rp = new RPS();
+                    sim = new RPS();
                     simName = "rps";
-                    ViewingWindow window6 = new ViewingWindow(rp, xmlFile, simName);
                     break;
             }
+            ViewingWindow window = new ViewingWindow(sim, xmlFile, simName);
         }
         catch(XMLException e){
                 setErrorBox();
