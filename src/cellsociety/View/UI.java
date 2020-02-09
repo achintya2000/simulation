@@ -53,6 +53,7 @@ public class UI extends Application {
     private static final String PERCOLATION = "Percolation";
     private static final String WATOR = "Wator";
     private static final String SEGREGATION = "Segregation";
+    private static final String RPS = "RPS";
     private static final String TITLE = "title";
     private static final String BADINPUT = "badinput";
     private static final String NOTXML = "notXML";
@@ -73,6 +74,7 @@ public class UI extends Application {
     Segregation segregation = new Segregation();
     Percolation percolation = new Percolation();
     Wator wator = new Wator();
+    RPS rps = new RPS();
     TilePane uiGrid = new TilePane();
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
 
@@ -121,7 +123,7 @@ public class UI extends Application {
 
     private Node setComboBox(){
         ComboBox comboBox = new ComboBox();
-        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE};
+        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
         for(String choice: choiceProperties){
             comboBox.getItems().add(myResources.getString(choice));
         }
@@ -163,6 +165,9 @@ public class UI extends Application {
                 simulationchoice = wator;
                 simName = "wator";
                 break;
+            case RPS:
+                simulationchoice = rps;
+                simName = "rps";
         }
 
         try{
