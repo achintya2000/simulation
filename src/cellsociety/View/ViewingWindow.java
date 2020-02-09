@@ -53,9 +53,8 @@ public class ViewingWindow {
 
     public ViewingWindow(Simulation simulation, File xml, String simname){
         mySimulation = simulation;
-        mySimulation.loadSimulationContents(xml, simname,false);
+        mySimulation.loadSimulationContents(xml, simname,true);
         myGrid = new TilePane();
-        //myStage = new Stage();
         myRoot = new BorderPane();
         myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
         myPlayButton = new Button();

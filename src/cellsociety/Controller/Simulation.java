@@ -68,17 +68,15 @@ public abstract class Simulation {
 
     simulationGrid = new ArrayGrid(GRID_WIDTH);
 
-    int range = cellTypes.size();
-    initializeGrid(cellTypes, configuration, random, range);
+    initializeGrid(cellTypes, configuration, random, numtypes);
     init();
   }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration, boolean random, int range) {
     if (random){
-
       for (int r = 0; r < simulationGrid.getSize(); r++) {
         for (int c = 0; c < simulationGrid.getSize(); c++) {
-          int randomNum = ThreadLocalRandom.current().nextInt(0, range + 1);
+          int randomNum = ThreadLocalRandom.current().nextInt(0, range);
           simulationGrid.updateCell(r, c, randomNum);
         }
       }

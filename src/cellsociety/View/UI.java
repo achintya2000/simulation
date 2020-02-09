@@ -30,10 +30,9 @@ import java.io.FileNotFoundException;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-
 public class UI extends Application {
-    private static final int HEIGHT = 800;
-    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 400;
     private static final int VIEWING_WINDOW_SIZE = 500;
     private static final int MARGIN = 10;
     private static final int MAXTIMESTEP = 1000;
@@ -106,9 +105,6 @@ public class UI extends Application {
 
     }
 
-
-
-
     private Scene makeScene() throws IOException {
         root.setLeft(setToolBox());
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
@@ -117,12 +113,10 @@ public class UI extends Application {
         return scene;
     }
 
-
     private Node chooseBrowserText(){
         Text text = new Text(myResources.getString("chooseFile"));
         return text;
     }
-
 
     private Node setToolBox(){
         VBox left = new VBox(100);
