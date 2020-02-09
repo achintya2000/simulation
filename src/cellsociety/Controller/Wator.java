@@ -70,6 +70,10 @@ public class Wator extends Simulation{
         }
       }
     }
+    updateSharkEnergy();
+  }
+
+  private void updateSharkEnergy() {
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         if (sharkEnergy[r][c] != 0) {

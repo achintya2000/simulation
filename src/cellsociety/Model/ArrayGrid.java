@@ -17,7 +17,7 @@ public class ArrayGrid extends Grid {
     private int edgeToroidal = 2;
     private boolean isNeighborhoodSet = false;
 
-    public ArrayGrid(int size) { // ** TODO assumes its a square
+    public ArrayGrid(int size) {
         mySize = size;
         myArray = new int[mySize][mySize];
         for (int i = 0; i < mySize; i++) {
