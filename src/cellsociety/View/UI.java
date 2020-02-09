@@ -52,6 +52,9 @@ public class UI extends Application {
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
 
+    private static final Map<String, Simulation> chooseSim = Map.of(GAMEOFLIFE,new GameOfLife(),FIRE, new Fire(), SEGREGATION, new Segregation(), PERCOLATION, new Percolation(), WATOR, new Wator(), RPS, new RPS());
+    private static final Map<String, String> chooseSimName = Map.of(GAMEOFLIFE,"gameoflife",FIRE, "fire", SEGREGATION, "segregation", PERCOLATION, "percolation", WATOR, "wator", RPS, "rps");
+
     private static final String BROWSE = "browse";
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
     FileChooser fileChooser = new FileChooser();
@@ -141,36 +144,8 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile) {
-        Simulation sim = new GameOfLife();
-        String simName = "";
         try {
-            switch (simulation) {
-                case GAMEOFLIFE:
-                    sim = new GameOfLife();
-                    simName = "gameoflife";
-                    break;
-                case FIRE:
-                    sim = new Fire();
-                    simName = "fire";
-                    break;
-                case SEGREGATION:
-                    sim = new Segregation();
-                    simName = "segregation";
-                    break;
-                case PERCOLATION:
-                    sim = new Percolation();
-                    simName = "percolation";
-                    break;
-                case WATOR:
-                    sim = new Wator();
-                    simName = "wator";
-                    break;
-                case RPS:
-                    sim = new RPS();
-                    simName = "rps";
-                    break;
-            }
-            ViewingWindow window = new ViewingWindow(sim, xmlFile, simName);
+            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation));
         }
         catch(XMLException e){
                 setErrorBox();
