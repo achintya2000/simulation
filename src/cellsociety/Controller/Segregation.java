@@ -56,8 +56,8 @@ public class Segregation extends Simulation {
   private void movesLocation(int r, int c, int state) {
       Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
       int count = 0;
-      for (String neighbor : statusOfNeighbors.keySet()) {
-          if(statusOfNeighbors.get(neighbor) == state){
+      for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+          if(entry.getValue() == state){
               count++;
           }
       }

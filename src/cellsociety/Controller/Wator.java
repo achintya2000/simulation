@@ -87,15 +87,15 @@ public class Wator extends Simulation{
     }
   }
 
-  private boolean huntFish(Map<String,Integer> neighbors, int r, int c) {
+  private boolean huntFish(Map<String,Integer> statusOfNeighbors, int r, int c) {
     boolean fishEaten = false;
     // Below determines if there are any fish around the shark, if they are, they are eaten
-    for (String neighbor: neighbors.keySet()) {
-      if (neighbors.get(neighbor) == fish) { // take first neighbor that is fish
-        if (simulationGrid.inBounds(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1])) { // this needs to get fixed asap
-          sharkEnergy[r+ simulationGrid.getOffset(neighbor)[0]][c+ simulationGrid.getOffset(neighbor)[1]] = sharkEnergy[r][c]+1;
+    for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+      if (entry.getValue() == fish) { // take first neighbor that is fish
+        if (simulationGrid.inBounds(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1])) { // this needs to get fixed asap
+          sharkEnergy[r+ simulationGrid.getOffset(entry.getKey())[0]][c+ simulationGrid.getOffset(entry.getKey())[1]] = sharkEnergy[r][c]+1;
           sharkEnergy[r][c] = 0;
-          simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], shark);
+          simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], shark);
           simulationGrid.updateCell(r, c, empty);
           fishEaten=true;
           if (chronon % 5 == 0) {
@@ -109,14 +109,14 @@ public class Wator extends Simulation{
     return fishEaten;
   }
 
-  private void moveShark(Map<String,Integer> neighbors, int r, int c) {
+  private void moveShark(Map<String,Integer> statusOfNeighbors, int r, int c) {
     // If the shark did not move to eat the fish, and a nearby location is empty, move
-    for (String neighbor: neighbors.keySet()) {
-      if (neighbors.get(neighbor) == empty) {
-        if (simulationGrid.inBounds(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1])) {
-          sharkEnergy[r+simulationGrid.getOffset(neighbor)[0]][c+simulationGrid.getOffset(neighbor)[1]]=sharkEnergy[r][c];
+    for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+      if (entry.getValue() == empty) {
+        if (simulationGrid.inBounds(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1])) {
+          sharkEnergy[r+simulationGrid.getOffset(entry.getKey())[0]][c+simulationGrid.getOffset(entry.getKey())[1]]=sharkEnergy[r][c];
           sharkEnergy[r][c]=0;
-          simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], shark);
+          simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], shark);
           simulationGrid.updateCell(r, c, empty);
           if (chronon % 5 == 0) {
             sharkEnergy[r][c] = shark_lives;
@@ -129,12 +129,12 @@ public class Wator extends Simulation{
   }
 
   private void fishGoesTo(int r, int c) {
-    Map<String,Integer> neighbors = simulationGrid.checkNeighbors(r, c,  false);
+    Map<String,Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r, c,  false);
 
-    for (String neighbor: neighbors.keySet()) {
-      if (neighbors.get(neighbor) == empty) {
-        if (simulationGrid.inBounds(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1])) {
-          simulationGrid.updateCell(r + simulationGrid.getOffset(neighbor)[0], c + simulationGrid.getOffset(neighbor)[1], fish);
+    for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+      if (entry.getValue() == empty) {
+        if (simulationGrid.inBounds(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1])) {
+          simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], fish);
           if (chronon % 5 != 0) { // Put fish in new spot
             simulationGrid.updateCell(r, c, empty);
           }

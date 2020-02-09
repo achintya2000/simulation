@@ -54,8 +54,8 @@ public class GameOfLife extends Simulation {
     private int liveNeighbors(int r, int c){
         Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         int alive = 0;
-        for (String neighbor : statusOfNeighbors.keySet()) {
-            if(statusOfNeighbors.get(neighbor) == live){
+        for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+            if(entry.getValue() == live){
                 alive++;
             }
         }

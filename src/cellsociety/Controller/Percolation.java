@@ -54,8 +54,8 @@ public class Percolation extends Simulation {
 
     public boolean closeToWater(int r, int c){
         Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
-        for (String neighbor : statusOfNeighbors.keySet()) {
-            if(statusOfNeighbors.get(neighbor) == percolated){
+        for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+            if(entry.getValue() == percolated){
                 return true;
             }
         }

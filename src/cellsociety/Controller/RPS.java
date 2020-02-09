@@ -25,9 +25,9 @@ public class RPS extends Simulation {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 Map<String,Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
                 int[] typeNeighbor = new int[numNeighborTypes];
-                for (String neighbor : statusOfNeighbors.keySet()) {
+                for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
                     for (int i = 0; i < numNeighborTypes; i++) {
-                        if (statusOfNeighbors.get(neighbor) == i) {
+                        if (entry.getValue() == i) {
                             typeNeighbor[i] = typeNeighbor[i]+1;
                         }
                     }
