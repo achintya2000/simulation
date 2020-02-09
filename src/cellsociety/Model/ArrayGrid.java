@@ -80,19 +80,23 @@ public class ArrayGrid extends Grid {
             }
             int[] validNeighbors = getValidNeighbors(row,col,neighbor);
             if (validNeighbors[0] != -5 && validNeighbors[1] != -5) {
-                int neighborRow = validNeighbors[0];
-                int neighborCol = validNeighbors[1];
-                if (inBounds(neighborRow,neighborCol)) {
-                    if (atomicUpdate) { // Use to determine whether reference or current state needed
-                        statusOfNeighbors.put(neighbor, getReferenceState(neighborRow, neighborCol));
-                    } else {
-                        statusOfNeighbors.put(neighbor, getCurrentState(neighborRow, neighborCol));
-                    }
-                }
+                addNeighbor(atomicUpdate, statusOfNeighbors, neighbor, validNeighbors);
             }
 
         }
         return statusOfNeighbors;
+    }
+
+    private void addNeighbor(boolean atomicUpdate, Map<String, Integer> statusOfNeighbors, String neighbor, int[] validNeighbors) {
+        int neighborRow = validNeighbors[0];
+        int neighborCol = validNeighbors[1];
+        if (inBounds(neighborRow,neighborCol)) {
+            if (atomicUpdate) { // Use to determine whether reference or current state needed
+                statusOfNeighbors.put(neighbor, getReferenceState(neighborRow, neighborCol));
+            } else {
+                statusOfNeighbors.put(neighbor, getCurrentState(neighborRow, neighborCol));
+            }
+        }
     }
 
     private void copyArray() {
