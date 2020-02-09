@@ -17,6 +17,8 @@ public abstract class Simulation {
   private static final int CIRCLE = 360;
   private static final int TRIANGLE = 180;
 
+  private static final Map<String, Integer> edgeTypes = Map.of("finite",1,"toroidal",2);
+
   protected String SIMULATION_NAME;
   protected int GRID_WIDTH;
   protected int GRID_HEIGHT;
@@ -24,11 +26,11 @@ public abstract class Simulation {
   protected Map<Integer, Color> cellColorMap;
   private File infoFile = new File("./Resources/simInfo.xml");
 
-  public void setSimulationParameters(List<String> neighborhood, int shape) { // call after loadsimcontents!!
-    if (validShape(shape)) {
-      simulationGrid.setNeighbors(neighborhood,shape);
+  public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
+    if (validShape(shape) && edgeTypes.containsKey(edge)) {
+      simulationGrid.setNeighbors(neighborhood,shape,edgeTypes.get(edge));
     } else {
-      System.out.println("YIKES - This neighborhood/shape combination is invalid"); // come back and change to exception
+      System.out.println("YIKES - This neighborhood/shape/edge combination is invalid"); // come back and change to exception
     }
   }
 

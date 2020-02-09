@@ -167,7 +167,6 @@ public class UI extends Application {
 
         try{
             simulationchoice.loadSimulationContents(xmlFile,simName);
-
         }
         catch(XMLException e){
             setErrorBox();

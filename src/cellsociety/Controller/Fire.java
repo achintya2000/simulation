@@ -9,6 +9,8 @@ public class Fire extends Simulation {
     private List<String> defaultNeighbors =  List.of("N","S","E","W");
     private int square = 4;
     private int defaultShape = square;
+    private int finite = 1;
+    private int defaultEdge = finite;
 
     private int empty = 0;
     private int tree = 1;
@@ -20,7 +22,7 @@ public class Fire extends Simulation {
     @Override
     public void updateGrid() {
         if (!simulationGrid.isNeighborhoodSet()) {
-            simulationGrid.setNeighbors(defaultNeighbors, defaultShape);
+            simulationGrid.setNeighbors(defaultNeighbors, defaultShape, defaultEdge);
         }
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
