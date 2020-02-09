@@ -34,6 +34,7 @@ import javafx.util.Duration;
 
 
 public class UI extends Application {
+
     private static final int HEIGHT = 800;
     private static final int WIDTH = 800;
     private static final int VIEWING_WINDOW_SIZE = 500;
@@ -62,6 +63,7 @@ public class UI extends Application {
     private static final String PLAY = "play";
     private static final String STOP = "stop";
     private static final String NEXT = "next";
+    private static final boolean RANDOM_BOARD_GENERATION = true;
 
 
     private double timestep = 1000;
@@ -99,7 +101,7 @@ public class UI extends Application {
         PrimaryStage = primaryStage;
 
         String segregationConfiguration = DEFAULTSIMULATION;
-        fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase());
+        fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase(), RANDOM_BOARD_GENERATION);
 
 
 
@@ -165,7 +167,7 @@ public class UI extends Application {
         }
 
         try{
-            simulationchoice.loadSimulationContents(xmlFile, simName);
+            simulationchoice.loadSimulationContents(xmlFile, simName, RANDOM_BOARD_GENERATION);
         }
         catch(XMLException e){
             setErrorBox();
@@ -256,11 +258,11 @@ public class UI extends Application {
                 uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, simulationchoice.getGridColor(i, j)));
             }
         }
-        uiGrid.setHgap(MARGIN);
-        uiGrid.setVgap(MARGIN);
+        //uiGrid.setHgap(MARGIN);
+        //uiGrid.setVgap(MARGIN);
         uiGrid.setAlignment(Pos.CENTER);
         uiGrid.setPrefColumns(simulationchoice.getSimulationCols());
-        uiGrid.setPadding(new Insets(100, 75, 20, 75));
+        //uiGrid.setPadding(new Insets(100, 75, 20, 75));
         uiGrid.prefRowsProperty();
         wrapper.getChildren().add(uiGrid);
         wrapper.setAlignment(Pos.CENTER);

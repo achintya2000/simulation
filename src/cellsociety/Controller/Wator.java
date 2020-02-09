@@ -135,9 +135,4 @@ public class Wator extends Simulation{
   }
 
 
-  @Override
-  public Map<Integer, Color> getCellColorMap() {
-    return cellColorMap;
-  }
-
 }

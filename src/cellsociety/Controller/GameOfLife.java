@@ -36,11 +36,6 @@ public class GameOfLife extends Simulation {
     }
 
     @Override
-    public Map<Integer, Color> getCellColorMap() {
-        return cellColorMap;
-    }
-
-    @Override
     protected void init() {
         cellColorMap = new HashMap<>();
         cellColorMap.put(0, Color.WHITE);
