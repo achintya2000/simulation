@@ -115,21 +115,25 @@ public class ArrayGrid extends Grid {
             return new int[] {directRow,directCol};
         }
         if (!inBounds(directRow,directCol) && myEdge==edgeToroidal) {
-            int neighborRow = directRow;
-            int neighborCol = directCol;
-            if (directRow < 0) {
-                neighborRow = myArray.length-1;
-            } else if (directRow >= myArray.length) {
-                neighborRow = 0;
-            }
-            if (directCol < 0) {
-                neighborCol = myArray[0].length-1;
-            } else if (directCol >= myArray[0].length) {
-                neighborCol = 0;
-            }
-            return new int[] {neighborRow, neighborCol};
+            return getToroidalNeighbors(directRow, directCol);
         }
         return new int[] {-5,-5};
+    }
+
+    private int[] getToroidalNeighbors(int directRow, int directCol) {
+        int neighborRow = directRow;
+        int neighborCol = directCol;
+        if (directRow < 0) {
+            neighborRow = myArray.length-1;
+        } else if (directRow >= myArray.length) {
+            neighborRow = 0;
+        }
+        if (directCol < 0) {
+            neighborCol = myArray[0].length-1;
+        } else if (directCol >= myArray[0].length) {
+            neighborCol = 0;
+        }
+        return new int[] {neighborRow, neighborCol};
     }
 
 
