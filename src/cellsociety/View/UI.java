@@ -60,6 +60,9 @@ public class UI extends Application {
     private String myNewSimulation = "Fire";
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
+    private String myShapeChosen = "Square";
+    private TilePane myNeighbors;
+    private int[][] myNeighborsInPlay = new int[3][3];
 
 
     public UI() throws IOException {
@@ -109,8 +112,10 @@ public class UI extends Application {
             row1.setPercentHeight(33.33);
         }
         leftPanel.add(setComboBox(),0,1);
-        leftPanel.add(chooseBrowserText(),0,2);
-        leftPanel.add(setBrowseButton(),1,2);
+        leftPanel.add(setChoseShapeeText(), 0, 2);
+        leftPanel.add(setShapeComboBox(),1,2);
+        leftPanel.add(chooseBrowserText(),0,3);
+        leftPanel.add(setBrowseButton(),1,3);
         leftPanel.setPadding(new Insets(20, 10, 20, 0));
         left.getChildren().add(leftPanel);
         return left;
@@ -140,7 +145,25 @@ public class UI extends Application {
             myNewSimulation = simulationChosen;
         });
         return comboBox;
+    }
 
+    private Node setShapeComboBox(){
+        ComboBox comboBox = new ComboBox();
+        comboBox.getStyleClass().add("combobox");
+        String[] shapeProperties = {"shape", "square", "triangle"};
+        for (String shape : shapeProperties){
+            comboBox.getItems().add(myResources.getString(shape));
+        }
+        comboBox.getSelectionModel().selectFirst();
+        comboBox.setOnAction(e-> {
+            myShapeChosen = (String) comboBox.getSelectionModel().getSelectedItem();
+        });
+        return comboBox;
+    }
+
+    private Node setChoseShapeeText(){
+        Text text = new Text(myResources.getString("chooseShape"));
+        return text;
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile) {
@@ -160,7 +183,26 @@ public class UI extends Application {
         alert.showAndWait();
     }
 
-
+    public Node setChooseNeighborsText(){
+        Text text = new Text(myResources.getString("chooseNeighbors"));
+        return text;
+    }
+    public TilePane setChooseNeighborsTilePane(){
+        TilePane neighbors = new TilePane();
+        if(myShapeChosen == "Square"){
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    double tileSize = 50;
+                    Rectangle tile = new Rectangle(tileSize,tileSize,Color.WHITE);
+                    tile.setOnMouseClicked( e->{
+                        tile.setFill(Color.BLUE);
+                    });
+                    neighbors.getChildren().add(new Rectangle(tileSize, tileSize, Color.WHITE));
+                }
+            }
+        }
+       return neighbors;
+    }
 }
 
 
