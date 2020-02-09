@@ -17,9 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -34,13 +32,8 @@ import javafx.util.Duration;
 
 
 public class UI extends Application {
-    private static final int HEIGHT = 800;
-    private static final int WIDTH = 800;
-    private static final int VIEWING_WINDOW_SIZE = 500;
-    private static final int MARGIN = 10;
-    private static final int MAXTIMESTEP = 1000;
-    private static final int MINTIMESTEP = 100;
-    private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 400;
     private static final String RESOURCES = "cellsociety/View/Resources/";
     // use Java's dot notation, like with import, for properties
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
@@ -76,11 +69,10 @@ public class UI extends Application {
     Wator wator = new Wator();
     RPS rps = new RPS();
     TilePane uiGrid = new TilePane();
+    private static final String BROWSE = "browse";
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
-
     FileChooser fileChooser = new FileChooser();
-
-    private Simulation simulationchoice = fire;
+    private String myNewSimulation = "Fire";
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
 
@@ -99,19 +91,114 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
-
-
         String segregationConfiguration = DEFAULTSIMULATION;
-        fire.loadSimulationContents(new File(segregationConfiguration), FIRE.toLowerCase());
-
-
-
-        //Setting the title to Stage.
+        loadSimulationChoice(FIRE, new File(segregationConfiguration));
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
-
     }
+
+    private Scene makeScene() throws IOException {
+        root.setLeft(setToolBox());
+        Scene scene = new Scene(root ,WIDTH, HEIGHT);
+        scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+        scene.setFill(Color.WHITE);
+        return scene;
+    }
+
+
+    private Node chooseBrowserText(){
+        Text text = new Text(myResources.getString("chooseFile"));
+        return text;
+    }
+
+
+    private Node setToolBox(){
+        VBox left = new VBox(100);
+        GridPane leftPanel = new GridPane();
+        leftPanel.setBackground(new Background(new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
+        leftPanel.getStyleClass().add("leftpanel");
+        for(int i = 0; i < 3; i++){
+            RowConstraints row1 = new RowConstraints();
+            row1.setPercentHeight(33.33);
+        }
+        leftPanel.add(setComboBox(),0,1);
+        leftPanel.add(chooseBrowserText(),0,2);
+        leftPanel.add(setBrowseButton(),1,2);
+        leftPanel.setPadding(new Insets(20, 10, 20, 0));
+        left.getChildren().add(leftPanel);
+        return left;
+    }
+
+    private Node setBrowseButton(){
+        Button browse = new Button();
+        browse.setText(myResources.getString(BROWSE));
+        browse.setOnAction(e -> {
+            File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
+            loadSimulationChoice(myNewSimulation, selectedFile);
+        });
+        return browse;
+    }
+
+    private Node setComboBox(){
+
+        ComboBox comboBox = new ComboBox();
+        comboBox.getStyleClass().add("combobox");
+        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
+
+        for(String choice: choiceProperties){
+            comboBox.getItems().add(myResources.getString(choice));
+        }
+        comboBox.getSelectionModel().selectFirst();
+        comboBox.setOnAction(e -> {
+            String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
+            myNewSimulation = simulationChosen;
+        });
+        return comboBox;
+    }
+
+    private void loadSimulationChoice(String simulation, File xmlFile) {
+        // = new GameOfLife();
+        String simName = "";
+        try {
+            switch (simulation) {
+                case GAMEOFLIFE:
+                    Simulation gol = new GameOfLife();
+                    simName = "gameoflife";
+                    ViewingWindow window = new ViewingWindow(gol, xmlFile, simName);
+                    break;
+                case FIRE:
+                    Simulation fir = new Fire();
+                    simName = "fire";
+                    ViewingWindow window2 = new ViewingWindow(fir, xmlFile, simName);
+                    break;
+                case SEGREGATION:
+                    Simulation seg = new Segregation();
+                    simName = "segregation";
+                    ViewingWindow window3 = new ViewingWindow(seg, xmlFile, simName);
+                    break;
+                case PERCOLATION:
+                    Simulation perc = new Percolation();
+                    simName = "percolation";
+                    ViewingWindow window4 = new ViewingWindow(perc, xmlFile, simName);
+                    break;
+                case WATOR:
+                    Simulation wat = new Wator();
+                    simName = "wator";
+                    ViewingWindow window5 = new ViewingWindow(wat, xmlFile, simName);
+                    break;
+                case RPS:
+                    Simulation rp = new RPS();
+                    simName = "rps";
+                    ViewingWindow window6 = new ViewingWindow(rp, xmlFile, simName);
+                    break;
+            }
+        }
+        catch(XMLException e){
+                setErrorBox();
+            }
+        }
+
 
     public void setErrorBox(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -120,160 +207,6 @@ public class UI extends Application {
         alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
-
-    private Node setComboBox(){
-        ComboBox comboBox = new ComboBox();
-        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
-        for(String choice: choiceProperties){
-            comboBox.getItems().add(myResources.getString(choice));
-        }
-        comboBox.getSelectionModel().selectFirst();
-        comboBox.setOnAction(e -> {
-            File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
-            String simulationChosen = (String) comboBox.getSelectionModel().getSelectedItem();
-            if (timeline != null) {
-                timeline.stop();
-            }
-            loadSimulationChoice(simulationChosen, selectedFile);
-            root.setCenter(buildGrid());
-            createTimeline(timestep,Timeline.INDEFINITE);
-            SimulationName.setText(simulationChosen);
-        });
-        return comboBox;
-    }
-
-    private void loadSimulationChoice(String simulation, File xmlFile){
-        String simName = "";
-        switch (simulation){
-            case GAMEOFLIFE:
-                simulationchoice = gameOfLife;
-                simName = "gameoflife";
-                break;
-            case FIRE:
-                simulationchoice = fire;
-                simName = "fire";
-                break;
-            case SEGREGATION:
-                simulationchoice = segregation;
-                simName = "segregation";
-                break;
-            case PERCOLATION:
-                simulationchoice = percolation;
-                simName = "percolation";
-                break;
-            case WATOR:
-                simulationchoice = wator;
-                simName = "wator";
-                break;
-            case RPS:
-                simulationchoice = rps;
-                simName = "rps";
-        }
-
-        try{
-            simulationchoice.loadSimulationContents(xmlFile,simName);
-        }
-        catch(XMLException e){
-            setErrorBox();
-        }
-    }
-
-
-    private Scene makeScene() throws IOException {
-        root.setTop(makeSimulationToolbar());
-        root.setBottom(makeSimulationControls());
-        root.setCenter(buildGrid());
-        Scene scene = new Scene(root ,WIDTH, HEIGHT);
-        scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-        scene.setFill(Color.WHITE);
-        return scene;
-    }
-
-
-    private Node makeSimulationToolbar() throws FileNotFoundException {
-        HBox toolbar = new HBox();
-
-        SimulationName = new Text();
-        SimulationName.setFont(new Font(22));
-        SimulationName.setText(myResources.getString(FIRE)); //default simulation
-        SimulationName.setFill(Color.WHITE);
-        toolbar.getChildren().add(setComboBox());
-        toolbar.getChildren().add(SimulationName);
-        toolbar.setSpacing(MARGIN);
-        return toolbar;
-    }
-
-    private void createTimeline(double milliseconds, int cycleCount) {
-        if (timeline!= null) {
-            timeline.stop();
-        }
-        timeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), event -> {
-            simulationchoice.updateGrid();
-            root.setCenter(buildGrid());
-        }));
-        timeline.setCycleCount(cycleCount);
-    }
-
-    private Node makeSimulationControls() {
-        Button playButton = new Button();
-        playButton.setText(myResources.getString(PLAY));
-        playButton.setOnAction(e -> {
-            createTimeline(timestep,Timeline.INDEFINITE);
-            timeline.play();
-        });
-        Button stopButton = new Button();
-        stopButton.setText(myResources.getString(STOP));
-        stopButton.setOnAction(e -> timeline.stop());
-        Button nextButton = new Button();
-        nextButton.setText(myResources.getString(NEXT));
-        nextButton.setOnAction(e -> {
-           createTimeline(1,1); // (1,1) means to create a new timeline with timestep 1 and cyclecount 1
-           timeline.play();                             // so that the next button makes grid only update once
-        });
-        stopButton.setAlignment(Pos.CENTER);
-        playButton.setAlignment(Pos.CENTER);
-
-        HBox controls = new HBox();
-        controls.getChildren().add(playButton);
-        controls.getChildren().add(stopButton);
-        controls.getChildren().add(nextButton);
-        controls.getChildren().add(makeSlider());
-        controls.setAlignment(Pos.CENTER);
-        controls.setSpacing(MARGIN);
-        return controls;
-    }
-    private Node makeSlider(){
-        Slider slider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            double value = DIVISONFACTOR/(double)newValue;
-            createTimeline(value,Timeline.INDEFINITE);
-            timeline.play();
-        });
-        return slider;
-    }
-
-    private Node buildGrid() {
-        HBox wrapper = new HBox();
-        uiGrid = new TilePane();
-
-        for (int i = 0; i < simulationchoice.getSimulationCols(); i++) {
-            for (int j = 0; j < simulationchoice.getSimulationCols(); j++) {
-                double tileSize = (VIEWING_WINDOW_SIZE / simulationchoice.getSimulationCols()) - MARGIN;
-                uiGrid.getChildren().add(new Rectangle(tileSize, tileSize, simulationchoice.getGridColor(i, j)));
-            }
-        }
-        uiGrid.setHgap(MARGIN);
-        uiGrid.setVgap(MARGIN);
-        uiGrid.setAlignment(Pos.CENTER);
-        uiGrid.setPrefColumns(simulationchoice.getSimulationCols());
-        uiGrid.setPadding(new Insets(100, 75, 20, 75));
-        uiGrid.prefRowsProperty();
-        wrapper.getChildren().add(uiGrid);
-        wrapper.setAlignment(Pos.CENTER);
-        return wrapper;
-    }
-
-
 }
 
 
