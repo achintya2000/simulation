@@ -13,9 +13,7 @@ public class ArrayGrid extends Grid {
     private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
     private int myShape = 0;
     private int shapeTriangle = 3;
-    private int shapeSquare = 4;
     private int myEdge = 0;
-    private int edgeFinite = 1;
     private int edgeToroidal = 2;
     private boolean isNeighborhoodSet = false;
 
