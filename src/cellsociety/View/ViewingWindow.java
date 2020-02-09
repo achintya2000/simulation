@@ -25,7 +25,6 @@ public class ViewingWindow {
     private TilePane myGrid;
     private Simulation mySimulation;
     private Timeline myAnimation;
-    private Stage myStage;
     private BorderPane myRoot;
     private Button myPlayButton;
     private Button myStopButton;
@@ -53,7 +52,7 @@ public class ViewingWindow {
 
     public ViewingWindow(Simulation simulation, File xml, String simname){
         mySimulation = simulation;
-        mySimulation.loadSimulationContents(xml, simname,true);
+        mySimulation.loadSimulationContents(xml, simname,false);
 
         myGrid = new TilePane();
         myRoot = new BorderPane();
@@ -66,7 +65,6 @@ public class ViewingWindow {
     }
 
     private void start(Stage primaryStage){
-        myStage = primaryStage;
         primaryStage.setTitle("Viewing Window");
         primaryStage.setScene(buildScene());
         primaryStage.show();

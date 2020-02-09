@@ -1,9 +1,5 @@
 package cellsociety.Controller;
 
-import cellsociety.Model.ArrayGrid;
-import cellsociety.Model.Grid;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +52,8 @@ public class Segregation extends Simulation {
   private void movesLocation(int r, int c, int state) {
       Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
       int count = 0;
-      for (String neighbor : statusOfNeighbors.keySet()) {
-          if(statusOfNeighbors.get(neighbor) == state){
+      for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+          if(entry.getValue() == state){
               count++;
           }
       }

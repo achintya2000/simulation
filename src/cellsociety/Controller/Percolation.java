@@ -1,11 +1,6 @@
 package cellsociety.Controller;
 
-import cellsociety.Model.ArrayGrid;
-import cellsociety.Model.Grid;
 import javafx.scene.paint.Color;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +49,8 @@ public class Percolation extends Simulation {
 
     public boolean closeToWater(int r, int c){
         Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
-        for (String neighbor : statusOfNeighbors.keySet()) {
-            if(statusOfNeighbors.get(neighbor) == percolated){
+        for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+            if(entry.getValue() == percolated){
                 return true;
             }
         }

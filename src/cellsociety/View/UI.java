@@ -34,7 +34,6 @@ public class UI extends Application {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 400;
     private static final String RESOURCES = "cellsociety/View/Resources/";
-    // use Java's dot notation, like with import, for properties
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
     private static final String STYLESHEET = "styles.css";
@@ -51,6 +50,9 @@ public class UI extends Application {
     private static final String NOTXML = "notXML";
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
+    private static final Map<String, Simulation> chooseSim = Map.of(GAMEOFLIFE,new GameOfLife(),FIRE, new Fire(), SEGREGATION, new Segregation(), PERCOLATION, new Percolation(), WATOR, new Wator(), RPS, new RPS());
+    private static final Map<String, String> chooseSimName = Map.of(GAMEOFLIFE,"gameoflife",FIRE, "fire", SEGREGATION, "segregation", PERCOLATION, "percolation", WATOR, "wator", RPS, "rps");
+
 
     private static final String BROWSE = "browse";
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
@@ -142,41 +144,8 @@ public class UI extends Application {
     }
 
     private void loadSimulationChoice(String simulation, File xmlFile) {
-        // = new GameOfLife();
-        String simName = "";
         try {
-            switch (simulation) {
-                case GAMEOFLIFE:
-                    Simulation gol = new GameOfLife();
-                    simName = "gameoflife";
-                    ViewingWindow window = new ViewingWindow(gol, xmlFile, simName);
-                    break;
-                case FIRE:
-                    Simulation fir = new Fire();
-                    simName = "fire";
-                    ViewingWindow window2 = new ViewingWindow(fir, xmlFile, simName);
-                    break;
-                case SEGREGATION:
-                    Simulation seg = new Segregation();
-                    simName = "segregation";
-                    ViewingWindow window3 = new ViewingWindow(seg, xmlFile, simName);
-                    break;
-                case PERCOLATION:
-                    Simulation perc = new Percolation();
-                    simName = "percolation";
-                    ViewingWindow window4 = new ViewingWindow(perc, xmlFile, simName);
-                    break;
-                case WATOR:
-                    Simulation wat = new Wator();
-                    simName = "wator";
-                    ViewingWindow window5 = new ViewingWindow(wat, xmlFile, simName);
-                    break;
-                case RPS:
-                    Simulation rp = new RPS();
-                    simName = "rps";
-                    ViewingWindow window6 = new ViewingWindow(rp, xmlFile, simName);
-                    break;
-            }
+            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation));
         }
         catch(XMLException e){
                 setErrorBox();
