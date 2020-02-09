@@ -53,23 +53,23 @@ public class ViewingWindow {
 
     public ViewingWindow(Simulation simulation, File xml, String simname){
         mySimulation = simulation;
-        System.out.println(mySimulation);
-        mySimulation.loadSimulationContents(xml, simname);
+        mySimulation.loadSimulationContents(xml, simname,true);
+
         myGrid = new TilePane();
-        myStage = new Stage();
         myRoot = new BorderPane();
         myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
         myPlayButton = new Button();
         myNextButton = new Button();
         myStopButton = new Button();
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
-        start();
+        start(new Stage());
     }
 
-    private void start(){
-        myStage.setScene(buildScene());
-        myStage.setTitle("Viewing Window");
-        myStage.show();
+    private void start(Stage primaryStage){
+        myStage = primaryStage;
+        primaryStage.setTitle("Viewing Window");
+        primaryStage.setScene(buildScene());
+        primaryStage.show();
     }
 
     private Scene buildScene(){

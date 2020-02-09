@@ -16,6 +16,8 @@ public class Wator extends Simulation{
   private List<String> defaultNeighbors =  List.of("N","S","E","W");
   private int square = 4;
   private int defaultShape = square;
+  private int finite = 1;
+  private int defaultEdge = finite;
 
   private int chronon = 0;
   private int[][] sharkEnergy;
@@ -51,7 +53,7 @@ public class Wator extends Simulation{
   @Override
   public void updateGrid() {
     if (!simulationGrid.isNeighborhoodSet()) {
-      simulationGrid.setNeighbors(defaultNeighbors, defaultShape);
+      simulationGrid.setNeighbors(defaultNeighbors, defaultShape, defaultEdge);
     }
     chronon++;
     for (int r = 0; r < simulationGrid.getSize(); r++) {
@@ -141,10 +143,5 @@ public class Wator extends Simulation{
     return GRID_WIDTH;
   }
 
-
-  @Override
-  public Map<Integer, Color> getCellColorMap() {
-    return cellColorMap;
-  }
 
 }

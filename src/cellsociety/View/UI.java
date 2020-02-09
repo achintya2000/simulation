@@ -30,7 +30,6 @@ import java.io.FileNotFoundException;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-
 public class UI extends Application {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 400;
@@ -46,22 +45,23 @@ public class UI extends Application {
     private static final String PERCOLATION = "Percolation";
     private static final String WATOR = "Wator";
     private static final String SEGREGATION = "Segregation";
+    private static final String RPS = "RPS";
     private static final String TITLE = "title";
     private static final String BADINPUT = "badinput";
     private static final String NOTXML = "notXML";
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
+
     private static final String BROWSE = "browse";
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
     FileChooser fileChooser = new FileChooser();
     private String myNewSimulation = "Fire";
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
-    List<ViewingWindow> myWindows = new ArrayList<>();
+
 
     public UI() throws IOException {
     }
-
 
     public static void main (String[] args) {
         launch(args);
@@ -79,6 +79,9 @@ public class UI extends Application {
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
+
+        primaryStage.show();
+
     }
 
     private Scene makeScene() throws IOException {
@@ -89,12 +92,10 @@ public class UI extends Application {
         return scene;
     }
 
-
     private Node chooseBrowserText(){
         Text text = new Text(myResources.getString("chooseFile"));
         return text;
     }
-
 
     private Node setToolBox(){
         VBox left = new VBox(100);
@@ -124,10 +125,10 @@ public class UI extends Application {
     }
 
     private Node setComboBox(){
-
         ComboBox comboBox = new ComboBox();
         comboBox.getStyleClass().add("combobox");
-        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE};
+        String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
+
         for(String choice: choiceProperties){
             comboBox.getItems().add(myResources.getString(choice));
         }
@@ -137,49 +138,51 @@ public class UI extends Application {
             myNewSimulation = simulationChosen;
         });
         return comboBox;
+
     }
 
-    private void loadSimulationChoice(String simulation, File xmlFile){
-        Simulation simulation1 = new GameOfLife();
+    private void loadSimulationChoice(String simulation, File xmlFile) {
+        // = new GameOfLife();
         String simName = "";
-        try{
-        switch (simulation){
-            case GAMEOFLIFE:
-                simulation1 = new GameOfLife();
-                simName = "gameoflife";
-                ViewingWindow window =  new ViewingWindow(simulation1,xmlFile,simName);
-                myWindows.add(window);
-                break;
-            case FIRE:
-                simulation1 = new Fire();
-                simName = "fire";
-                ViewingWindow window2 =  new ViewingWindow(simulation1,xmlFile,simName);
-                myWindows.add(window2);
-                break;
-            case SEGREGATION:
-                simulation1 = new Segregation();
-                simName = "segregation";
-                ViewingWindow window3 =  new ViewingWindow(simulation1,xmlFile,simName);
-                myWindows.add(window3);
-                break;
-            case PERCOLATION:
-                simulation1 = new Percolation();
-                simName = "percolation";
-                ViewingWindow window4 =  new ViewingWindow(simulation1,xmlFile,simName);
-                myWindows.add(window4);
-                break;
-            case WATOR:
-                simulation1 = new Wator();
-                simName = "wator";
-                ViewingWindow window5 =  new ViewingWindow(simulation1,xmlFile,simName);
-                myWindows.add(window5);
-                break;
-        }
+        try {
+            switch (simulation) {
+                case GAMEOFLIFE:
+                    Simulation gol = new GameOfLife();
+                    simName = "gameoflife";
+                    ViewingWindow window = new ViewingWindow(gol, xmlFile, simName);
+                    break;
+                case FIRE:
+                    Simulation fir = new Fire();
+                    simName = "fire";
+                    ViewingWindow window2 = new ViewingWindow(fir, xmlFile, simName);
+                    break;
+                case SEGREGATION:
+                    Simulation seg = new Segregation();
+                    simName = "segregation";
+                    ViewingWindow window3 = new ViewingWindow(seg, xmlFile, simName);
+                    break;
+                case PERCOLATION:
+                    Simulation perc = new Percolation();
+                    simName = "percolation";
+                    ViewingWindow window4 = new ViewingWindow(perc, xmlFile, simName);
+                    break;
+                case WATOR:
+                    Simulation wat = new Wator();
+                    simName = "wator";
+                    ViewingWindow window5 = new ViewingWindow(wat, xmlFile, simName);
+                    break;
+                case RPS:
+                    Simulation rp = new RPS();
+                    simName = "rps";
+                    ViewingWindow window6 = new ViewingWindow(rp, xmlFile, simName);
+                    break;
+            }
         }
         catch(XMLException e){
-            setErrorBox();
+                setErrorBox();
+            }
         }
-    }
+
     public void setErrorBox(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(myResources.getString(BADINPUT));

@@ -12,10 +12,14 @@ public class ArrayGrid extends Grid {
     private Map<String,Integer[]> allNeighbors = Map.ofEntries(Map.entry("NW",new Integer[] {1,-1}),Map.entry("N",new Integer[] {1,0}),Map.entry("NE",new Integer[] {1,1}),Map.entry("W",new Integer[] {0,-1}),Map.entry("E",new Integer[] {0,1}),Map.entry("SW",new Integer[] {-1,-1}),Map.entry("S",new Integer[] {-1,0}),Map.entry("SE",new Integer[] {-1,1}), Map.entry("NWW", new Integer[] {-2,1}),Map.entry("NEE",new Integer[] {2,1}),Map.entry("WW",new Integer[] {-2,0}) ,Map.entry("EE",new Integer[] {2,0}));
     private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
     private int myShape = 0;
-    private int triangle = 3;
+    private int shapeTriangle = 3;
+    private int shapeSquare = 4;
+    private int myEdge = 0;
+    private int edgeFinite = 1;
+    private int edgeToroidal = 2;
     private boolean isNeighborhoodSet = false;
 
-    public ArrayGrid(int size) { // assume its a square
+    public ArrayGrid(int size) { // ** TODO assumes its a square
         mySize = size;
         myArray = new int[mySize][mySize];
         for (int i = 0; i < mySize; i++) {
@@ -47,8 +51,9 @@ public class ArrayGrid extends Grid {
     }
 
     @Override
-    public void setNeighbors(List<String> requestedNeighbors, int shape) {
+    public void setNeighbors(List<String> requestedNeighbors, int shape, int edge) {
         isNeighborhoodSet = true;
+        myEdge = edge;
         myShape = shape;
         for (String neighbor: requestedNeighbors) {
             currentNeighbors.put(neighbor, allNeighbors.get(neighbor));
@@ -77,21 +82,50 @@ public class ArrayGrid extends Grid {
         }
         Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
         for(String neighbor : currentNeighbors.keySet()) {
-            if (col % 2 != 0 && myShape == triangle) { // if odd col and triangle, then orientation is flipped
+            if (col % 2 != 0 && myShape == shapeTriangle) { // if odd col and triangle, then orientation is flipped
                 neighbor = neighbor.replace("N","S");
             }
-           int neighborRow = row + currentNeighbors.get(neighbor)[0];
-           int neighborCol = col + currentNeighbors.get(neighbor)[1];
-           if (inBounds(neighborRow, neighborCol)) {
-               if (atomicUpdate) { // Use to determine whether reference or current state needed
-                   statusOfNeighbors.put(neighbor,getReferenceState(neighborRow,neighborCol));
-               } else {
-                   statusOfNeighbors.put(neighbor,getCurrentState(neighborRow,neighborCol));
-               }
-           }
+            int[] validNeighbors = getValidNeighbors(row,col,neighbor);
+            if (validNeighbors[0] != -5 && validNeighbors[1] != -5) {
+                int neighborRow = validNeighbors[0];
+                int neighborCol = validNeighbors[1];
+                if (inBounds(neighborRow,neighborCol)) {
+                    if (atomicUpdate) { // Use to determine whether reference or current state needed
+                        statusOfNeighbors.put(neighbor, getReferenceState(neighborRow, neighborCol));
+                    } else {
+                        statusOfNeighbors.put(neighbor, getCurrentState(neighborRow, neighborCol));
+                    }
+                }
+            }
+
         }
         return statusOfNeighbors;
     }
+
+    private int[] getValidNeighbors(int row, int col, String neighbor) {
+        int directRow = row + currentNeighbors.get(neighbor)[0];
+        int directCol = col + currentNeighbors.get(neighbor)[1];
+        if (inBounds(directRow,directCol)) {
+            return new int[] {directRow,directCol};
+        }
+        if (!inBounds(directRow,directCol) && myEdge==edgeToroidal) {
+            int neighborRow = directRow;
+            int neighborCol = directCol;
+            if (directRow < 0) {
+                neighborRow = myArray.length-1;
+            } else if (directRow >= myArray.length) {
+                neighborRow = 0;
+            }
+            if (directCol < 0) {
+                neighborCol = myArray[0].length-1;
+            } else if (directCol >= myArray[0].length) {
+                neighborCol = 0;
+            }
+            return new int[] {neighborRow, neighborCol};
+        }
+        return new int[] {-5,-5};
+    }
+
 
     @Override
     public int getCurrentState(int row, int col) {
