@@ -62,9 +62,6 @@ public class UI extends Application {
     BorderPane root = new BorderPane();
     Stage PrimaryStage;
 
-    public UI() throws IOException {
-    }
-
     public static void main (String[] args) {
         launch(args);
     }

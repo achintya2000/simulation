@@ -23,13 +23,7 @@ public class GameOfLife extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
                 int aliveNeighbors = liveNeighbors(r,c);
-                if(simulationGrid.getReferenceState(r,c) == live && aliveNeighbors < 2){
-                    simulationGrid.updateCell(r,c,dead);
-                }
-                else if(simulationGrid.getReferenceState(r,c) == live && aliveNeighbors >= 2 && aliveNeighbors <= 3){
-                    simulationGrid.updateCell(r,c,live);
-                }
-                else if(simulationGrid.getReferenceState(r,c) == live && aliveNeighbors > 3){
+                if(simulationGrid.getReferenceState(r,c) == live && (aliveNeighbors < 2 || aliveNeighbors > 3 )){
                     simulationGrid.updateCell(r,c,dead);
                 }
                 else if(simulationGrid.getReferenceState(r,c) == dead && aliveNeighbors == 3){
