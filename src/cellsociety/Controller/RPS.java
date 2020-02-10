@@ -18,15 +18,19 @@ public class RPS extends Simulation {
 
     @Override
     public void updateGrid() {
-        if (!simulationGrid.isNeighborhoodSet()) {
-            simulationGrid.setNeighbors(defaultNeighbors, defaultShape, defaultEdge);
-        }
+        setDefault();
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 Map<String,Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
                 int[] typeNeighbor = countNeighborTypes(statusOfNeighbors);
                 updateCurrentCell(r, c, typeNeighbor);
             }
+        }
+    }
+
+    private void setDefault() {
+        if (!simulationGrid.isNeighborhoodSet()) {
+            simulationGrid.setNeighbors(defaultNeighbors, defaultShape, defaultEdge);
         }
     }
 
