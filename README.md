@@ -55,9 +55,11 @@ Features implemented:
     5. Allow for simulation to be styled. Includes grid outline style and size
     of each grid location.
 5. Visualization
-    1. Allow users to interact with the simulation dynamically to change the values of its parameters
+    1. Allow users to interact with the simulation dynamically to change the values of its parameters.
     2. Graph of populations of the cell types.
-
+    3. The user can open a new simulation by selecting new simulaiton settings and uploading a new xml file. If a simulation was running prior
+    the user has to close the older one to run the new one. In future development we would have it so that multiple simulations can run at the same time.
+  
 
 ### Notes/Assumptions
 
@@ -75,7 +77,7 @@ Known Bugs:
 - Visualization: A chart is displayed, and it updates values in real time. However, we are not using the
 current simulation data to display that info. With more time we can easily implement
 it so that it takes in the current grid's data to display the population.
-- Visualization: Multiple simulation windows may interfere with one another's timeline.
+- Visualization: The user has to close an older viewing window before creating a new simulation. 
 
 ### Impressions
 A fun extension of Basic, Complete was made easier by writing good code especially on the back end, but more complicated by the continued use of JavaFX which is still a learning curve.
@@ -84,3 +86,4 @@ written to add new features. Our abstract simulation class made it possible to a
 Additionally because of that abstract class, all the error checking of the configuration
 methods was able to be written just once there and it worked for all the simulations.
 Overall we were able to implement most of the additional features in Complete without compromising good coding practice. 
+The user interface now has more customization options available to the user, with multiple viewing windows, and a graph. 
