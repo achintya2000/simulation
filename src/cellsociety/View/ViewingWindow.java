@@ -8,16 +8,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewingWindow {
@@ -44,16 +47,19 @@ public class ViewingWindow {
     private static final String PLAY = "play";
     private static final String STOP = "stop";
     private static final String NEXT = "next";
-    private static final int VIEWING_WINDOW_SIZE = 400;
+    private static final int VIEWING_WINDOW_SIZE = 500;
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private List<String> Neighbors;
 
-
-    public ViewingWindow(Simulation simulation, File xml, String simname){
+    public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, boolean custom, List<String> neighbors){
         mySimulation = simulation;
-        mySimulation.loadSimulationContents(xml, simname,false);
-
+        mySimulation.loadSimulationContents(xml, simname,random);
+        if(custom){
+            Neighbors = neighbors;
+            mySimulation.setSimulationParameters(neighbors,4,"finite");
+        }
         this.myGrid = new TilePane();
         this.myRoot = new BorderPane();
         this.setAmimation(timestep,Timeline.INDEFINITE);
@@ -62,9 +68,10 @@ public class ViewingWindow {
         this.myStopButton = new Button();
         this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
         this.makeSimulationControls();
-
         start(new Stage());
     }
+
+
 
     private void setAmimation(double timestep, int cyclecount){
         this.myAnimation = createTimeline(timestep, cyclecount);
@@ -92,15 +99,18 @@ public class ViewingWindow {
 
         for (int i = 0; i < mySimulation.getSimulationCols(); i++) {
             for (int j = 0; j < mySimulation.getSimulationCols(); j++) {
-                double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols()) - MARGIN;
+                double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols());
+//                if(mySimulation.getSimulationCols() * mySimulation.getSimulationCols() > VIEWING_WINDOW_SIZE){
+//                    tileSize = tileSize/2;
+//                }
                 myGrid.getChildren().add(new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j)));
             }
         }
-        myGrid.setHgap(MARGIN);
-        myGrid.setVgap(MARGIN);
+//        myGrid.setHgap(MARGIN/2);
+//        myGrid.setVgap(MARGIN/2);
         myGrid.setAlignment(Pos.CENTER);
         myGrid.setPrefColumns(mySimulation.getSimulationCols());
-        myGrid.setPadding(new Insets(100, 75, 20, 75));
+        //myGrid.setPadding(new Insets(100, 75, 20, 75));
         myGrid.prefRowsProperty();
         wrapper.getChildren().add(myGrid);
         wrapper.setAlignment(Pos.CENTER);
