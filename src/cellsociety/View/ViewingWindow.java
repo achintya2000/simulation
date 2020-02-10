@@ -54,14 +54,20 @@ public class ViewingWindow {
         mySimulation = simulation;
         mySimulation.loadSimulationContents(xml, simname,false);
 
-        myGrid = new TilePane();
-        myRoot = new BorderPane();
-        myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
-        myPlayButton = new Button();
-        myNextButton = new Button();
-        myStopButton = new Button();
-        mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
+        this.myGrid = new TilePane();
+        this.myRoot = new BorderPane();
+        this.setAmimation(timestep,Timeline.INDEFINITE);
+        this.myPlayButton = new Button();
+        this.myNextButton = new Button();
+        this.myStopButton = new Button();
+        this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
+        this.makeSimulationControls();
+
         start(new Stage());
+    }
+
+    private void setAmimation(double timestep, int cyclecount){
+        this.myAnimation = createTimeline(timestep, cyclecount);
     }
 
     private void start(Stage primaryStage){
@@ -128,18 +134,18 @@ public class ViewingWindow {
     }
 
     private Node makeSlider(){
-        mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        this.mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double value = DIVISONFACTOR/(double)newValue;
             myAnimation = createTimeline(value,Timeline.INDEFINITE);
             myAnimation.play();
         });
-        return mySlider;
+        return this.mySlider;
     }
 
     private Timeline createTimeline(double timestep, int cyclecount){
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(timestep), actionEvent -> {
-            mySimulation.updateGrid();
-            myRoot.setCenter(buildGrid());
+            this.mySimulation.updateGrid();
+            this.myRoot.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cyclecount);
         return timeline;

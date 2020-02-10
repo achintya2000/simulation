@@ -170,15 +170,16 @@ public class UI extends Application {
             ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation));
         }
         catch(XMLException e){
-                setErrorBox();
+                setErrorBox(chooseSim.get(simulation).getERROR_MESSAGE());
             }
         }
 
-    public void setErrorBox(){
+    private void setErrorBox(String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(myResources.getString(BADINPUT));
         alert.setHeaderText(myResources.getString(NOTXML));
-        alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
+        alert.setContentText(message);
+        //alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
 
@@ -187,33 +188,39 @@ public class UI extends Application {
         return text;
     }
     public Node setChooseNeighborsTilePane(){
-        TilePane neighbors = new TilePane();
+        TilePane myNeighbors = new TilePane();
         HBox box = new HBox();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 double tileSize = 50;
                 Rectangle tile = new Rectangle(tileSize,tileSize,Color.WHITE);
-                tile.setOnMouseClicked(e-> tile.setFill(Color.BLUE));
-                neighbors.getChildren().add(new Rectangle(tileSize, tileSize, Color.WHITE));
+                if(i == 1 && j == 1){
+                    tile.setFill(Color.RED);
+                }
+                tile.setOnMousePressed(e-> {
+                    tile.setFill(Color.BLUE);
+                });
+
+                myNeighbors.getChildren().add(tile);
 
             }
         }
-        neighbors.setHgap(5);
-        neighbors.setVgap(5);
-        neighbors.setAlignment(Pos.CENTER);
-        neighbors.setPrefColumns(3);
-        neighbors.setPadding(new Insets(100, 75, 20, 75));
-        neighbors.prefRowsProperty();
-        box.getChildren().add(neighbors);
+        myNeighbors.setHgap(5);
+        myNeighbors.setVgap(5);
+        myNeighbors.setAlignment(Pos.CENTER);
+        myNeighbors.setPrefColumns(3);
+        myNeighbors.setPadding(new Insets(100, 75, 20, 75));
+        myNeighbors.prefRowsProperty();
+        box.getChildren().add(myNeighbors);
         box.setAlignment(Pos.CENTER);
         return box;
-        //box.getChildren().add(setChooseNeighborsText());
     }
 
+    
     private Node setChooseNeighborsCheckBox(){
 
         CheckBox checkBox = new CheckBox();
-        checkBox.setOnMouseClicked(e->{
+        checkBox.setOnMousePressed(e->{
             root.setBottom(setChooseNeighborsTilePane());
         });
         return checkBox;
@@ -222,6 +229,7 @@ public class UI extends Application {
         Text text = new Text(myResources.getString("customNeighbors"));
         return text;
     }
+
 
 }
 
