@@ -10,8 +10,8 @@ public class Segregation extends Simulation {
   private static final float moveProb = (float) 0.30;
 
   private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
-  private int square = 4;
-  private int defaultShape = square;
+  private static final int SQUARE = 4;
+  private int defaultShape = SQUARE;
   private int finite = 1;
   private int defaultEdge = finite;
 

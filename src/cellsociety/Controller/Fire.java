@@ -7,8 +7,8 @@ import javafx.scene.paint.Color;
 public class Fire extends Simulation {
 
     private List<String> defaultNeighbors =  List.of("N","S","E","W");
-    private int square = 4;
-    private int defaultShape = square;
+    private static final int SQUARE = 4;
+    private int defaultShape = SQUARE;
     private int finite = 1;
     private int defaultEdge = finite;
 

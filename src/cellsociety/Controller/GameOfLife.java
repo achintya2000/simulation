@@ -7,10 +7,12 @@ import javafx.scene.paint.Color;
 public class GameOfLife extends Simulation {
 
     private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
-    private int square = 4;
-    private int defaultShape = square;
+    private final static int SQUARE = 4;
+    private int defaultShape = SQUARE;
     private int finite = 1;
     private int defaultEdge = finite;
+    private int numtoLive = 2;
+    private int numtoDie = 3;
 
     private int dead = 0;
     private int live = 1;
@@ -23,10 +25,10 @@ public class GameOfLife extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++){
             for(int c = 0; c < simulationGrid.getSize(); c ++){
                 int aliveNeighbors = liveNeighbors(r,c);
-                if(simulationGrid.getReferenceState(r,c) == live && (aliveNeighbors < 2 || aliveNeighbors > 3 )){
+                if(simulationGrid.getReferenceState(r,c) == live && (aliveNeighbors < numtoLive || aliveNeighbors > numtoDie )){
                     simulationGrid.updateCell(r,c,dead);
                 }
-                else if(simulationGrid.getReferenceState(r,c) == dead && aliveNeighbors == 3){
+                else if(simulationGrid.getReferenceState(r,c) == dead && aliveNeighbors == numtoDie){
                     simulationGrid.updateCell(r,c,live);
                 }
             }
