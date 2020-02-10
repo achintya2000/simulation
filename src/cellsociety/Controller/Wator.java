@@ -53,18 +53,22 @@ public class Wator extends Simulation{
     for (int r = 0; r < simulationGrid.getSize(); r++) {
       for (int c = 0; c < simulationGrid.getSize(); c++) {
         simulationGrid.checkNeighbors(r, c, false);
-        if (simulationGrid.getCurrentState(r, c) == shark) { // Must use current state because sharks can move during updates
-          if (sharkEnergy[r][c] <= 0) {
-            simulationGrid.updateCell(r, c, empty);
-          } else {
-            sharkGoesTo(r, c);
-          }
-        } else if (simulationGrid.getCurrentState(r, c) == fish) { // Must use current state because fish can move during updates
-          fishGoesTo(r, c);
-        }
+        moveSharkFish(r, c);
       }
     }
     updateSharkEnergy();
+  }
+
+  private void moveSharkFish(int r, int c) {
+    if (simulationGrid.getCurrentState(r, c) == shark) { // Must use current state because sharks can move during updates
+      if (sharkEnergy[r][c] <= 0) {
+        simulationGrid.updateCell(r, c, empty);
+      } else {
+        sharkGoesTo(r, c);
+      }
+    } else if (simulationGrid.getCurrentState(r, c) == fish) { // Must use current state because fish can move during updates
+      fishGoesTo(r, c);
+    }
   }
 
   private void updateSharkEnergy() {

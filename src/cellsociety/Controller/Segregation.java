@@ -58,6 +58,12 @@ public class Segregation extends Simulation {
           }
       }
       if (count/((float) statusOfNeighbors.size()) < moveProb) {
+          moveLoc(state);
+          simulationGrid.updateCell(r, c, empty);
+      }
+  }
+
+    private void moveLoc(int state) {
         outerloop:
         for (int i = 0; i < simulationGrid.getSize(); i++) {
           for (int j = 0; j < simulationGrid.getSize(); j++) {
@@ -67,7 +73,5 @@ public class Segregation extends Simulation {
             }
           }
         }
-        simulationGrid.updateCell(r, c, empty);
-      }
-  }
+    }
 }

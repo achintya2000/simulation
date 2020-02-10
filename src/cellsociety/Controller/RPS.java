@@ -24,21 +24,30 @@ public class RPS extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 Map<String,Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
-                int[] typeNeighbor = new int[numNeighborTypes];
-                for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
-                    for (int i = 0; i < numNeighborTypes; i++) {
-                        if (entry.getValue() == i) {
-                            typeNeighbor[i] = typeNeighbor[i]+1;
-                        }
-                    }
-                }
-                for (int i = 0; i < numNeighborTypes; i++) {
-                    if (typeNeighbor[i] > WIN_THRESH && beats(i,simulationGrid.getReferenceState(r,c))) {
-                        simulationGrid.updateCell(r,c,i);
-                    }
+                int[] typeNeighbor = countNeighborTypes(statusOfNeighbors);
+                updateCurrentCell(r, c, typeNeighbor);
+            }
+        }
+    }
+
+    private void updateCurrentCell(int r, int c, int[] typeNeighbor) {
+        for (int i = 0; i < numNeighborTypes; i++) {
+            if (typeNeighbor[i] > WIN_THRESH && beats(i,simulationGrid.getReferenceState(r,c))) {
+                simulationGrid.updateCell(r,c,i);
+            }
+        }
+    }
+
+    private int[] countNeighborTypes(Map<String, Integer> statusOfNeighbors) {
+        int[] typeNeighbor = new int[numNeighborTypes];
+        for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
+            for (int i = 0; i < numNeighborTypes; i++) {
+                if (entry.getValue() == i) {
+                    typeNeighbor[i] = typeNeighbor[i]+1;
                 }
             }
         }
+        return typeNeighbor;
     }
 
     private boolean beats(int candidateWinner, int candidateLoser) {

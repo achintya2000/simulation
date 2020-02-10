@@ -27,20 +27,24 @@ public class Fire extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 simulationGrid.checkNeighbors(r, c, true);
-                if(simulationGrid.getReferenceState(r,c)==burning) {
-                    simulationGrid.updateCell(r,c,empty);
-                } else if (simulationGrid.getReferenceState(r,c)==tree && catchesFire(r,c)) {
-                    simulationGrid.updateCell(r,c,burning);
-                } else if (simulationGrid.getReferenceState(r,c)==empty) { // What do I do if cell is empty state?
-                    if (growsTree(r,c)) {
-                        simulationGrid.updateCell(r, c, tree);
-                    } else {
-                        simulationGrid.updateCell(r, c, empty);
-                    }
-                }
+                updateCurrentCell(r, c);
             }
         }
         System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
+    }
+
+    private void updateCurrentCell(int r, int c) {
+        if(simulationGrid.getReferenceState(r,c)==burning) {
+            simulationGrid.updateCell(r,c,empty);
+        } else if (simulationGrid.getReferenceState(r,c)==tree && catchesFire(r,c)) {
+            simulationGrid.updateCell(r,c,burning);
+        } else if (simulationGrid.getReferenceState(r,c)==empty) { // What do I do if cell is empty state?
+            if (growsTree(r,c)) {
+                simulationGrid.updateCell(r, c, tree);
+            } else {
+                simulationGrid.updateCell(r, c, empty);
+            }
+        }
     }
 
     @Override
