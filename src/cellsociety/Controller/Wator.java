@@ -1,5 +1,6 @@
 package cellsociety.Controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,10 @@ public class Wator extends Simulation{
   private int shark = 2;
 
   private int shark_lives = 3;
+
+  public Wator(){
+    loadSimulationContents(new File("./Resources/wator.xml"), "wator", true);
+  }
 
   @Override
   protected void init() {

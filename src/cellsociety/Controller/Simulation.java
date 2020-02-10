@@ -26,6 +26,8 @@ public abstract class Simulation {
   protected Map<Integer, Color> cellColorMap;
   private File infoFile = new File("./Resources/simInfo.xml");
 
+  private String ERROR_MESSAGE = "";
+
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
     if (validShape(shape) && edgeTypes.containsKey(edge)) {
       simulationGrid.setNeighbors(neighborhood,shape,edgeTypes.get(edge));
@@ -53,13 +55,25 @@ public abstract class Simulation {
       cellTypes.add("celltype"+i);
     }
 
-    List<String> xmlvals = new ArrayList<String>();
+    List<String> xmlvals = new ArrayList<>();
     xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
     for (String celltype : cellTypes) {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     XMLParser simParser = new XMLParser("config");
     Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
+
+    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+      if(entry.getValue().equals("")) {
+        ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " is null";
+        throw new XMLException("XML file value %s is null", entry.getKey());
+      } else if (!entry.getKey().matches("title|author|simulation")) {
+        if (entry.getValue().matches(".*[a-zA-Z]+.*")) {
+          ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " has improper format";
+          throw new XMLException("XML file value %s is improperly formatted", entry.getKey());
+        }
+      }
+    }
 
     SIMULATION_NAME = configuration.get("simulation");
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
@@ -108,4 +122,7 @@ public abstract class Simulation {
 
   protected abstract void init();
 
+  public String getERROR_MESSAGE() {
+    return ERROR_MESSAGE;
+  }
 }

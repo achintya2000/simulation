@@ -1,5 +1,6 @@
 package cellsociety.Controller;
 
+import java.io.File;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,10 @@ public class Percolation extends Simulation {
     private int open = 0;
     private int percolated = 1;
     private int blocked = 2;
+
+    public Percolation() {
+        loadSimulationContents(new File("./Resources/percolation.xml"), "percolation", true);
+    }
 
     @Override
     public void updateGrid() {
