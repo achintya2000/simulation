@@ -36,6 +36,19 @@ public abstract class Simulation {
     }
   }
 
+  public void addCells(int numNewCells, int state) {
+    int iter = 0;
+    int maxiter = 50*numNewCells;
+    while(numNewCells >= 0 && maxiter > iter) {
+      int randRow = (int)((simulationGrid.getSize()-1)* Math.random());
+      int randCol = (int)((simulationGrid.getSize()-1)* Math.random());
+      if (simulationGrid.getCurrentState(randRow,randCol)!=state) {
+        simulationGrid.updateCell(randRow,randCol,state);
+        numNewCells--;
+      }
+    }
+  }
+
   private boolean validShape(int shape) {
     return ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
   }
