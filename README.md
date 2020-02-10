@@ -20,6 +20,7 @@ Hours Spent: ~75
 - JavaFx JavaDoc
 - Ruleset documents for all the simulations
 - XML reader and builder guides online
+- Java real-time graph tutorial
 
 ### Running the Program
 
@@ -71,9 +72,15 @@ examples of cases where exception handling will display an error to the user
 about which exact key value is causing the error.
 
 Known Bugs: 
-- Visualization: A chart is displayed, however, it does not update the values in real time.
-- Visualization: Multiple simulation windows may interfere with one another's timeline
+- Visualization: A chart is displayed, and it updates values in real time. However, we are not using the
+current simulation data to display that info. With more time we can easily implement
+it so that it takes in the current grid's data to display the population.
+- Visualization: Multiple simulation windows may interfere with one another's timeline.
 
 ### Impressions
 A fun extension of Basic, Complete was made easier by writing good code especially on the back end, but more complicated by the continued use of JavaFX which is still a learning curve.
+Because of our pretty good design we were able to easily extend what we had already
+written to add new features. Our abstract simulation class made it possible to add a new sim quickly.
+Additionally because of that abstract class, all the error checking of the configuration
+methods was able to be written just once there and it worked for all the simulations.
 Overall we were able to implement most of the additional features in Complete without compromising good coding practice. 
