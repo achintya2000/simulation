@@ -115,8 +115,7 @@ public class ViewingWindow {
         myStopButton.setAlignment(Pos.CENTER);
         myPlayButton.setAlignment(Pos.CENTER);
 
-        HBox controls = getHBox();
-        return controls;
+        return getHBox();
     }
 
     private HBox getHBox() {
