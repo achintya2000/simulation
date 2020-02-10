@@ -39,8 +39,10 @@ public abstract class Simulation {
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {
+
     List<String> cellTypes = getCellTypes(simName);
     List<String> xmlvals = getXMLTags(cellTypes);
+
     XMLParser simParser = new XMLParser("config");
     Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
 
