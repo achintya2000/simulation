@@ -1,8 +1,9 @@
 package cellsociety.Controller;
 
-import java.util.*;
 
 import javafx.scene.paint.Color;
+
+import java.util.*;
 
 public class Fire extends Simulation {
 

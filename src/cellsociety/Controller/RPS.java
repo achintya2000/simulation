@@ -2,7 +2,10 @@ package cellsociety.Controller;
 
 import javafx.scene.paint.Color;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class RPS extends Simulation {
     private List<String> defaultNeighbors =   List.of("N","S","E","W","NW","NE","SW","SE");

@@ -1,8 +1,11 @@
 package cellsociety.Controller;
 
-import java.util.*;
 
 import javafx.scene.paint.Color;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameOfLife extends Simulation {
 

@@ -1,9 +1,9 @@
 package cellsociety.View;
 
-import cellsociety.Controller.*;
 import java.io.IOException;
 import java.util.*;
 
+import cellsociety.Controller.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
