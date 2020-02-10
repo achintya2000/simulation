@@ -5,7 +5,7 @@
 .slider .track {
     -fx-pref-height:5;
 }
-.text-field {
+.text {
     font-family: 'Open Sans', sans-serif;
     -fx-text-fill: white;
 }

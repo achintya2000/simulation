@@ -8,10 +8,12 @@ public class Square {
 
     private Rectangle myShape;
     private int myNumber;
+    private boolean clicked;
 
     public Square(int row, int col, double size, Color color){
         myShape = new Rectangle(size,size,color);
         myNumber = (row*10) + col;
+        clicked = false;
     }
 
     public Rectangle getShape(){
@@ -20,5 +22,11 @@ public class Square {
 
     public int getMyNumber(){
         return myNumber;
+    }
+    public boolean getClicked(){
+        return clicked;
+    }
+    public void changeClicked(){
+        clicked = !clicked;
     }
 }
