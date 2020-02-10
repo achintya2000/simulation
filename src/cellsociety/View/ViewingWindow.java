@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -53,7 +54,7 @@ public class ViewingWindow {
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
     private List<String> Neighbors;
     private CheckBox viewGraph;
-    List<String> defaultNeighbors = new ArrayList<>();
+    private int NUMSIDES;
     private HashMap<Color, Integer> celltypeMap;
 
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
@@ -67,6 +68,7 @@ public class ViewingWindow {
         this.myPlayButton = new Button();
         this.myNextButton = new Button();
         setGraphButton();
+        NUMSIDES = numsides;
         this.myStopButton = new Button();
         this.mySaveButton = new Button();
         this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
@@ -104,13 +106,25 @@ public class ViewingWindow {
     private Node buildGrid() {
         HBox wrapper = new HBox();
         myGrid = new TilePane();
-
+        boolean pointsdown = true;
         for (int i = 0; i < mySimulation.getSimulationCols(); i++) {
             for (int j = 0; j < mySimulation.getSimulationCols(); j++) {
                 double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols());
-                Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
-                rect.getStyleClass().add("Rectangle");
-                myGrid.getChildren().add(rect);
+                if (NUMSIDES == 3) {
+                    Triangle triangle = new Triangle(pointsdown, i, j, tileSize);
+                    Polygon shape = triangle.getPolygon();
+                    shape.setFill(mySimulation.getGridColor(i,j));
+                    if(i == 0 && j == 0){
+                        shape.setFill(Color.GREEN);
+                    }
+                    myGrid.getChildren().add(shape);
+                    pointsdown = !pointsdown;
+                }
+                else{
+                    Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
+                    rect.getStyleClass().add("Rectangle");
+                    myGrid.getChildren().add(rect);
+                }
             }
         }
 //        myGrid.setHgap(MARGIN/2);
