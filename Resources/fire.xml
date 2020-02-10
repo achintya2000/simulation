@@ -4,8 +4,8 @@
 	<title>CS308 Sim</title>
 	<author>Team 19</author>
 	<simulation>Fire</simulation>
-	<width>8</width>
-	<height>8</height>
+	<width>50</width>
+	<height>50</height>
 	<numcelltype0>5</numcelltype0>
 	<statecelltype0>1</statecelltype0>
 	<celltype0>[1,1][1,2][3,1][3,2][5,1][]</celltype0>

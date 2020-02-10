@@ -43,8 +43,10 @@ public abstract class Simulation {
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {
+
     List<String> cellTypes = getCellTypes(simName);
     List<String> xmlvals = getXMLTags(cellTypes);
+
     XMLParser simParser = new XMLParser("config");
     configuration = simParser.getInfo(simFile, xmlvals);
 
@@ -95,6 +97,29 @@ public abstract class Simulation {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     return xmlvals;
+
+
+//    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+//      if(entry.getValue().equals("")) {
+//        ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " is null";
+//        throw new XMLException("XML file value %s is null", entry.getKey());
+//      } else if (!entry.getKey().matches("title|author|simulation")) {
+//        if (entry.getValue().matches(".*[a-zA-Z]+.*")) {
+//          ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " has improper format";
+//          throw new XMLException("XML file value %s is improperly formatted", entry.getKey());
+//        }
+//      }
+//    }
+//
+//    SIMULATION_NAME = configuration.get("simulation");
+//    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
+//    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+//
+//    simulationGrid = new ArrayGrid(GRID_WIDTH);
+//
+//    initializeGrid(cellTypes, configuration, random, numtypes);
+//    init();
+
   }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration, boolean random, int range) {

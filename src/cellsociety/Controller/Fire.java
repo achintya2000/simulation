@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.*;
 import javafx.scene.paint.Color;
 
-import java.util.*;
-
 public class Fire extends Simulation {
 
     private List<String> defaultNeighbors =  List.of("N","S","E","W");

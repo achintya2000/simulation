@@ -8,17 +8,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ViewingWindow {
 
@@ -45,24 +47,42 @@ public class ViewingWindow {
     private static final String PLAY = "play";
     private static final String STOP = "stop";
     private static final String NEXT = "next";
-    private static final int VIEWING_WINDOW_SIZE = 400;
+    private static final int VIEWING_WINDOW_SIZE = 500;
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private List<String> Neighbors;
+    private CheckBox viewGraph;
+    List<String> defaultNeighbors = new ArrayList<>();
+    private HashMap<Color, Integer> celltypeMap;
 
-
-    public ViewingWindow(Simulation simulation, File xml, String simname){
+    public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
         mySimulation = simulation;
+        mySimulation.loadSimulationContents(xml, simname,random);
+        Neighbors = neighbors;
+        mySimulation.setSimulationParameters(Neighbors,numsides,"finite");
+        this.myGrid = new TilePane();
+        this.myRoot = new BorderPane();
+        this.setAmimation(timestep,Timeline.INDEFINITE);
+        this.myPlayButton = new Button();
+        this.myNextButton = new Button();
+        setGraphButton();
+        this.myStopButton = new Button();
+        this.mySaveButton = new Button();
+        this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
+        this.makeSimulationControls();
         mySimulation.loadSimulationContents(xml, simname,false);
         myGrid = new TilePane();
         myRoot = new BorderPane();
         myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
-        myPlayButton = new Button();
-        myNextButton = new Button();
-        myStopButton = new Button();
-        mySaveButton = new Button();
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
+        celltypeMap = new HashMap<>();
         start(new Stage());
+    }
+
+
+    private void setAmimation(double timestep, int cyclecount){
+        this.myAnimation = createTimeline(timestep, cyclecount);
     }
 
     private void start(Stage primaryStage){
@@ -87,15 +107,14 @@ public class ViewingWindow {
 
         for (int i = 0; i < mySimulation.getSimulationCols(); i++) {
             for (int j = 0; j < mySimulation.getSimulationCols(); j++) {
-                double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols()) - MARGIN;
+                double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols());
                 Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
                 rect.getStyleClass().add("Rectangle");
                 myGrid.getChildren().add(rect);
-
             }
         }
-        myGrid.setHgap(MARGIN);
-        myGrid.setVgap(MARGIN);
+//        myGrid.setHgap(MARGIN/2);
+//        myGrid.setVgap(MARGIN/2);
         myGrid.setAlignment(Pos.CENTER);
         myGrid.setPrefColumns(mySimulation.getSimulationCols());
         myGrid.setPadding(new Insets(100, 75, 20, 75));
@@ -108,19 +127,18 @@ public class ViewingWindow {
     private Node makeSimulationControls() {
         myPlayButton.setText(myResources.getString(PLAY));
         myPlayButton.setOnAction(e -> myAnimation.play());
-        myStopButton = new Button();
         myStopButton.setText(myResources.getString(STOP));
         myStopButton.setOnAction(e -> myAnimation.pause());
         myNextButton.setText(myResources.getString(NEXT));
         myNextButton.setOnAction(e -> {
-            myAnimation = createTimeline (1,1); //
+            myAnimation.setCycleCount(1);
+            //myAnimation = createTimeline (1,1); //
             // means to create a new timeline with timestep 1 and cyclecount 1
             myAnimation.play();                           // so that the next button makes grid only update once
         });
         myStopButton.setAlignment(Pos.CENTER);
         myPlayButton.setAlignment(Pos.CENTER);
-
-        mySaveButton.setText("Save");
+        mySaveButton.setText(myResources.getString("save"));
         mySaveButton.setOnAction(e -> mySimulation.saveCurrentState());
         return getHBox();
     }
@@ -131,6 +149,9 @@ public class ViewingWindow {
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
         controls.getChildren().add(mySaveButton);
+        Text text = new Text (myResources.getString("viewgraph"));
+//        controls.getChildren().add(text);
+//        controls.getChildren().add(viewGraph);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);
@@ -138,20 +159,27 @@ public class ViewingWindow {
     }
 
     private Node makeSlider(){
-        mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        this.mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double value = DIVISONFACTOR/(double)newValue;
             myAnimation = createTimeline(value,Timeline.INDEFINITE);
             myAnimation.play();
         });
-        return mySlider;
+        return this.mySlider;
     }
 
     private Timeline createTimeline(double timestep, int cyclecount){
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(timestep), actionEvent -> {
-            mySimulation.updateGrid();
-            myRoot.setCenter(buildGrid());
+            this.mySimulation.updateGrid();
+            this.myRoot.setCenter(buildGrid());
         }));
         timeline.setCycleCount(cyclecount);
         return timeline;
+    }
+
+    private void setGraphButton(){
+        viewGraph = new CheckBox();
+        viewGraph.setOnMousePressed(e->{
+            //Chart myChart = new Chart;
+        });
     }
 }
