@@ -197,11 +197,11 @@ public class UI extends Application {
     public Node setChooseNeighborsTilePane(){
         myNeighbors = new TilePane();
         HBox box = new HBox();
-        boolean turneddown = true;
+//        boolean turneddown = true;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 double tileSize = 50;
-                if(NUMSIDES == 4){
+               // if(NUMSIDES == 4){
                     Square tile = new Square(i,j,tileSize,Color.WHITE);
                     if(i == 1 && j == 1){
                         tile.getShape().setFill(Color.RED);
@@ -216,25 +216,25 @@ public class UI extends Application {
                         }
                     });
                     myNeighbors.getChildren().add(tile.getShape());
-                }
-                if(NUMSIDES == 3){
-                    Triangle tile = new Triangle(turneddown,i,j,tileSize);
-                    tile.getPolygon().setFill(Color.WHITE);
-                    if(i == 1 && j == 1){
-                        tile.getPolygon().setFill(Color.RED);
-                    }
-                    tile.getPolygon().setOnMousePressed(e-> {
-                        int number = tile.getMyNumber();
-                        String direction = allNeighbors.get(number);
-                        if(tile.getMyNumber() != 11) {
-                            tile.getPolygon().setFill(Color.BLUE);
-                            neighborstosend.add(direction);
-
-                        }
-                    });
-                    myNeighbors.getChildren().add(tile.getPolygon());
-                    turneddown = !turneddown;
-                }
+              //  }
+//                if(NUMSIDES == 3){
+//                    Triangle tile = new Triangle(turneddown,i,j,tileSize);
+//                    tile.getPolygon().setFill(Color.WHITE);
+//                    if(i == 1 && j == 1){
+//                        tile.getPolygon().setFill(Color.RED);
+//                    }
+//                    tile.getPolygon().setOnMousePressed(e-> {
+//                        int number = tile.getMyNumber();
+//                        String direction = allNeighbors.get(number);
+//                        if(tile.getMyNumber() != 11) {
+//                            tile.getPolygon().setFill(Color.BLUE);
+//                            neighborstosend.add(direction);
+//
+//                        }
+//                    });
+//                    myNeighbors.getChildren().add(tile.getPolygon());
+//                    turneddown = !turneddown;
+//                }
                 }
             }
         myNeighbors.setHgap(5);
