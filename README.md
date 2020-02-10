@@ -64,7 +64,7 @@ Features implemented:
 Assumptions or Simplifications: 
 - Assumption that grid shape would always be rectangular: we did not account for variability in grid shapes, despite accounting for variability in cell shape.
 This was to simplify our creation and display of the grid without compromising our ability to display multiple models.
-- Assumption that code would be able to correctly interpret different celltypes in the XML file: we did this to simplify our design of the XML files such taht they are easy to create.
+- Assumption that code would be able to correctly interpret different celltypes in the XML file: we did this to simplify our design of the XML files such that they are easy to create.
 
 Interesting data files: All of the XML files are in Resources and display how
 our configuration is formatted. Additionally, the XML files labeled BAD show
