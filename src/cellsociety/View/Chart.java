@@ -69,7 +69,6 @@ public class Chart {
   private void start(Stage primaryStage){
     myRoot = new BorderPane();
     myRoot.setCenter(initializeChart());
-    initializeChart();
     scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     updateChart();
     primaryStage.setTitle("Graph");
@@ -102,6 +101,10 @@ public class Chart {
     series1.setName("Data Series 1");
     series2 = new XYChart.Series<>();
     series2.setName("Data Series 2");
+
+    lineChart.getData().add(series1);
+    lineChart.getData().add(series2);
+
     return lineChart;
   }
 
