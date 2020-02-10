@@ -62,7 +62,10 @@ Features implemented:
 
 Assumptions or Simplifications: 
 
-Interesting data files:
+Interesting data files: All of the XML files are in Resources and display how
+our configuration is formatted. Additionally, the XML files labeled BAD show
+examples of cases where exception handling will display an error to the user
+about which exact key value is causing the error.
 
 Known Bugs:
 
