@@ -55,7 +55,7 @@ public class ViewingWindow {
     private List<String> Neighbors;
     private CheckBox viewGraph;
     private int NUMSIDES ;
-    private HashMap<Color, Integer> celltypeMap;
+    private Chart myChart;
 
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
         mySimulation = simulation;
@@ -78,7 +78,6 @@ public class ViewingWindow {
         myRoot = new BorderPane();
         myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
-        celltypeMap = new HashMap<>();
         start(new Stage());
     }
 
@@ -190,7 +189,9 @@ public class ViewingWindow {
     private void setGraphButton(){
         viewGraph = new CheckBox();
         viewGraph.setOnMousePressed(e->{
-            Chart myChart = new Chart();
+                myChart = new Chart();
+            
+
         });
     }
 }
