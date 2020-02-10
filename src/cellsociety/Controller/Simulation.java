@@ -27,6 +27,8 @@ public abstract class Simulation {
   private File infoFile = new File("./Resources/simInfo.xml");
   private Map<String, String> configuration;
   private String ERROR_MESSAGE = "";
+  protected int cell1Count = 0;
+  protected int cell2Count = 0;
 
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
     if (validShape(shape) && edgeTypes.containsKey(edge)) {

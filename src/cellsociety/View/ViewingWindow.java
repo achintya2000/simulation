@@ -190,7 +190,7 @@ public class ViewingWindow {
     private void setGraphButton(){
         viewGraph = new CheckBox();
         viewGraph.setOnMousePressed(e->{
-            //Chart myChart = new Chart;
+            Chart myChart = new Chart();
         });
     }
 }
