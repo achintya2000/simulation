@@ -38,10 +38,7 @@ public class Chart {
   private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
   public Chart() {
-    myRoot = new BorderPane();
-    myRoot.setCenter(initializeChart());
-      scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-      start(new Stage());
+    start(new Stage());
   }
 
   public void updateChart() {
@@ -70,6 +67,11 @@ public class Chart {
   }
 
   private void start(Stage primaryStage){
+    myRoot = new BorderPane();
+    myRoot.setCenter(initializeChart());
+    initializeChart();
+    scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    updateChart();
     primaryStage.setTitle("Graph");
     primaryStage.setScene(buildScene());
     primaryStage.show();

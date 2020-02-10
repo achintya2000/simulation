@@ -150,8 +150,8 @@ public class ViewingWindow {
         controls.getChildren().add(myNextButton);
         controls.getChildren().add(mySaveButton);
         Text text = new Text (myResources.getString("viewgraph"));
-//        controls.getChildren().add(text);
-//        controls.getChildren().add(viewGraph);
+        controls.getChildren().add(text);
+        controls.getChildren().add(viewGraph);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);
@@ -179,7 +179,7 @@ public class ViewingWindow {
     private void setGraphButton(){
         viewGraph = new CheckBox();
         viewGraph.setOnMousePressed(e->{
-            //Chart myChart = new Chart;
+            Chart myChart = new Chart();
         });
     }
 }

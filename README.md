@@ -55,19 +55,23 @@ Features implemented:
     of each grid location.
 5. Visualization
     1. Allow users to interact with the simulation dynamically to change the values of its parameters
-    2. 
+    2. Graph of populations of the cell types.
 
 
 ### Notes/Assumptions
 
 Assumptions or Simplifications: 
+- We 
+
 
 Interesting data files: All of the XML files are in Resources and display how
 our configuration is formatted. Additionally, the XML files labeled BAD show
 examples of cases where exception handling will display an error to the user
 about which exact key value is causing the error.
 
-Known Bugs:
+Known Bugs: 
+- A chart is displayed, however, it does not update the values in real time.
+
 
 Extra credit:
 
