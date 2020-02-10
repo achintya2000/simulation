@@ -13,10 +13,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -80,7 +77,7 @@ public class UI extends Application {
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
         String segregationConfiguration = DEFAULTSIMULATION;
-        loadSimulationChoice(FIRE, new File(segregationConfiguration));
+       // loadSimulationChoice(FIRE, new File(segregationConfiguration));
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
@@ -114,8 +111,10 @@ public class UI extends Application {
         leftPanel.add(setComboBox(),0,1);
         leftPanel.add(setChoseShapeeText(), 0, 2);
         leftPanel.add(setShapeComboBox(),1,2);
-        leftPanel.add(chooseBrowserText(),0,3);
-        leftPanel.add(setBrowseButton(),1,3);
+        leftPanel.add(setQuestionText(),0,3);
+        leftPanel.add(setChooseNeighborsCheckBox(),1,3);
+        leftPanel.add(chooseBrowserText(),0,4);
+        leftPanel.add(setBrowseButton(),1,4);
         leftPanel.setPadding(new Insets(20, 10, 20, 0));
         left.getChildren().add(leftPanel);
         return left;
@@ -187,22 +186,43 @@ public class UI extends Application {
         Text text = new Text(myResources.getString("chooseNeighbors"));
         return text;
     }
-    public TilePane setChooseNeighborsTilePane(){
+    public Node setChooseNeighborsTilePane(){
         TilePane neighbors = new TilePane();
-        if(myShapeChosen == "Square"){
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    double tileSize = 50;
-                    Rectangle tile = new Rectangle(tileSize,tileSize,Color.WHITE);
-                    tile.setOnMouseClicked( e->{
-                        tile.setFill(Color.BLUE);
-                    });
-                    neighbors.getChildren().add(new Rectangle(tileSize, tileSize, Color.WHITE));
-                }
+        HBox box = new HBox();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                double tileSize = 50;
+                Rectangle tile = new Rectangle(tileSize,tileSize,Color.WHITE);
+                tile.setOnMouseClicked(e-> tile.setFill(Color.BLUE));
+                neighbors.getChildren().add(new Rectangle(tileSize, tileSize, Color.WHITE));
+
             }
         }
-       return neighbors;
+        neighbors.setHgap(5);
+        neighbors.setVgap(5);
+        neighbors.setAlignment(Pos.CENTER);
+        neighbors.setPrefColumns(3);
+        neighbors.setPadding(new Insets(100, 75, 20, 75));
+        neighbors.prefRowsProperty();
+        box.getChildren().add(neighbors);
+        box.setAlignment(Pos.CENTER);
+        return box;
+        //box.getChildren().add(setChooseNeighborsText());
     }
+
+    private Node setChooseNeighborsCheckBox(){
+
+        CheckBox checkBox = new CheckBox();
+        checkBox.setOnMouseClicked(e->{
+            root.setBottom(setChooseNeighborsTilePane());
+        });
+        return checkBox;
+    }
+    private Node setQuestionText(){
+        Text text = new Text(myResources.getString("customNeighbors"));
+        return text;
+    }
+
 }
 
 
