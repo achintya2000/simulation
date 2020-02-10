@@ -1,7 +1,5 @@
 package cellsociety.Model;
 
-import cellsociety.Model.Grid;
-
 import java.util.*;
 
 public class ArrayGrid extends Grid {

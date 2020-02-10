@@ -81,10 +81,7 @@ public class Fire extends Simulation {
     private boolean growsTree(int r, int c) {
         Random rand = new Random();
         float float_random = rand.nextFloat();
-        if (float_random < PROB_GROW) {
-            return true;
-        }
-        return false;
+        return (float_random < PROB_GROW);
     }
 
 

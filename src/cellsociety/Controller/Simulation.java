@@ -35,10 +35,7 @@ public abstract class Simulation {
   }
 
   private boolean validShape(int shape) {
-    if ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES ) {
-      return true;
-    }
-    return false;
+    return ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {

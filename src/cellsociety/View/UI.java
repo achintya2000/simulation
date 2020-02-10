@@ -1,34 +1,22 @@
 package cellsociety.View;
 
 import cellsociety.Controller.*;
-import cellsociety.Model.Grid;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import java.io.File;
-import java.io.FileNotFoundException;
-
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 public class UI extends Application {
     private static final int HEIGHT = 600;
@@ -90,11 +78,6 @@ public class UI extends Application {
         return scene;
     }
 
-    private Node chooseBrowserText(){
-        Text text = new Text(myResources.getString("chooseFile"));
-        return text;
-    }
-
     private Node setToolBox(){
         VBox left = new VBox(100);
         GridPane leftPanel = new GridPane();
@@ -105,7 +88,7 @@ public class UI extends Application {
             row1.setPercentHeight(33.33);
         }
         leftPanel.add(setComboBox(),0,1);
-        leftPanel.add(chooseBrowserText(),0,2);
+        leftPanel.add(new Text(myResources.getString("chooseFile")),0,2);
         leftPanel.add(setBrowseButton(),1,2);
         leftPanel.setPadding(new Insets(20, 10, 20, 0));
         left.getChildren().add(leftPanel);
