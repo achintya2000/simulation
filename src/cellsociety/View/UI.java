@@ -60,13 +60,10 @@ public class UI extends Application {
     Stage PrimaryStage;
     private String myShapeChosen = "Square";
     private TilePane myNeighbors;
-//    private boolean Random = false;
-//    private boolean Custom = false;
-    private CheckBox Custom = new CheckBox();
-    private CheckBox Random = new CheckBox();
     private boolean isRandom = false;
-    private boolean isCustom = false;
     private String ENVIRONMENT = "finite";
+    private int NUMSIDES = 4;
+
     public UI() throws IOException {
     }
 
@@ -116,14 +113,14 @@ public class UI extends Application {
         leftPanel.add(setComboBox(),0,1);
         leftPanel.add(setChoseShapeeText(), 0, 2);
         leftPanel.add(setShapeComboBox(),1,2);
-        leftPanel.add(setQuestionText(),0,3);
-        leftPanel.add(setChooseNeighborsCheckBox(),1,3);
-        leftPanel.add(addRamdomConfigText(),0,4);
-        leftPanel.add(setramdomConfigBox(),1,4);
+        leftPanel.add(addRamdomConfigText(),0,3);
+        leftPanel.add(setramdomConfigBox(),1,3);
+        leftPanel.add(setToroidComboBox(),0,4);
         leftPanel.add(chooseBrowserText(),0,5);
         leftPanel.add(setBrowseButton(),1,5);
         leftPanel.setPadding(new Insets(20, 10, 20, 0));
         left.getChildren().add(leftPanel);
+        root.setBottom(setChooseNeighborsTilePane());
         return left;
     }
 
@@ -132,7 +129,7 @@ public class UI extends Application {
         browse.setText(myResources.getString(BROWSE));
         browse.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
-            loadSimulationChoice(myNewSimulation, selectedFile, Random.isSelected());
+            loadSimulationChoice(myNewSimulation, selectedFile);
         });
         return browse;
     }
@@ -159,9 +156,9 @@ public class UI extends Application {
         return text;
     }
 
-    private void loadSimulationChoice(String simulation, File xmlFile, boolean random) {
+    private void loadSimulationChoice(String simulation, File xmlFile) {
         try {
-            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation), isRandom, isCustom, neighborstosend);
+            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation), isRandom, neighborstosend, ENVIRONMENT,NUMSIDES );
         }
         catch(XMLException e){
                 setErrorBox(chooseSim.get(simulation).getERROR_MESSAGE());
@@ -227,20 +224,12 @@ public class UI extends Application {
         return box;
     }
 
-    private Node setChooseNeighborsCheckBox(){
-         Custom = new CheckBox();
-        Custom.setOnMousePressed(e->{
-            if(isCustom){
-                isCustom = false;
-                root.getChildren().remove(myNeighbors);
-            }
-            else if(!isCustom){
-                isCustom = true;
-                root.setBottom(setChooseNeighborsTilePane());
-            }
-        });
-        return Custom;
-    }
+//    private Node setChooseNeighborsCheckBox(){
+//         Custom = new CheckBox();
+//        Custom.setOnMousePressed(e->{
+//                root.setBottom(setChooseNeighborsTilePane());
+//        return Custom;
+//    }
     private Node setQuestionText(){
         Text text = new Text(myResources.getString("customNeighbors"));
         return text;
@@ -249,13 +238,13 @@ public class UI extends Application {
     private Node setToroidComboBox(){
         ComboBox comboBox = new ComboBox();
         comboBox.getStyleClass().add("combobox");
-        String[] environProp = {"environment", "finite", "toriod"};
+        String[] environProp = {"environment", "finite", "toroid"};
         for(String s : environProp){
             comboBox.getItems().add(myResources.getString(s));
         }
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e->{
-            String environ = (String) comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase();
+            ENVIRONMENT = (String) comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase();
         });
         return comboBox;
     }

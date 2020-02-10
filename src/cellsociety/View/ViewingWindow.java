@@ -20,8 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ViewingWindow {
 
@@ -52,14 +51,14 @@ public class ViewingWindow {
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
     private List<String> Neighbors;
+    List<String> defaultNeighbors = new ArrayList<>();
 
-    public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, boolean custom, List<String> neighbors){
+    public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
+
         mySimulation = simulation;
         mySimulation.loadSimulationContents(xml, simname,random);
-        if(custom){
-            Neighbors = neighbors;
-            mySimulation.setSimulationParameters(neighbors,4,"finite");
-        }
+        Neighbors = neighbors;
+        mySimulation.setSimulationParameters(Neighbors,numsides,"finite");
         this.myGrid = new TilePane();
         this.myRoot = new BorderPane();
         this.setAmimation(timestep,Timeline.INDEFINITE);
@@ -70,7 +69,6 @@ public class ViewingWindow {
         this.makeSimulationControls();
         start(new Stage());
     }
-
 
 
     private void setAmimation(double timestep, int cyclecount){
