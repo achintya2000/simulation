@@ -55,12 +55,12 @@ public abstract class Simulation {
   }
 
   private List<String> getCellTypes(String simName) {
-    List<String> numTypesRequest = new ArrayList<String>();
+    List<String> numTypesRequest = new ArrayList<>();
     numTypesRequest.addAll(List.of(simName+"numtypes"));
     XMLParser metaParser = new XMLParser("config");
     Map<String, String> numTypesFromFile = metaParser.getInfo(infoFile, numTypesRequest);
     int numtypes = Integer.parseInt(numTypesFromFile.get(simName+"numtypes"));
-    List<String> cellTypes = new ArrayList<String>();
+    List<String> cellTypes = new ArrayList<>();
     for (int i = 0; i < numtypes-1; i ++) {
       cellTypes.add("celltype"+i);
     }
@@ -68,7 +68,7 @@ public abstract class Simulation {
   }
 
   private List<String> getXMLTags(List<String> cellTypes) {
-    List<String> xmlvals = new ArrayList<String>();
+    List<String> xmlvals = new ArrayList<>();
     xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
     for (String celltype : cellTypes) {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));

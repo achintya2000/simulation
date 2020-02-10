@@ -8,7 +8,7 @@ public class ArrayGrid extends Grid {
     private int[][] myArray;
     private int[][] myReferenceArray;
     private Map<String,Integer[]> allNeighbors = Map.ofEntries(Map.entry("NW",new Integer[] {1,-1}),Map.entry("N",new Integer[] {1,0}),Map.entry("NE",new Integer[] {1,1}),Map.entry("W",new Integer[] {0,-1}),Map.entry("E",new Integer[] {0,1}),Map.entry("SW",new Integer[] {-1,-1}),Map.entry("S",new Integer[] {-1,0}),Map.entry("SE",new Integer[] {-1,1}), Map.entry("NWW", new Integer[] {-2,1}),Map.entry("NEE",new Integer[] {2,1}),Map.entry("WW",new Integer[] {-2,0}) ,Map.entry("EE",new Integer[] {2,0}));
-    private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
+    private Map<String,Integer[]> currentNeighbors = new HashMap<>();
     private int myShape = 0;
     private int shapeTriangle = 3;
     private int myEdge = 0;
@@ -71,7 +71,7 @@ public class ArrayGrid extends Grid {
         if (row==0 && col==0) {
             copyArray();
         }
-        Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
+        Map<String, Integer> statusOfNeighbors = new HashMap<>();
         for(String neighbor : currentNeighbors.keySet()) {
             if (col % 2 != 0 && myShape == shapeTriangle) { // if odd col and triangle, then orientation is flipped
                 neighbor = neighbor.replace("N","S");
