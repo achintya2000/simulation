@@ -1,8 +1,9 @@
 package cellsociety.Model;
 
-import cellsociety.Model.Grid;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ArrayGrid extends Grid {
 
@@ -10,12 +11,13 @@ public class ArrayGrid extends Grid {
     private int[][] myArray;
     private int[][] myReferenceArray;
     private Map<String,Integer[]> allNeighbors = Map.ofEntries(Map.entry("NW",new Integer[] {1,-1}),Map.entry("N",new Integer[] {1,0}),Map.entry("NE",new Integer[] {1,1}),Map.entry("W",new Integer[] {0,-1}),Map.entry("E",new Integer[] {0,1}),Map.entry("SW",new Integer[] {-1,-1}),Map.entry("S",new Integer[] {-1,0}),Map.entry("SE",new Integer[] {-1,1}), Map.entry("NWW", new Integer[] {-2,1}),Map.entry("NEE",new Integer[] {2,1}),Map.entry("WW",new Integer[] {-2,0}) ,Map.entry("EE",new Integer[] {2,0}));
-    private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
+    private Map<String,Integer[]> currentNeighbors = new HashMap<>();
     private int myShape = 0;
-    private int shapeTriangle = 3;
+    private static final int shapeTriangle = 3;
     private int myEdge = 0;
-    private int edgeToroidal = 2;
+    private static final int edgeToroidal = 2;
     private boolean isNeighborhoodSet = false;
+    private static final int INVALID_INDEX = -5;
 
     public ArrayGrid(int size) {
         mySize = size;
@@ -73,26 +75,30 @@ public class ArrayGrid extends Grid {
         if (row==0 && col==0) {
             copyArray();
         }
-        Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
+        Map<String, Integer> statusOfNeighbors = new HashMap<>();
         for(String neighbor : currentNeighbors.keySet()) {
             if (col % 2 != 0 && myShape == shapeTriangle) { // if odd col and triangle, then orientation is flipped
                 neighbor = neighbor.replace("N","S");
             }
             int[] validNeighbors = getValidNeighbors(row,col,neighbor);
-            if (validNeighbors[0] != -5 && validNeighbors[1] != -5) {
-                int neighborRow = validNeighbors[0];
-                int neighborCol = validNeighbors[1];
-                if (inBounds(neighborRow,neighborCol)) {
-                    if (atomicUpdate) { // Use to determine whether reference or current state needed
-                        statusOfNeighbors.put(neighbor, getReferenceState(neighborRow, neighborCol));
-                    } else {
-                        statusOfNeighbors.put(neighbor, getCurrentState(neighborRow, neighborCol));
-                    }
-                }
+            if (validNeighbors[0] != INVALID_INDEX && validNeighbors[1] != INVALID_INDEX) {
+                addNeighbor(atomicUpdate, statusOfNeighbors, neighbor, validNeighbors);
             }
 
         }
         return statusOfNeighbors;
+    }
+
+    private void addNeighbor(boolean atomicUpdate, Map<String, Integer> statusOfNeighbors, String neighbor, int[] validNeighbors) {
+        int neighborRow = validNeighbors[0];
+        int neighborCol = validNeighbors[1];
+        if (inBounds(neighborRow,neighborCol)) {
+            if (atomicUpdate) { // Use to determine whether reference or current state needed
+                statusOfNeighbors.put(neighbor, getReferenceState(neighborRow, neighborCol));
+            } else {
+                statusOfNeighbors.put(neighbor, getCurrentState(neighborRow, neighborCol));
+            }
+        }
     }
 
     private void copyArray() {
@@ -111,21 +117,25 @@ public class ArrayGrid extends Grid {
             return new int[] {directRow,directCol};
         }
         if (!inBounds(directRow,directCol) && myEdge==edgeToroidal) {
-            int neighborRow = directRow;
-            int neighborCol = directCol;
-            if (directRow < 0) {
-                neighborRow = myArray.length-1;
-            } else if (directRow >= myArray.length) {
-                neighborRow = 0;
-            }
-            if (directCol < 0) {
-                neighborCol = myArray[0].length-1;
-            } else if (directCol >= myArray[0].length) {
-                neighborCol = 0;
-            }
-            return new int[] {neighborRow, neighborCol};
+            return getToroidalNeighbors(directRow, directCol);
         }
-        return new int[] {-5,-5};
+        return new int[] {INVALID_INDEX,INVALID_INDEX};
+    }
+
+    private int[] getToroidalNeighbors(int directRow, int directCol) {
+        int neighborRow = directRow;
+        int neighborCol = directCol;
+        if (directRow < 0) {
+            neighborRow = myArray.length-1;
+        } else if (directRow >= myArray.length) {
+            neighborRow = 0;
+        }
+        if (directCol < 0) {
+            neighborCol = myArray[0].length-1;
+        } else if (directCol >= myArray[0].length) {
+            neighborCol = 0;
+        }
+        return new int[] {neighborRow, neighborCol};
     }
 
 

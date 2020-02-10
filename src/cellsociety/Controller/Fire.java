@@ -2,14 +2,15 @@ package cellsociety.Controller;
 
 import java.io.File;
 import java.util.*;
-
 import javafx.scene.paint.Color;
+
+import java.util.*;
 
 public class Fire extends Simulation {
 
     private List<String> defaultNeighbors =  List.of("N","S","E","W");
-    private int square = 4;
-    private int defaultShape = square;
+    private static final int SQUARE = 4;
+    private int defaultShape = SQUARE;
     private int finite = 1;
     private int defaultEdge = finite;
 
@@ -32,20 +33,24 @@ public class Fire extends Simulation {
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 simulationGrid.checkNeighbors(r, c, true);
-                if(simulationGrid.getReferenceState(r,c)==burning) {
-                    simulationGrid.updateCell(r,c,empty);
-                } else if (simulationGrid.getReferenceState(r,c)==tree && catchesFire(r,c)) {
-                    simulationGrid.updateCell(r,c,burning);
-                } else if (simulationGrid.getReferenceState(r,c)==empty) { // What do I do if cell is empty state?
-                    if (growsTree(r,c)) {
-                        simulationGrid.updateCell(r, c, tree);
-                    } else {
-                        simulationGrid.updateCell(r, c, empty);
-                    }
-                }
+                updateCurrentCell(r, c);
             }
         }
         System.out.println(Arrays.deepToString(simulationGrid.getGrid()));
+    }
+
+    private void updateCurrentCell(int r, int c) {
+        if(simulationGrid.getReferenceState(r,c)==burning) {
+            simulationGrid.updateCell(r,c,empty);
+        } else if (simulationGrid.getReferenceState(r,c)==tree && catchesFire(r,c)) {
+            simulationGrid.updateCell(r,c,burning);
+        } else if (simulationGrid.getReferenceState(r,c)==empty) { // What do I do if cell is empty state?
+            if (growsTree(r,c)) {
+                simulationGrid.updateCell(r, c, tree);
+            } else {
+                simulationGrid.updateCell(r, c, empty);
+            }
+        }
     }
 
     @Override
@@ -82,10 +87,7 @@ public class Fire extends Simulation {
     private boolean growsTree(int r, int c) {
         Random rand = new Random();
         float float_random = rand.nextFloat();
-        if (float_random < PROB_GROW) {
-            return true;
-        }
-        return false;
+        return (float_random < PROB_GROW);
     }
 
 

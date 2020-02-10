@@ -1,34 +1,22 @@
 package cellsociety.View;
 
-import cellsociety.Controller.*;
-import cellsociety.Model.Grid;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import cellsociety.Controller.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import java.io.File;
-import java.io.FileNotFoundException;
-
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 public class UI extends Application {
     private static final int HEIGHT = 600;
@@ -50,6 +38,16 @@ public class UI extends Application {
     private static final String NOTXML = "notXML";
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
+
+    private static final int SPACING = 100;
+    private static final float PERCENT_HEIGHT = 33.33F;
+    private static final int colindex0 = 0;
+    private static final int rowindex1 = 1;
+    private static final int colindex2 = 2;
+    private static final int TOP_INSET =20;
+    private static final int BOTTOM_INSET =20;
+    private static final int RIGHT_INSET =10;
+    private static final int LEFT_INSET =0;
 
     private static final Map<String, Simulation> chooseSim = Map.of(GAMEOFLIFE,new GameOfLife(),FIRE, new Fire(), SEGREGATION, new Segregation(), PERCOLATION, new Percolation(), WATOR, new Wator(), RPS, new RPS());
     private static final Map<String, String> chooseSimName = Map.of(GAMEOFLIFE,"gameoflife",FIRE, "fire", SEGREGATION, "segregation", PERCOLATION, "percolation", WATOR, "wator", RPS, "rps");
@@ -90,24 +88,19 @@ public class UI extends Application {
         return scene;
     }
 
-    private Node chooseBrowserText(){
-        Text text = new Text(myResources.getString("chooseFile"));
-        return text;
-    }
-
     private Node setToolBox(){
-        VBox left = new VBox(100);
+        VBox left = new VBox(SPACING);
         GridPane leftPanel = new GridPane();
         leftPanel.setBackground(new Background(new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
         leftPanel.getStyleClass().add("leftpanel");
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 3; i++) {
             RowConstraints row1 = new RowConstraints();
-            row1.setPercentHeight(33.33);
+            row1.setPercentHeight(PERCENT_HEIGHT);
         }
-        leftPanel.add(setComboBox(),0,1);
-        leftPanel.add(chooseBrowserText(),0,2);
-        leftPanel.add(setBrowseButton(),1,2);
-        leftPanel.setPadding(new Insets(20, 10, 20, 0));
+        leftPanel.add(setComboBox(),colindex0,rowindex1);
+        leftPanel.add(new Text(myResources.getString("chooseFile")),colindex0,colindex2);
+        leftPanel.add(setBrowseButton(),rowindex1,colindex2);
+        leftPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
         left.getChildren().add(leftPanel);
         return left;
     }

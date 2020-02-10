@@ -122,6 +122,10 @@ public class ViewingWindow {
 
         mySaveButton.setText("Save");
         mySaveButton.setOnAction(e -> mySimulation.saveCurrentState());
+        return getHBox();
+    }
+
+    private HBox getHBox() {
         HBox controls = new HBox();
         controls.getChildren().add(myPlayButton);
         controls.getChildren().add(myStopButton);

@@ -37,30 +37,28 @@ public abstract class Simulation {
   }
 
   private boolean validShape(int shape) {
-    return ((shape - MIN_NEIGHBOR_EDGES) * TRIANGLE) * MIN_NEIGHBOR_EDGES % CIRCLE == 0
-        && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES;
+    return ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {
-    List<String> numTypesRequest = new ArrayList<String>();
-    numTypesRequest.addAll(List.of(simName+"numtypes"));
-    XMLParser metaParser = new XMLParser("config");
-    Map<String, String> numTypesFromFile = metaParser.getInfo(infoFile, numTypesRequest);
-    int numtypes = Integer.parseInt(numTypesFromFile.get(simName+"numtypes"));
-
-    List<String> cellTypes = new ArrayList<String>();
-    for (int i = 0; i < numtypes-1; i ++) {
-      cellTypes.add("celltype"+i);
-    }
-
-    List<String> xmlvals = new ArrayList<>();
-    xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
-    for (String celltype : cellTypes) {
-      xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
-    }
+    List<String> cellTypes = getCellTypes(simName);
+    List<String> xmlvals = getXMLTags(cellTypes);
     XMLParser simParser = new XMLParser("config");
-    configuration = simParser.getInfo(simFile, xmlvals);
+    Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
 
+    checkXMLFileError(configuration);
+
+    SIMULATION_NAME = configuration.get("simulation");
+    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
+    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+
+    simulationGrid = new ArrayGrid(GRID_WIDTH);
+
+    initializeGrid(cellTypes, configuration, random, cellTypes.size()+1);
+    init();
+  }
+
+  private void checkXMLFileError(Map<String, String> configuration) {
     for (Map.Entry<String, String> entry : configuration.entrySet()) {
       if(entry.getValue().equals("")) {
         ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " is null";
@@ -72,41 +70,63 @@ public abstract class Simulation {
         }
       }
     }
+  }
 
-    SIMULATION_NAME = configuration.get("simulation");
-    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
+  private List<String> getCellTypes(String simName) {
+    List<String> numTypesRequest = new ArrayList<>();
+    numTypesRequest.addAll(List.of(simName+"numtypes"));
+    XMLParser metaParser = new XMLParser("config");
+    Map<String, String> numTypesFromFile = metaParser.getInfo(infoFile, numTypesRequest);
+    int numtypes = Integer.parseInt(numTypesFromFile.get(simName+"numtypes"));
+    List<String> cellTypes = new ArrayList<>();
+    for (int i = 0; i < numtypes-1; i ++) {
+      cellTypes.add("celltype"+i);
+    }
+    return cellTypes;
+  }
 
-    simulationGrid = new ArrayGrid(GRID_WIDTH);
 
-    initializeGrid(cellTypes, configuration, random, numtypes);
-    init();
+  private List<String> getXMLTags(List<String> cellTypes) {
+    List<String> xmlvals = new ArrayList<>();
+    xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
+    for (String celltype : cellTypes) {
+      xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
+    }
+    return xmlvals;
   }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration, boolean random, int range) {
     if (random){
-      for (int r = 0; r < simulationGrid.getSize(); r++) {
-        for (int c = 0; c < simulationGrid.getSize(); c++) {
-          int randomNum = ThreadLocalRandom.current().nextInt(0, range);
-          simulationGrid.updateCell(r, c, randomNum);
-        }
-      }
+      populateRandomGrid(range);
     } else {
-      String[] point = new String[2];
-      for (String celltype : cellTypes) {
-        String cellLocations = configuration.get(celltype);
-        int k = 0;
-        while (cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
-          point = (cellLocations
-              .substring(cellLocations.indexOf("[") + 1, cellLocations.indexOf("]"))).split(",");
-          simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]),
-              Integer.parseInt(configuration.get("state" + celltype)));
-          cellLocations = cellLocations
-              .substring(cellLocations.indexOf("]") + 1, cellLocations.lastIndexOf("]") + 1);
-          k = k + 1;
-        }
+      populateFileGrid(cellTypes, configuration);
+    }
+  }
+
+  private void populateFileGrid(List<String> cellTypes, Map<String, String> configuration) {
+    String[] point = new String[2];
+    for (String celltype : cellTypes) {
+      String cellLocations = configuration.get(celltype);
+      int k = 0;
+      while (cellLocations.lastIndexOf("]") != cellLocations.indexOf("]")) {
+        point = (cellLocations
+            .substring(cellLocations.indexOf("[") + 1, cellLocations.indexOf("]"))).split(",");
+        simulationGrid.updateCell(Integer.parseInt(point[0]), Integer.parseInt(point[1]),
+            Integer.parseInt(configuration.get("state" + celltype)));
+        cellLocations = cellLocations
+            .substring(cellLocations.indexOf("]") + 1, cellLocations.lastIndexOf("]") + 1);
+        k = k + 1;
       }
-      simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
+    }
+    simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
+  }
+
+  private void populateRandomGrid(int range) {
+    for (int r = 0; r < simulationGrid.getSize(); r++) {
+      for (int c = 0; c < simulationGrid.getSize(); c++) {
+        int randomNum = ThreadLocalRandom.current().nextInt(0, range);
+        simulationGrid.updateCell(r, c, randomNum);
+      }
     }
   }
 
