@@ -88,7 +88,10 @@ public class ViewingWindow {
         for (int i = 0; i < mySimulation.getSimulationCols(); i++) {
             for (int j = 0; j < mySimulation.getSimulationCols(); j++) {
                 double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols()) - MARGIN;
-                myGrid.getChildren().add(new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j)));
+                Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
+                rect.getStyleClass().add("Rectangle");
+                myGrid.getChildren().add(rect);
+
             }
         }
         myGrid.setHgap(MARGIN);
