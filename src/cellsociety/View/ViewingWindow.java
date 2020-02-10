@@ -164,8 +164,8 @@ public class ViewingWindow {
         controls.getChildren().add(myNextButton);
         controls.getChildren().add(mySaveButton);
         Text text = new Text (myResources.getString("viewgraph"));
-//        controls.getChildren().add(text);
-//        controls.getChildren().add(viewGraph);
+        controls.getChildren().add(text);
+        controls.getChildren().add(viewGraph);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);

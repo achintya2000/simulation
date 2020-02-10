@@ -126,7 +126,6 @@ public class UI extends Application {
 //        leftPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
 
         left.getChildren().add(leftPanel);
-        root.setBottom(setChooseNeighborsTilePane());
         return left;
     }
 
@@ -195,25 +194,26 @@ public class UI extends Application {
     public Node setChooseNeighborsTilePane(){
          myNeighbors = new TilePane();
         HBox box = new HBox();
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 double tileSize = 50;
                 Square tile = new Square(i,j,tileSize,Color.WHITE);
-                if(i == 1 && j == 1){
-                    tile.myShape.setFill(Color.RED);
-                }
-                tile.myShape.setOnMousePressed(e-> {
-                    if(tile.myNumber != 11){
-                        tile.myShape.setFill(Color.BLUE);
-                        int number = tile.myNumber;
-                        String direction = allNeighbors.get(number);
-                        System.out.println(direction);
-                        neighborstosend.add(direction);
+                    if(i == 1 && j == 1){
+                        tile.getShape().setFill(Color.RED);
                     }
-                });
-                myNeighbors.getChildren().add(tile.myShape);
+                    tile.getShape().setOnMousePressed(e-> {
+                        if(tile.getMyNumber() != 11){
+                            tile.getShape().setFill(Color.BLUE);
+                            int number = tile.getMyNumber();
+                            String direction = allNeighbors.get(number);
+                            System.out.println(direction);
+                            neighborstosend.add(direction);
+                        }
+                    });
+                    myNeighbors.getChildren().add(tile.getShape());
+                }
             }
-        }
         myNeighbors.setHgap(5);
         myNeighbors.setVgap(5);
         myNeighbors.setAlignment(Pos.CENTER);
@@ -255,6 +255,7 @@ public class UI extends Application {
                 case ("Triangle"):
                     NUMSIDES = 3;
                 }
+            root.setBottom(setChooseNeighborsTilePane());
         });
         return comboBox;
     }
