@@ -46,7 +46,7 @@ public abstract class Simulation {
     List<String> xmlvals = getXMLTags(cellTypes);
 
     XMLParser simParser = new XMLParser("config");
-    Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
+    configuration = simParser.getInfo(simFile, xmlvals);
 
     checkXMLFileError(configuration);
 
