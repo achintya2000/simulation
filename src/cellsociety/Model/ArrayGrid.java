@@ -1,21 +1,23 @@
 package cellsociety.Model;
 
-import cellsociety.Model.Grid;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ArrayGrid extends Grid {
+public class ArrayGrid implements Grid {
 
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
     private int[][] myArray;
     private int[][] myReferenceArray;
     private Map<String,Integer[]> allNeighbors = Map.ofEntries(Map.entry("NW",new Integer[] {1,-1}),Map.entry("N",new Integer[] {1,0}),Map.entry("NE",new Integer[] {1,1}),Map.entry("W",new Integer[] {0,-1}),Map.entry("E",new Integer[] {0,1}),Map.entry("SW",new Integer[] {-1,-1}),Map.entry("S",new Integer[] {-1,0}),Map.entry("SE",new Integer[] {-1,1}), Map.entry("NWW", new Integer[] {-2,1}),Map.entry("NEE",new Integer[] {2,1}),Map.entry("WW",new Integer[] {-2,0}) ,Map.entry("EE",new Integer[] {2,0}));
-    private Map<String,Integer[]> currentNeighbors = new HashMap<String,Integer[]>();
+    private Map<String,Integer[]> currentNeighbors = new HashMap<>();
     private int myShape = 0;
-    private int shapeTriangle = 3;
+    private static final int shapeTriangle = 3;
     private int myEdge = 0;
-    private int edgeToroidal = 2;
+    private static final int edgeToroidal = 2;
     private boolean isNeighborhoodSet = false;
+    private static final int INVALID_INDEX = -5;
 
     public ArrayGrid(int size) {
         mySize = size;
@@ -73,13 +75,13 @@ public class ArrayGrid extends Grid {
         if (row==0 && col==0) {
             copyArray();
         }
-        Map<String, Integer> statusOfNeighbors = new HashMap<String, Integer>();
+        Map<String, Integer> statusOfNeighbors = new HashMap<>();
         for(String neighbor : currentNeighbors.keySet()) {
             if (col % 2 != 0 && myShape == shapeTriangle) { // if odd col and triangle, then orientation is flipped
                 neighbor = neighbor.replace("N","S");
             }
             int[] validNeighbors = getValidNeighbors(row,col,neighbor);
-            if (validNeighbors[0] != -5 && validNeighbors[1] != -5) {
+            if (validNeighbors[0] != INVALID_INDEX && validNeighbors[1] != INVALID_INDEX) {
                 addNeighbor(atomicUpdate, statusOfNeighbors, neighbor, validNeighbors);
             }
 
@@ -117,7 +119,7 @@ public class ArrayGrid extends Grid {
         if (!inBounds(directRow,directCol) && myEdge==edgeToroidal) {
             return getToroidalNeighbors(directRow, directCol);
         }
-        return new int[] {-5,-5};
+        return new int[] {INVALID_INDEX,INVALID_INDEX};
     }
 
     private int[] getToroidalNeighbors(int directRow, int directCol) {

@@ -31,6 +31,7 @@ public class ViewingWindow {
     private Button myPlayButton;
     private Button myStopButton;
     private Button myNextButton;
+    private Button mySaveButton;
     private Slider mySlider;
 
     private static final int WIDTH = 600;
@@ -67,6 +68,15 @@ public class ViewingWindow {
         this.myStopButton = new Button();
         this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
         this.makeSimulationControls();
+        mySimulation.loadSimulationContents(xml, simname,false);
+        myGrid = new TilePane();
+        myRoot = new BorderPane();
+        myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
+        myPlayButton = new Button();
+        myNextButton = new Button();
+        myStopButton = new Button();
+        mySaveButton = new Button();
+        mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
         start(new Stage());
     }
 
@@ -102,6 +112,10 @@ public class ViewingWindow {
 //                    tileSize = tileSize/2;
 //                }
                 myGrid.getChildren().add(new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j)));
+                Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
+                rect.getStyleClass().add("Rectangle");
+                myGrid.getChildren().add(rect);
+
             }
         }
 //        myGrid.setHgap(MARGIN/2);
@@ -131,10 +145,17 @@ public class ViewingWindow {
         myStopButton.setAlignment(Pos.CENTER);
         myPlayButton.setAlignment(Pos.CENTER);
 
+        mySaveButton.setText("Save");
+        mySaveButton.setOnAction(e -> mySimulation.saveCurrentState());
+        return getHBox();
+    }
+
+    private HBox getHBox() {
         HBox controls = new HBox();
         controls.getChildren().add(myPlayButton);
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
+        controls.getChildren().add(mySaveButton);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);

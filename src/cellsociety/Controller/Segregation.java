@@ -11,8 +11,8 @@ public class Segregation extends Simulation {
   private static final float moveProb = (float) 0.30;
 
   private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
-  private int square = 4;
-  private int defaultShape = square;
+  private static final int SQUARE = 4;
+  private int defaultShape = SQUARE;
   private int finite = 1;
   private int defaultEdge = finite;
 
@@ -63,6 +63,12 @@ public class Segregation extends Simulation {
           }
       }
       if (count/((float) statusOfNeighbors.size()) < moveProb) {
+          moveLoc(state);
+          simulationGrid.updateCell(r, c, empty);
+      }
+  }
+
+    private void moveLoc(int state) {
         outerloop:
         for (int i = 0; i < simulationGrid.getSize(); i++) {
           for (int j = 0; j < simulationGrid.getSize(); j++) {
@@ -72,7 +78,5 @@ public class Segregation extends Simulation {
             }
           }
         }
-        simulationGrid.updateCell(r, c, empty);
-      }
-  }
+    }
 }
