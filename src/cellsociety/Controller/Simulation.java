@@ -25,7 +25,7 @@ public abstract class Simulation {
   protected Grid simulationGrid;
   protected Map<Integer, Color> cellColorMap;
   private File infoFile = new File("./Resources/simInfo.xml");
-
+  private Map<String, String> configuration;
   private String ERROR_MESSAGE = "";
 
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
@@ -37,10 +37,8 @@ public abstract class Simulation {
   }
 
   private boolean validShape(int shape) {
-    if ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES ) {
-      return true;
-    }
-    return false;
+    return ((shape - MIN_NEIGHBOR_EDGES) * TRIANGLE) * MIN_NEIGHBOR_EDGES % CIRCLE == 0
+        && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES;
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {
@@ -61,7 +59,7 @@ public abstract class Simulation {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     XMLParser simParser = new XMLParser("config");
-    Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
+    configuration = simParser.getInfo(simFile, xmlvals);
 
     for (Map.Entry<String, String> entry : configuration.entrySet()) {
       if(entry.getValue().equals("")) {
@@ -110,6 +108,39 @@ public abstract class Simulation {
       }
       simulationGrid.initializeDefaultCell(Integer.parseInt(configuration.get("default")));
     }
+  }
+
+  public void saveCurrentState() {
+    XMLBuilder xmlBuilder = new XMLBuilder();
+    int numCellType0 = 0;
+    int numCellType1 = 0;
+    int defaultNum = 0;
+    int stateCellType0 = Integer.parseInt(configuration.get("statecelltype0"));
+    int stateCellType1 = Integer.parseInt(configuration.get("statecelltype1"));
+    int stateDefault = Integer.parseInt(configuration.get("default"));
+
+    StringBuilder cellType0Location = new StringBuilder();
+    StringBuilder cellType1Location = new StringBuilder();
+
+    for (int r = 0; r < simulationGrid.getSize(); r++) {
+      for (int c = 0; c < simulationGrid.getSize(); c++) {
+        if (simulationGrid.getCurrentState(r, c) == stateCellType0) {
+          numCellType0++;
+          cellType0Location.append("[").append(r).append(",").append(c).append("]");
+        } else if (simulationGrid.getCurrentState(r, c) == stateCellType1) {
+          numCellType1++;
+          cellType1Location.append("[").append(r).append(",").append(c).append("]");
+        } else if (simulationGrid.getCurrentState(r, c) == defaultNum){
+          defaultNum++;
+        }
+      }
+    }
+    cellType0Location.append("[]");
+    cellType1Location.append("[]");
+    xmlBuilder.buildXML(SIMULATION_NAME, Integer.toString(GRID_WIDTH), Integer.toString(GRID_HEIGHT),
+                        Integer.toString(numCellType0), Integer.toString(stateCellType0),
+                        cellType0Location.toString(), Integer.toString(numCellType1), Integer.toString(stateCellType1), cellType1Location.toString(),
+                        Integer.toString(stateDefault));
   }
 
   public Color getGridColor(int r, int c) {

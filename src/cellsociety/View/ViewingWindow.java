@@ -29,6 +29,7 @@ public class ViewingWindow {
     private Button myPlayButton;
     private Button myStopButton;
     private Button myNextButton;
+    private Button mySaveButton;
     private Slider mySlider;
 
     private static final int WIDTH = 600;
@@ -59,6 +60,7 @@ public class ViewingWindow {
         myPlayButton = new Button();
         myNextButton = new Button();
         myStopButton = new Button();
+        mySaveButton = new Button();
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
         start(new Stage());
     }
@@ -115,10 +117,13 @@ public class ViewingWindow {
         myStopButton.setAlignment(Pos.CENTER);
         myPlayButton.setAlignment(Pos.CENTER);
 
+        mySaveButton.setText("Save");
+        mySaveButton.setOnAction(e -> mySimulation.saveCurrentState());
         HBox controls = new HBox();
         controls.getChildren().add(myPlayButton);
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
+        controls.getChildren().add(mySaveButton);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);
