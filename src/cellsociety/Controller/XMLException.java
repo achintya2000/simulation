@@ -1,9 +1,7 @@
 package cellsociety.Controller;
 
 /**
- * This class represents what might go wrong when using XML files.
  *
- * @author Robert C. Duvall
  */
 public class XMLException extends RuntimeException {
     // for serialization

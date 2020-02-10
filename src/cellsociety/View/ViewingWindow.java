@@ -29,6 +29,7 @@ public class ViewingWindow {
     private Button myPlayButton;
     private Button myStopButton;
     private Button myNextButton;
+    private Button mySaveButton;
     private Slider mySlider;
 
     private static final int WIDTH = 600;
@@ -59,6 +60,7 @@ public class ViewingWindow {
         myPlayButton = new Button();
         myNextButton = new Button();
         myStopButton = new Button();
+        mySaveButton = new Button();
         mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
         start(new Stage());
     }
@@ -86,7 +88,10 @@ public class ViewingWindow {
         for (int i = 0; i < mySimulation.getSimulationCols(); i++) {
             for (int j = 0; j < mySimulation.getSimulationCols(); j++) {
                 double tileSize = (VIEWING_WINDOW_SIZE / mySimulation.getSimulationCols()) - MARGIN;
-                myGrid.getChildren().add(new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j)));
+                Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
+                rect.getStyleClass().add("Rectangle");
+                myGrid.getChildren().add(rect);
+
             }
         }
         myGrid.setHgap(MARGIN);
@@ -115,6 +120,8 @@ public class ViewingWindow {
         myStopButton.setAlignment(Pos.CENTER);
         myPlayButton.setAlignment(Pos.CENTER);
 
+        mySaveButton.setText("Save");
+        mySaveButton.setOnAction(e -> mySimulation.saveCurrentState());
         return getHBox();
     }
 
@@ -123,6 +130,7 @@ public class ViewingWindow {
         controls.getChildren().add(myPlayButton);
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
+        controls.getChildren().add(mySaveButton);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
         controls.setSpacing(MARGIN);

@@ -25,6 +25,8 @@ public abstract class Simulation {
   protected Grid simulationGrid;
   protected Map<Integer, Color> cellColorMap;
   private File infoFile = new File("./Resources/simInfo.xml");
+  private Map<String, String> configuration;
+  private String ERROR_MESSAGE = "";
 
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
     if (validShape(shape) && edgeTypes.containsKey(edge)) {
@@ -46,6 +48,8 @@ public abstract class Simulation {
     XMLParser simParser = new XMLParser("config");
     Map<String, String> configuration = simParser.getInfo(simFile, xmlvals);
 
+    checkXMLFileError(configuration);
+
     SIMULATION_NAME = configuration.get("simulation");
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
     GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
@@ -54,6 +58,20 @@ public abstract class Simulation {
 
     initializeGrid(cellTypes, configuration, random, cellTypes.size()+1);
     init();
+  }
+
+  private void checkXMLFileError(Map<String, String> configuration) {
+    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+      if(entry.getValue().equals("")) {
+        ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " is null";
+        throw new XMLException("XML file value %s is null", entry.getKey());
+      } else if (!entry.getKey().matches("title|author|simulation")) {
+        if (entry.getValue().matches(".*[a-zA-Z]+.*")) {
+          ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " has improper format";
+          throw new XMLException("XML file value %s is improperly formatted", entry.getKey());
+        }
+      }
+    }
   }
 
   private List<String> getCellTypes(String simName) {
@@ -69,6 +87,7 @@ public abstract class Simulation {
     return cellTypes;
   }
 
+
   private List<String> getXMLTags(List<String> cellTypes) {
     List<String> xmlvals = new ArrayList<>();
     xmlvals.addAll(List.of("title", "author", "simulation", "width", "height","default"));
@@ -76,7 +95,6 @@ public abstract class Simulation {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     return xmlvals;
-
   }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration, boolean random, int range) {
@@ -114,6 +132,39 @@ public abstract class Simulation {
     }
   }
 
+  public void saveCurrentState() {
+    XMLBuilder xmlBuilder = new XMLBuilder();
+    int numCellType0 = 0;
+    int numCellType1 = 0;
+    int defaultNum = 0;
+    int stateCellType0 = Integer.parseInt(configuration.get("statecelltype0"));
+    int stateCellType1 = Integer.parseInt(configuration.get("statecelltype1"));
+    int stateDefault = Integer.parseInt(configuration.get("default"));
+
+    StringBuilder cellType0Location = new StringBuilder();
+    StringBuilder cellType1Location = new StringBuilder();
+
+    for (int r = 0; r < simulationGrid.getSize(); r++) {
+      for (int c = 0; c < simulationGrid.getSize(); c++) {
+        if (simulationGrid.getCurrentState(r, c) == stateCellType0) {
+          numCellType0++;
+          cellType0Location.append("[").append(r).append(",").append(c).append("]");
+        } else if (simulationGrid.getCurrentState(r, c) == stateCellType1) {
+          numCellType1++;
+          cellType1Location.append("[").append(r).append(",").append(c).append("]");
+        } else if (simulationGrid.getCurrentState(r, c) == defaultNum){
+          defaultNum++;
+        }
+      }
+    }
+    cellType0Location.append("[]");
+    cellType1Location.append("[]");
+    xmlBuilder.buildXML(SIMULATION_NAME, Integer.toString(GRID_WIDTH), Integer.toString(GRID_HEIGHT),
+                        Integer.toString(numCellType0), Integer.toString(stateCellType0),
+                        cellType0Location.toString(), Integer.toString(numCellType1), Integer.toString(stateCellType1), cellType1Location.toString(),
+                        Integer.toString(stateDefault));
+  }
+
   public Color getGridColor(int r, int c) {
     return cellColorMap.get(simulationGrid.getCurrentState(r, c));
   }
@@ -124,4 +175,7 @@ public abstract class Simulation {
 
   protected abstract void init();
 
+  public String getERROR_MESSAGE() {
+    return ERROR_MESSAGE;
+  }
 }

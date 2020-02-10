@@ -1,5 +1,6 @@
 package cellsociety.Controller;
 
+import java.io.File;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -18,6 +19,10 @@ public class RPS extends Simulation {
     private Map<Integer,Integer> winnerToLoser = Map.of(0,2,1,0,2,1);
 
     private static final int WIN_THRESH = 3;
+
+    public RPS() {
+        loadSimulationContents(new File("./Resources/RPS.xml"), "rps", true);
+    }
 
     @Override
     public void updateGrid() {

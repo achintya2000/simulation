@@ -1,5 +1,6 @@
 package cellsociety.Controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,10 @@ public class Segregation extends Simulation {
   private int empty = 0;
   private int agent1 = 1;
   private int agent2 = 2;
+
+  public Segregation(){
+    loadSimulationContents(new File("./Resources/segregation.xml"), "segregation", true);
+  }
 
   @Override
   public void updateGrid() {

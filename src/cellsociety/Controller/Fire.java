@@ -1,8 +1,8 @@
 package cellsociety.Controller;
 
-import javafx.scene.paint.Color;
-
+import java.io.File;
 import java.util.*;
+import javafx.scene.paint.Color;
 
 public class Fire extends Simulation {
 
@@ -18,6 +18,10 @@ public class Fire extends Simulation {
 
     private static final float PROB_CATCH = .15F;
     private static final float PROB_GROW = .15F;
+
+    public Fire() {
+        loadSimulationContents(new File("./Resources/fire.xml"), "fire", true);
+    }
 
     @Override
     public void updateGrid() {

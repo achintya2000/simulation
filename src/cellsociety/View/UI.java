@@ -137,15 +137,16 @@ public class UI extends Application {
             ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation));
         }
         catch(XMLException e){
-                setErrorBox();
+                setErrorBox(chooseSim.get(simulation).getERROR_MESSAGE());
             }
         }
 
-    public void setErrorBox(){
+    private void setErrorBox(String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(myResources.getString(BADINPUT));
         alert.setHeaderText(myResources.getString(NOTXML));
-        alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
+        alert.setContentText(message);
+        //alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
 }

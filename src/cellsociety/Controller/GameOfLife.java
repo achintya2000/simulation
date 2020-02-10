@@ -1,5 +1,7 @@
 package cellsociety.Controller;
 
+import java.io.File;
+import java.util.*;
 
 import javafx.scene.paint.Color;
 
@@ -19,6 +21,11 @@ public class GameOfLife extends Simulation {
 
     private static final int dead = 0;
     private static final int live = 1;
+
+
+    public GameOfLife(){
+        loadSimulationContents(new File("./Resources/gameoflife.xml"), "gameoflife", true);
+    }
 
     @Override
     public void updateGrid() {
