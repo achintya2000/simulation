@@ -1,11 +1,12 @@
 package cellsociety.View;
 
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Rotate;
 
 public class Triangle {
 
     private Polygon myTriangle;
-    protected int myNumber;
+    private int myNumber;
 
 
     /**
@@ -23,9 +24,11 @@ public class Triangle {
         } else {
             myTriangle.getPoints().addAll(row+tileSize, col, row, col+(tileSize/2), row+tileSize, col+tileSize);
         }
+        myTriangle.getTransforms().add(new Rotate(90));
     }
 
     public Polygon getPolygon() {
         return myTriangle;
     }
+    public int getMyNumber(){return myNumber;}
 }

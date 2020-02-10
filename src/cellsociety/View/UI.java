@@ -1,5 +1,6 @@
 package cellsociety.View;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import cellsociety.Controller.*;
@@ -13,11 +14,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import java.io.File;
+import java.util.List;
 
 public class UI extends Application {
     private static final int HEIGHT = 500;
@@ -44,7 +47,7 @@ public class UI extends Application {
     private static final int colindex0 = 0;
     private static final int rowindex1 = 1;
     private static final int colindex2 = 2;
-    private static final int TOP_INSET =20;
+    private static final int TOP_INSET =10;
     private static final int BOTTOM_INSET =20;
     private static final int RIGHT_INSET =10;
     private static final int LEFT_INSET =0;
@@ -108,24 +111,24 @@ public class UI extends Application {
             RowConstraints row1 = new RowConstraints();
             row1.setPercentHeight(PERCENT_HEIGHT);
         }
-
+        Text description = new Text(myResources.getString("description"));
+        description.setFont(Font.font(20));
+        leftPanel.add(description,0,0);
         leftPanel.add(setComboBox(),0,1);
         leftPanel.add(setChoseShapeeText(), 0, 2);
         leftPanel.add(setShapeComboBox(),1,2);
         leftPanel.add(addRamdomConfigText(),0,3);
         leftPanel.add(setramdomConfigBox(),1,3);
         leftPanel.add(setToroidComboBox(),0,4);
+        Text chooseConFig = new Text(myResources.getString("chooseFile"));
+        leftPanel.add(chooseConFig,0,5);
         leftPanel.add(setBrowseButton(),1,5);
         Text text = new Text(myResources.getString("chooseNeighbors"));
         leftPanel.add(text, 0, 6);
-        leftPanel.setPadding(new Insets(20, 10, 20, 0));
-
-//        leftPanel.add(setComboBox(),colindex0,rowindex1);
-//        leftPanel.add(new Text(myResources.getString("chooseFile")),colindex0,colindex2);
-//        leftPanel.add(setBrowseButton(),rowindex1,colindex2);
-//        leftPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
-        root.setBottom(setChooseNeighborsTilePane());
+        leftPanel.setPadding(new Insets(10, 10, 20, 0));
+        leftPanel.setHgap(10);
         left.getChildren().add(leftPanel);
+        root.setBottom(setChooseNeighborsTilePane());
         return left;
     }
 
@@ -134,7 +137,7 @@ public class UI extends Application {
         browse.setText(myResources.getString(BROWSE));
         browse.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(PrimaryStage);
-            loadSimulationChoice(myNewSimulation, selectedFile);
+            if(selectedFile != null) loadSimulationChoice(myNewSimulation, selectedFile);
         });
         return browse;
     }
@@ -192,25 +195,46 @@ public class UI extends Application {
     }
 
     public Node setChooseNeighborsTilePane(){
-         myNeighbors = new TilePane();
+        myNeighbors = new TilePane();
         HBox box = new HBox();
-
+//        boolean turneddown = true;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 double tileSize = 50;
-                Square tile = new Square(i,j,tileSize,Color.WHITE);
+               // if(NUMSIDES == 4){
+                    Square tile = new Square(i,j,tileSize,Color.WHITE);
                     if(i == 1 && j == 1){
                         tile.getShape().setFill(Color.RED);
                     }
                     tile.getShape().setOnMousePressed(e-> {
-                        if(tile.getMyNumber() != 11){
+                        int number = tile.getMyNumber();
+                        String direction = allNeighbors.get(number);
+                        if(tile.getMyNumber() != 11) {
                             tile.getShape().setFill(Color.BLUE);
-                            int number = tile.getMyNumber();
-                            String direction = allNeighbors.get(number);
                             neighborstosend.add(direction);
+
                         }
                     });
                     myNeighbors.getChildren().add(tile.getShape());
+              //  }
+//                if(NUMSIDES == 3){
+//                    Triangle tile = new Triangle(turneddown,i,j,tileSize);
+//                    tile.getPolygon().setFill(Color.WHITE);
+//                    if(i == 1 && j == 1){
+//                        tile.getPolygon().setFill(Color.RED);
+//                    }
+//                    tile.getPolygon().setOnMousePressed(e-> {
+//                        int number = tile.getMyNumber();
+//                        String direction = allNeighbors.get(number);
+//                        if(tile.getMyNumber() != 11) {
+//                            tile.getPolygon().setFill(Color.BLUE);
+//                            neighborstosend.add(direction);
+//
+//                        }
+//                    });
+//                    myNeighbors.getChildren().add(tile.getPolygon());
+//                    turneddown = !turneddown;
+//                }
                 }
             }
         myNeighbors.setHgap(5);
@@ -222,6 +246,11 @@ public class UI extends Application {
         box.getChildren().add(myNeighbors);
         box.setAlignment(Pos.CENTER);
         return box;
+    }
+
+    private Color getColor(boolean clicked){
+        if(clicked) return Color.BLUE;
+        return Color.WHITE;
     }
 
 
@@ -256,7 +285,7 @@ public class UI extends Application {
                     NUMSIDES = 3;
                     break;
                 }
-            System.out.println(NUMSIDES);
+            root.setBottom(setChooseNeighborsTilePane());
         });
         return comboBox;
     }
