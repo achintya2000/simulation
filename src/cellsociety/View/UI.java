@@ -124,7 +124,7 @@ public class UI extends Application {
 //        leftPanel.add(new Text(myResources.getString("chooseFile")),colindex0,colindex2);
 //        leftPanel.add(setBrowseButton(),rowindex1,colindex2);
 //        leftPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
-
+        root.setBottom(setChooseNeighborsTilePane());
         left.getChildren().add(leftPanel);
         return left;
     }
@@ -186,7 +186,7 @@ public class UI extends Application {
     private CheckBox setramdomConfigBox(){
         CheckBox box = new CheckBox();
         box.setOnMousePressed(e->{
-            isRandom = true;
+            isRandom = !isRandom;
         });
         return box;
     }
@@ -207,7 +207,6 @@ public class UI extends Application {
                             tile.getShape().setFill(Color.BLUE);
                             int number = tile.getMyNumber();
                             String direction = allNeighbors.get(number);
-                            System.out.println(direction);
                             neighborstosend.add(direction);
                         }
                     });
@@ -252,10 +251,12 @@ public class UI extends Application {
             switch (myShapeChosen){
                 case ("Square"):
                     NUMSIDES = 4;
+                    break;
                 case ("Triangle"):
                     NUMSIDES = 3;
+                    break;
                 }
-            root.setBottom(setChooseNeighborsTilePane());
+            System.out.println(NUMSIDES);
         });
         return comboBox;
     }

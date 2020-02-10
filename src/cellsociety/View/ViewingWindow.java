@@ -35,8 +35,8 @@ public class ViewingWindow {
     private Button mySaveButton;
     private Slider mySlider;
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 700;
     private static final int MARGIN = 10;
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
     private static final String RESOURCES = "cellsociety/View/Resources/";
@@ -54,7 +54,7 @@ public class ViewingWindow {
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
     private List<String> Neighbors;
     private CheckBox viewGraph;
-    private int NUMSIDES;
+    private int NUMSIDES ;
     private HashMap<Color, Integer> celltypeMap;
 
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
@@ -73,7 +73,7 @@ public class ViewingWindow {
         this.mySaveButton = new Button();
         this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
         this.makeSimulationControls();
-        mySimulation.loadSimulationContents(xml, simname,false);
+        mySimulation.loadSimulationContents(xml, simname,random);
         myGrid = new TilePane();
         myRoot = new BorderPane();
         myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
@@ -114,13 +114,10 @@ public class ViewingWindow {
                     Triangle triangle = new Triangle(pointsdown, i, j, tileSize);
                     Polygon shape = triangle.getPolygon();
                     shape.setFill(mySimulation.getGridColor(i,j));
-                    if(i == 0 && j == 0){
-                        shape.setFill(Color.GREEN);
-                    }
                     myGrid.getChildren().add(shape);
                     pointsdown = !pointsdown;
                 }
-                else{
+                else if(NUMSIDES == 4){
                     Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
                     rect.getStyleClass().add("Rectangle");
                     myGrid.getChildren().add(rect);
