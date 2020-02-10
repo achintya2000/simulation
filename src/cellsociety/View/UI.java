@@ -2,19 +2,15 @@ package cellsociety.View;
 
 import java.io.IOException;
 import java.util.*;
-
 import cellsociety.Controller.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-
 import javafx.scene.control.*;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -24,7 +20,7 @@ import javafx.scene.text.Text;
 import java.io.File;
 
 public class UI extends Application {
-    private static final int HEIGHT = 600;
+    private static final int HEIGHT = 500;
     private static final int WIDTH = 400;
     private static final String RESOURCES = "cellsociety/View/Resources/";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
@@ -43,8 +39,6 @@ public class UI extends Application {
     private static final String NOTXML = "notXML";
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
-
-
     private static final int SPACING = 100;
     private static final float PERCENT_HEIGHT = 33.33F;
     private static final int colindex0 = 0;
@@ -98,7 +92,7 @@ public class UI extends Application {
     }
 
     private Scene makeScene() throws IOException {
-        root.setLeft(setToolBox());
+        root.setTop(setToolBox());
         Scene scene = new Scene(root ,WIDTH, HEIGHT);
         scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         scene.setFill(Color.WHITE);
@@ -122,6 +116,8 @@ public class UI extends Application {
         leftPanel.add(setramdomConfigBox(),1,3);
         leftPanel.add(setToroidComboBox(),0,4);
         leftPanel.add(setBrowseButton(),1,5);
+        Text text = new Text(myResources.getString("chooseNeighbors"));
+        leftPanel.add(text, 0, 6);
         leftPanel.setPadding(new Insets(20, 10, 20, 0));
 
 //        leftPanel.add(setComboBox(),colindex0,rowindex1);
@@ -180,14 +176,9 @@ public class UI extends Application {
         alert.setTitle(myResources.getString(BADINPUT));
         alert.setHeaderText(myResources.getString(NOTXML));
         alert.setContentText(message);
-        //alert.setContentText(myResources.getString(CHOOSEANOTHERFILE));
         alert.showAndWait();
     }
 
-    private Node setChooseNeighborsText(){
-        Text text = new Text(myResources.getString("chooseNeighbors"));
-        return text;
-    }
 
     private Node addRamdomConfigText(){
         Text text = new Text(myResources.getString("randomConfiguration"));
@@ -234,10 +225,6 @@ public class UI extends Application {
         return box;
     }
 
-    private Node setQuestionText(){
-        Text text = new Text(myResources.getString("customNeighbors"));
-        return text;
-    }
 
     private Node setToroidComboBox(){
         ComboBox comboBox = new ComboBox();
@@ -262,6 +249,12 @@ public class UI extends Application {
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e-> {
             myShapeChosen = (String) comboBox.getSelectionModel().getSelectedItem();
+            switch (myShapeChosen){
+                case ("Square"):
+                    NUMSIDES = 4;
+                case ("Triangle"):
+                    NUMSIDES = 3;
+                }
         });
         return comboBox;
     }
