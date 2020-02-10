@@ -10,15 +10,15 @@ import java.util.Map;
 public class GameOfLife extends Simulation {
 
     private List<String> defaultNeighbors =  List.of("N","S","E","W","NW","NE","SW","SE");
-    private final static int SQUARE = 4;
+    private static final int SQUARE = 4;
     private int defaultShape = SQUARE;
-    private int finite = 1;
+    private static final int finite = 1;
     private int defaultEdge = finite;
-    private int numtoLive = 2;
-    private int numtoDie = 3;
+    private static final int numtoLive = 2;
+    private static final int numtoDie = 3;
 
-    private int dead = 0;
-    private int live = 1;
+    private static final int dead = 0;
+    private static final int live = 1;
 
     @Override
     public void updateGrid() {

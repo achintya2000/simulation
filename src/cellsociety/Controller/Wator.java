@@ -20,7 +20,8 @@ public class Wator extends Simulation{
   private int fish = 1;
   private int shark = 2;
 
-  private int shark_lives = 3;
+  private static final int shark_lives = 3;
+  private static final int fishRepTime = 5;
 
   @Override
   protected void init() {
@@ -99,7 +100,7 @@ public class Wator extends Simulation{
         simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], shark);
         simulationGrid.updateCell(r, c, empty);
         fishEaten=true;
-        if (chronon % 5 == 0) {
+        if (chronon % fishRepTime == 0) {
           sharkEnergy[r][c] = shark_lives;
           simulationGrid.updateCell(r,c, shark);
         }
@@ -117,7 +118,7 @@ public class Wator extends Simulation{
         sharkEnergy[r][c]=0;
         simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], shark);
         simulationGrid.updateCell(r, c, empty);
-        if (chronon % 5 == 0) {
+        if (chronon % fishRepTime == 0) {
           sharkEnergy[r][c] = shark_lives;
           simulationGrid.updateCell(r,c, shark);
         }
@@ -131,7 +132,7 @@ public class Wator extends Simulation{
     for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
       if (entry.getValue() == empty && (simulationGrid.inBounds(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1]))) {
         simulationGrid.updateCell(r + simulationGrid.getOffset(entry.getKey())[0], c + simulationGrid.getOffset(entry.getKey())[1], fish);
-        if (chronon % 5 != 0) { // Put fish in new spot
+        if (chronon % fishRepTime != 0) { // Put fish in new spot
           simulationGrid.updateCell(r, c, empty);
         }
         break;

@@ -39,6 +39,16 @@ public class UI extends Application {
     private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
 
+    private static final int SPACING = 100;
+    private static final float PERCENT_HEIGHT = 33.33F;
+    private static final int colindex0 = 0;
+    private static final int rowindex1 = 1;
+    private static final int colindex2 = 2;
+    private static final int TOP_INSET =20;
+    private static final int BOTTOM_INSET =20;
+    private static final int RIGHT_INSET =10;
+    private static final int LEFT_INSET =0;
+
     private static final Map<String, Simulation> chooseSim = Map.of(GAMEOFLIFE,new GameOfLife(),FIRE, new Fire(), SEGREGATION, new Segregation(), PERCOLATION, new Percolation(), WATOR, new Wator(), RPS, new RPS());
     private static final Map<String, String> chooseSimName = Map.of(GAMEOFLIFE,"gameoflife",FIRE, "fire", SEGREGATION, "segregation", PERCOLATION, "percolation", WATOR, "wator", RPS, "rps");
 
@@ -79,18 +89,18 @@ public class UI extends Application {
     }
 
     private Node setToolBox(){
-        VBox left = new VBox(100);
+        VBox left = new VBox(SPACING);
         GridPane leftPanel = new GridPane();
         leftPanel.setBackground(new Background(new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
         leftPanel.getStyleClass().add("leftpanel");
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 3; i++) {
             RowConstraints row1 = new RowConstraints();
-            row1.setPercentHeight(33.33);
+            row1.setPercentHeight(PERCENT_HEIGHT);
         }
-        leftPanel.add(setComboBox(),0,1);
-        leftPanel.add(new Text(myResources.getString("chooseFile")),0,2);
-        leftPanel.add(setBrowseButton(),1,2);
-        leftPanel.setPadding(new Insets(20, 10, 20, 0));
+        leftPanel.add(setComboBox(),colindex0,rowindex1);
+        leftPanel.add(new Text(myResources.getString("chooseFile")),colindex0,colindex2);
+        leftPanel.add(setBrowseButton(),rowindex1,colindex2);
+        leftPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
         left.getChildren().add(leftPanel);
         return left;
     }
