@@ -61,8 +61,9 @@ Features implemented:
 ### Notes/Assumptions
 
 Assumptions or Simplifications: 
-- We 
-
+- Assumption that grid shape would always be rectangular: we did not account for variability in grid shapes, despite accounting for variability in cell shape.
+This was to simplify our creation and display of the grid without compromising our ability to display multiple models.
+- Assumption that code would be able to correctly interpret different celltypes in the XML file: we did this to simplify our design of the XML files such taht they are easy to create.
 
 Interesting data files: All of the XML files are in Resources and display how
 our configuration is formatted. Additionally, the XML files labeled BAD show
@@ -70,11 +71,9 @@ examples of cases where exception handling will display an error to the user
 about which exact key value is causing the error.
 
 Known Bugs: 
-- A chart is displayed, however, it does not update the values in real time.
-
-
-Extra credit:
-
+- Visualization: A chart is displayed, however, it does not update the values in real time.
+- Visualization: Multiple simulation windows may interfere with one another's timeline
 
 ### Impressions
-
+A fun extension of Basic, Complete was made easier by writing good code especially on the back end, but more complicated by the continued use of JavaFX which is still a learning curve.
+Overall we were able to implement most of the additional features in Complete without compromising good coding practice. 
