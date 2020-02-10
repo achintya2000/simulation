@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.scene.paint.Color;
   
@@ -33,6 +34,19 @@ public abstract class Simulation {
       simulationGrid.setNeighbors(neighborhood,shape,edgeTypes.get(edge));
     } else {
       System.out.println("YIKES - This neighborhood/shape/edge combination is invalid"); // come back and change to exception
+    }
+  }
+
+  public void addCells(int numNewCells, int state) {
+    int iter = 0;
+    int maxiter = 50*numNewCells;
+    while(numNewCells >= 0 && maxiter > iter) {
+      int randRow = (int)((simulationGrid.getSize()-1)* Math.random());
+      int randCol = (int)((simulationGrid.getSize()-1)* Math.random());
+      if (simulationGrid.getCurrentState(randRow,randCol)!=state) {
+        simulationGrid.updateCell(randRow,randCol,state);
+        numNewCells--;
+      }
     }
   }
 
