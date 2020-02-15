@@ -23,6 +23,10 @@ public class XMLParser {
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
 
+    /**
+     * Constructor to create a XMLParser that reads in info from XML formatted tages
+     * @param type Type of xml file value
+     */
     public XMLParser(String type) {
         DOCUMENT_BUILDER = getDocumentBuilder();
         TYPE_ATTRIBUTE = type;
