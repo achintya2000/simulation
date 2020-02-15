@@ -1,6 +1,5 @@
 package cellsociety.Controller;
 
-import java.io.File;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -9,36 +8,28 @@ import java.util.Map;
 
 
 public class RPS extends Simulation {
-    private List<String> defaultNeighbors =   List.of("N","S","E","W","NW","NE","SW","SE");
-    private static final int square = 4;
-    private int defaultShape = square;
-    private static final int finite = 1;
-    private int defaultEdge = finite;
+    private static final List<String> DEFAULT_NEIGHBORS = List.of("N","S","E","W","NW","NE","SW","SE");
+    private static final int SQUARE = 4;
+    private static final int DEFAULT_SHAPE = SQUARE;
+    private static final int FINITE = 1;
+    private static final int DEFAULT_EDGE = FINITE;
 
     private static final int numNeighborTypes = 3;
     private Map<Integer,Integer> winnerToLoser = Map.of(0,2,1,0,2,1);
 
     private static final int WIN_THRESH = 3;
 
-    public RPS() {
-        loadSimulationContents(new File("./Resources/RPS.xml"), "rps", true);
-    }
-
     @Override
     public void updateGrid() {
-        setDefault();
+        if (!simulationGrid.isNeighborhoodSet()) {
+            simulationGrid.setNeighbors(DEFAULT_NEIGHBORS, DEFAULT_SHAPE, DEFAULT_EDGE);
+        }
         for(int r = 0; r < simulationGrid.getSize(); r ++) {
             for (int c = 0; c < simulationGrid.getSize(); c++) {
                 Map<String,Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r, c, true);
                 int[] typeNeighbor = countNeighborTypes(statusOfNeighbors);
                 updateCurrentCell(r, c, typeNeighbor);
             }
-        }
-    }
-
-    private void setDefault() {
-        if (!simulationGrid.isNeighborhoodSet()) {
-            simulationGrid.setNeighbors(defaultNeighbors, defaultShape, defaultEdge);
         }
     }
 
