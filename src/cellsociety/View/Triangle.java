@@ -10,7 +10,7 @@ public class Triangle {
 
 
     /**
-     *
+     * Create a new triangle to be displayed.
      * @param orientation - flipped or unflipped
      * @param row - the row number
      * @param col - the column number
