@@ -12,8 +12,8 @@ public class Fire extends Simulation {
     private static final int FINITE = 1;
     private static final int DEFAULT_EDGE = FINITE;
 
-    private static final float PROB_CATCH = 1F;
-    private static final float PROB_GROW = .01F;
+    private static final float PROB_CATCH = 2F;
+    private static final float PROB_GROW = 1F;
 
     private int empty = 0;
     private int tree = 1;

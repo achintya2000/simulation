@@ -156,9 +156,10 @@ public class ViewingWindow {
         myPlayButton.setText(myResources.getString(PLAY));
         myPlayButton.setOnAction(e -> myAnimation.play());
         myStopButton.setText(myResources.getString(STOP));
-        myStopButton.setOnAction(e -> myAnimation.pause());
+        myStopButton.setOnAction(e -> myAnimation.stop());
         myNextButton.setText(myResources.getString(NEXT));
         myNextButton.setOnAction(e -> {
+            myAnimation.stop();
             myAnimation.setCycleCount(1); // means to create a new timeline with timestep 1 and cyclecount 1
             myAnimation.play();                           // so that the next button makes grid only update once
         });
@@ -186,6 +187,7 @@ public class ViewingWindow {
     private Node makeSlider(){
         this.mySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double value = DIVISONFACTOR/(double)newValue;
+            myAnimation.stop();
             myAnimation = createTimeline(value,Timeline.INDEFINITE);
             myAnimation.play();
         });
