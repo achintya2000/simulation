@@ -58,7 +58,7 @@ public class ViewingWindow {
     private Chart myChart;
 
     /**
-     *
+     * Constructor for viewing window which will create a new window for a simulation.
      * @param simulation -  Simulation: the type of simulation that is running
      * @param xml - File:the xml file
      * @param simname - String: the simulation name
@@ -67,12 +67,11 @@ public class ViewingWindow {
      * @param environ - String: Toroidal vs Finite
      * @param numsides int: number of sides ie type of tile
      */
-
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
         mySimulation = simulation;
         mySimulation.loadSimulationContents(xml, simname,random);
         Neighbors = neighbors;
-        mySimulation.setSimulationParameters(Neighbors,numsides,"finite");
+        mySimulation.setSimulationParameters(Neighbors,numsides,environ);
         this.myGrid = new TilePane();
         this.myRoot = new BorderPane();
         this.setAmimation(timestep,Timeline.INDEFINITE);

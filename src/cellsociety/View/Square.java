@@ -11,13 +11,12 @@ public class Square {
     private boolean clicked;
 
     /**
-     *
-     * @param row - the row number of the Sqaure
+     * Square constructor creates a new instance of square cell.
+     * @param row - the row number of the Square
      * @param col - the col number of the Square
      * @param size - the size of the square
      * @param color - the color of the square
      */
-
     public Square(int row, int col, double size, Color color){
         myShape = new Rectangle(size,size,color);
         myNumber = (row*10) + col;
