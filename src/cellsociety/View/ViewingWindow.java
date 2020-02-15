@@ -25,6 +25,13 @@ import java.util.*;
 
 public class ViewingWindow {
 
+    /**
+     * This is the class the displays the simulation to the user. I think that this class is well designed because
+     * each it is well encapsulated. The class can run without any dependencies other than the simulations class.
+     * THe viewing window contains everything the user needs to view the simulation. With further development the user will also
+     * be able to interact with the simulation dynamically.
+     */
+
     private TilePane myGrid;
     private Simulation mySimulation;
     private Timeline myAnimation;
@@ -38,24 +45,29 @@ public class ViewingWindow {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 700;
     private static final int MARGIN = 10;
-    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
-    private static final String RESOURCES = "cellsociety/View/Resources/";
-    // use Java's dot notation, like with import, for properties
-    private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
-    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
-    private static final String STYLESHEET = "styles.css";
-    private double timestep = 1000;
-    private static final String PLAY = "play";
-    private static final String STOP = "stop";
-    private static final String NEXT = "next";
     private static final int VIEWING_WINDOW_SIZE = 500;
     private static final int MAXTIMESTEP = 1000;
     private static final int MINTIMESTEP = 100;
     private static final int DIVISONFACTOR = 100000; //used with slider so that 10000/100 = 1000(Max) and  10000/1000 = 100(Min). Divided to that the sim speeds up as slider goes to the right
+    private double timestep = 1000;
+
+    private static final String RESOURCES = "cellsociety/View/Resources/";
+    private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
+    private static final String STYLESHEET = "styles.css";
+    private static final String PLAY = "play";
+    private static final String STOP = "stop";
+    private static final String NEXT = "next";
+    private static final String RECTANGLESTYLE = "Rectangle";
+    private static final String TITLE = "Viewing Window";
+
+    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
     private List<String> Neighbors;
     private CheckBox viewGraph;
     private int NUMSIDES ;
     private Chart myChart;
+    private Text viewGraphText = new Text (myResources.getString("viewgraph"));
+
 
     /**
      * Constructor for viewing window which will create a new window for a simulation.
@@ -69,35 +81,33 @@ public class ViewingWindow {
      */
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
         mySimulation = simulation;
-        mySimulation.loadSimulationContents(xml, simname,random);
         Neighbors = neighbors;
-        mySimulation.setSimulationParameters(Neighbors,numsides,environ);
-        this.myGrid = new TilePane();
-        this.myRoot = new BorderPane();
-        this.setAmimation(timestep,Timeline.INDEFINITE);
-        this.myPlayButton = new Button();
-        this.myNextButton = new Button();
-        setGraphButton();
-        NUMSIDES = numsides;
-        this.myStopButton = new Button();
-        this.mySaveButton = new Button();
-        this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,100);
-        this.makeSimulationControls();
         mySimulation.loadSimulationContents(xml, simname,random);
+        mySimulation.setSimulationParameters(Neighbors,numsides,environ);
+        NUMSIDES = numsides;
         myGrid = new TilePane();
         myRoot = new BorderPane();
-        myAnimation = createTimeline(timestep,Timeline.INDEFINITE);
-        mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, 100);
+        mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP, MINTIMESTEP);
+        setGraphButton();
+        this.myGrid = new TilePane();
+        this.myRoot = new BorderPane();
+        this.setAnimation(timestep,Timeline.INDEFINITE);
+        this.myPlayButton = new Button();
+        this.myNextButton = new Button();
+        this.myStopButton = new Button();
+        this.mySaveButton = new Button();
+        this.mySlider = new Slider(MINTIMESTEP,MAXTIMESTEP,MINTIMESTEP);
+        this.makeSimulationControls();
         start(new Stage());
     }
 
 
-    private void setAmimation(double timestep, int cyclecount){
+    private void setAnimation(double timestep, int cyclecount){
         this.myAnimation = createTimeline(timestep, cyclecount);
     }
 
     private void start(Stage primaryStage){
-        primaryStage.setTitle("Viewing Window");
+        primaryStage.setTitle(TITLE);
         primaryStage.setScene(buildScene());
         primaryStage.show();
     }
@@ -128,13 +138,11 @@ public class ViewingWindow {
                 }
                 else if(NUMSIDES == 4){
                     Rectangle rect = new Rectangle(tileSize, tileSize, mySimulation.getGridColor(i, j));
-                    rect.getStyleClass().add("Rectangle");
+                    rect.getStyleClass().add(RECTANGLESTYLE);
                     myGrid.getChildren().add(rect);
                 }
             }
         }
-//        myGrid.setHgap(MARGIN/2);
-//        myGrid.setVgap(MARGIN/2);
         myGrid.setAlignment(Pos.CENTER);
         myGrid.setPrefColumns(mySimulation.getSimulationCols());
         myGrid.setPadding(new Insets(100, 75, 20, 75));
@@ -151,9 +159,7 @@ public class ViewingWindow {
         myStopButton.setOnAction(e -> myAnimation.pause());
         myNextButton.setText(myResources.getString(NEXT));
         myNextButton.setOnAction(e -> {
-            myAnimation.setCycleCount(1);
-            //myAnimation = createTimeline (1,1); //
-            // means to create a new timeline with timestep 1 and cyclecount 1
+            myAnimation.setCycleCount(1); // means to create a new timeline with timestep 1 and cyclecount 1
             myAnimation.play();                           // so that the next button makes grid only update once
         });
         myStopButton.setAlignment(Pos.CENTER);
@@ -169,8 +175,7 @@ public class ViewingWindow {
         controls.getChildren().add(myStopButton);
         controls.getChildren().add(myNextButton);
         controls.getChildren().add(mySaveButton);
-        Text text = new Text (myResources.getString("viewgraph"));
-        controls.getChildren().add(text);
+        controls.getChildren().add(viewGraphText);
         controls.getChildren().add(viewGraph);
         controls.getChildren().add(makeSlider());
         controls.setAlignment(Pos.CENTER);
@@ -200,8 +205,6 @@ public class ViewingWindow {
         viewGraph = new CheckBox();
         viewGraph.setOnMousePressed(e->{
                 myChart = new Chart();
-            
-
         });
     }
 }

@@ -1,6 +1,5 @@
 package cellsociety.View;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import cellsociety.Controller.*;
@@ -25,11 +24,24 @@ import java.util.List;
 public class UI extends Application {
     private static final int HEIGHT = 500;
     private static final int WIDTH = 400;
+    private static final int SPACING = 100;
+    private static final int HGAP = 10;
+    private static final int rowindex = 1;
+    private static final int TOP_INSET =10;
+    private static final int BOTTOM_INSET =20;
+    private static final int RIGHT_INSET =10;
+    private static final int LEFT_INSET =0;
+    private static final int LEFTCOLUMN = 0;
+    private static final int RIGHTCOLUMN = 1;
+    private static final int FONTSIZE = 20;
+    private static final int TILESIZE = 50;
+    private static final int CENTERTILENUM = 11;
+
     private static final String RESOURCES = "cellsociety/View/Resources/";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES.replace("/", ".");
+    private static final String DESCRIPTION = "description";
     private static final String STYLESHEET = "styles.css";
-    private static final String DEFAULTSIMULATION = "./Resources/fire.xml";
     private static final String gameoflife = "GameofLife";
     private static final String GAMEOFLIFE = "Game of Life";
     private static final String FIRE = "Fire";
@@ -40,35 +52,47 @@ public class UI extends Application {
     private static final String TITLE = "title";
     private static final String BADINPUT = "badinput";
     private static final String NOTXML = "notXML";
-    private static final String CHOOSEANOTHERFILE = "chooseother";
     private static final String NEWSIM = "newSim";
-    private static final int SPACING = 100;
-    private static final float PERCENT_HEIGHT = 33.33F;
-    private static final int colindex0 = 0;
-    private static final int rowindex1 = 1;
-    private static final int colindex2 = 2;
-    private static final int TOP_INSET =10;
-    private static final int BOTTOM_INSET =20;
-    private static final int RIGHT_INSET =10;
-    private static final int LEFT_INSET =0;
+    private static final String CHOOSESHAPE = "chooseShape";
+    private static final String TRIANGLE = "Triangle";
+    private static final String SQUARE = "Square";
+    private static final String BROWSE = "browse";
+    private static final String LEFTPANELSTYLENAME = "leftpanel";
+    private static final String COMBOBOXSTYLENAME = "combobox";
+    private static final String  ENVIRONMENT = "environment";
+    private static final String FINITE = "finite";
+    private static final String TOROID = "toroid";
+    private static final String SHAPE = "shape";
+
+
 
 
     private static final Map<String, Simulation> chooseSim = Map.of(GAMEOFLIFE,new GameOfLife(),FIRE, new Fire(), SEGREGATION, new Segregation(), PERCOLATION, new Percolation(), WATOR, new Wator(), RPS, new RPS());
     private static final Map<String, String> chooseSimName = Map.of(GAMEOFLIFE,"gameoflife",FIRE, "fire", SEGREGATION, "segregation", PERCOLATION, "percolation", WATOR, "wator", RPS, "rps");
+
+
+    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
+    private BorderPane root = new BorderPane();
+    private Stage PrimaryStage;
+    private TilePane myNeighbors;
+    private FileChooser fileChooser = new FileChooser();
     private Map<Integer, String> allNeighbors = Map.ofEntries(Map.entry(0, "NW"),Map.entry(1, "N"),Map.entry(2, "NE"),Map.entry(10 , "W"),Map.entry(12, "E"),Map.entry(20, "SW"),Map.entry(21, "S"),Map.entry(22, "SE"), Map.entry( -21, "NWW"),Map.entry(-22, "NEE"),Map.entry(-20, "WW") ,Map.entry(-26, "EE"));
     private List<String> neighborstosend = new ArrayList<>();
 
-    private static final String BROWSE = "browse";
-    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
-    FileChooser fileChooser = new FileChooser();
-    private String myNewSimulation = "Fire";
-    BorderPane root = new BorderPane();
-    Stage PrimaryStage;
-    private String myShapeChosen = "Square";
-    private TilePane myNeighbors;
+    /*
+    * Default parameters for new viewingwindow
+    * */
     private boolean isRandom = false;
-    private String ENVIRONMENT = "finite";
     private int NUMSIDES = 4;
+    private String myShapeChosen = "Square";
+    private String myNewSimulation = "Fire";
+    private String environment = "finite";
+
+    private Text chooseNeighborsText = new Text(myResources.getString("chooseNeighbors"));
+    private Text chooseConFigText = new Text(myResources.getString("chooseFile"));
+    private Text descriptionText = new Text(myResources.getString(DESCRIPTION));
+    private Text chooseShapeText= new Text(myResources.getString(CHOOSESHAPE));
+    private Text randomConfigurationText = new Text(myResources.getString("randomConfiguration"));
 
     /**
      *
@@ -89,14 +113,9 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PrimaryStage = primaryStage;
-        String segregationConfiguration = DEFAULTSIMULATION;
-       // loadSimulationChoice(FIRE, new File(segregationConfiguration));
         primaryStage.setTitle(myResources.getString(TITLE));
         primaryStage.setScene(makeScene());
         primaryStage.show();
-
-        primaryStage.show();
-
     }
 
     private Scene makeScene() throws IOException {
@@ -105,36 +124,39 @@ public class UI extends Application {
         scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         scene.setFill(Color.WHITE);
         return scene;
+
+    }
+
+    private void loadSimulationChoice(String simulation, File xmlFile) {
+        try {
+            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation), isRandom, neighborstosend, environment,NUMSIDES );
+        }
+        catch(XMLException e){
+            setErrorBox(chooseSim.get(simulation).getERROR_MESSAGE());
+        }
     }
 
     private Node setToolBox(){
-        VBox left = new VBox(SPACING);
-        GridPane leftPanel = new GridPane();
-        leftPanel.setBackground(new Background(new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
-        leftPanel.getStyleClass().add("leftpanel");
-        for(int i = 0; i < 3; i++) {
-            RowConstraints row1 = new RowConstraints();
-            row1.setPercentHeight(PERCENT_HEIGHT);
-        }
-        Text description = new Text(myResources.getString("description"));
-        description.setFont(Font.font(20));
-        leftPanel.add(description,0,0);
-        leftPanel.add(setComboBox(),0,1);
-        leftPanel.add(setChoseShapeeText(), 0, 2);
-        leftPanel.add(setShapeComboBox(),1,2);
-        leftPanel.add(addRamdomConfigText(),0,3);
-        leftPanel.add(setramdomConfigBox(),1,3);
-        leftPanel.add(setToroidComboBox(),0,4);
-        Text chooseConFig = new Text(myResources.getString("chooseFile"));
-        leftPanel.add(chooseConFig,0,5);
-        leftPanel.add(setBrowseButton(),1,5);
-        Text text = new Text(myResources.getString("chooseNeighbors"));
-        leftPanel.add(text, 0, 6);
-        leftPanel.setPadding(new Insets(10, 10, 20, 0));
-        leftPanel.setHgap(10);
-        left.getChildren().add(leftPanel);
+        VBox topBox = new VBox(SPACING);
+        GridPane topPanel = new GridPane();
+        topPanel.setBackground(new Background(new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
+        topPanel.getStyleClass().add(LEFTPANELSTYLENAME);
+        descriptionText.setFont(Font.font(FONTSIZE));
+        topPanel.add(descriptionText,LEFTCOLUMN,rowindex*0);
+        topPanel.add(setComboBox(),LEFTCOLUMN,rowindex);
+        topPanel.add(chooseShapeText, LEFTCOLUMN, rowindex *2);
+        topPanel.add(setShapeComboBox(),RIGHTCOLUMN,rowindex*2);
+        topPanel.add(randomConfigurationText,LEFTCOLUMN,rowindex*3);
+        topPanel.add(setramdomConfigBox(),RIGHTCOLUMN,rowindex*3);
+        topPanel.add(setToroidComboBox(),LEFTCOLUMN,rowindex*4);
+        topPanel.add(chooseConFigText,LEFTCOLUMN,rowindex*5);
+        topPanel.add(setBrowseButton(),RIGHTCOLUMN,rowindex*6);
+        topPanel.add(chooseNeighborsText, LEFTCOLUMN, rowindex*7);
+        topPanel.setPadding(new Insets(TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET));
+        topPanel.setHgap(HGAP);
+        topBox.getChildren().add(topPanel);
         root.setBottom(setChooseNeighborsTilePane());
-        return left;
+        return topBox;
     }
 
     private Node setBrowseButton(){
@@ -149,9 +171,8 @@ public class UI extends Application {
 
     private Node setComboBox(){
         ComboBox comboBox = new ComboBox();
-        comboBox.getStyleClass().add("combobox");
+        comboBox.getStyleClass().add(COMBOBOXSTYLENAME);
         String[] choiceProperties = {NEWSIM, PERCOLATION, gameoflife, WATOR, SEGREGATION, FIRE, RPS};
-
         for(String choice: choiceProperties){
             comboBox.getItems().add(myResources.getString(choice));
         }
@@ -164,20 +185,6 @@ public class UI extends Application {
     }
 
 
-    private Node setChoseShapeeText(){
-        Text text = new Text(myResources.getString("chooseShape"));
-        return text;
-    }
-
-    private void loadSimulationChoice(String simulation, File xmlFile) {
-        try {
-            ViewingWindow window = new ViewingWindow(chooseSim.get(simulation), xmlFile, chooseSimName.get(simulation), isRandom, neighborstosend, ENVIRONMENT,NUMSIDES );
-        }
-        catch(XMLException e){
-                setErrorBox(chooseSim.get(simulation).getERROR_MESSAGE());
-            }
-        }
-
     private void setErrorBox(String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(myResources.getString(BADINPUT));
@@ -187,10 +194,6 @@ public class UI extends Application {
     }
 
 
-    private Node addRamdomConfigText(){
-        Text text = new Text(myResources.getString("randomConfiguration"));
-        return text;
-    }
     private CheckBox setramdomConfigBox(){
         CheckBox box = new CheckBox();
         box.setOnMousePressed(e->{
@@ -202,51 +205,28 @@ public class UI extends Application {
     public Node setChooseNeighborsTilePane(){
         myNeighbors = new TilePane();
         HBox box = new HBox();
-//        boolean turneddown = true;
-        for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                double tileSize = 50;
-               // if(NUMSIDES == 4){
-                    Square tile = new Square(i,j,tileSize,Color.WHITE);
+                    Square tile = new Square(i,j,TILESIZE,Color.WHITE);
                     if(i == 1 && j == 1){
                         tile.getShape().setFill(Color.RED);
                     }
                     tile.getShape().setOnMousePressed(e-> {
                         int number = tile.getMyNumber();
                         String direction = allNeighbors.get(number);
-                        if(tile.getMyNumber() != 11) {
+                        if(tile.getMyNumber() != CENTERTILENUM) {
                             tile.getShape().setFill(Color.BLUE);
                             neighborstosend.add(direction);
-
                         }
                     });
                     myNeighbors.getChildren().add(tile.getShape());
-              //  }
-//                if(NUMSIDES == 3){
-//                    Triangle tile = new Triangle(turneddown,i,j,tileSize);
-//                    tile.getPolygon().setFill(Color.WHITE);
-//                    if(i == 1 && j == 1){
-//                        tile.getPolygon().setFill(Color.RED);
-//                    }
-//                    tile.getPolygon().setOnMousePressed(e-> {
-//                        int number = tile.getMyNumber();
-//                        String direction = allNeighbors.get(number);
-//                        if(tile.getMyNumber() != 11) {
-//                            tile.getPolygon().setFill(Color.BLUE);
-//                            neighborstosend.add(direction);
-//
-//                        }
-//                    });
-//                    myNeighbors.getChildren().add(tile.getPolygon());
-//                    turneddown = !turneddown;
-//                }
                 }
             }
-        myNeighbors.setHgap(5);
+        myNeighbors.setHgap(HGAP/2);
         myNeighbors.setVgap(5);
         myNeighbors.setAlignment(Pos.CENTER);
         myNeighbors.setPrefColumns(3);
-        myNeighbors.setPadding(new Insets(100, 75, 20, 75));
+        myNeighbors.setPadding(new Insets(TOP_INSET *  RIGHT_INSET, 75, 20, 75));
         myNeighbors.prefRowsProperty();
         box.getChildren().add(myNeighbors);
         box.setAlignment(Pos.CENTER);
@@ -261,21 +241,21 @@ public class UI extends Application {
 
     private Node setToroidComboBox(){
         ComboBox comboBox = new ComboBox();
-        comboBox.getStyleClass().add("combobox");
-        String[] environProp = {"environment", "finite", "toroid"};
+        comboBox.getStyleClass().add(COMBOBOXSTYLENAME);
+        String[] environProp = {ENVIRONMENT, FINITE, TOROID};
         for(String s : environProp){
             comboBox.getItems().add(myResources.getString(s));
         }
         comboBox.getSelectionModel().selectFirst();
         comboBox.setOnAction(e->{
-            ENVIRONMENT = (String) comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase();
+            environment = comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase();
         });
         return comboBox;
     }
     private Node setShapeComboBox(){
         ComboBox comboBox = new ComboBox();
-        comboBox.getStyleClass().add("combobox");
-        String[] shapeProperties = {"shape", "square", "triangle"};
+        comboBox.getStyleClass().add(COMBOBOXSTYLENAME);
+        String[] shapeProperties = {SHAPE, SQUARE, TRIANGLE};
         for (String shape : shapeProperties){
             comboBox.getItems().add(myResources.getString(shape));
         }
@@ -283,10 +263,10 @@ public class UI extends Application {
         comboBox.setOnAction(e-> {
             myShapeChosen = (String) comboBox.getSelectionModel().getSelectedItem();
             switch (myShapeChosen){
-                case ("Square"):
+                case (SQUARE):
                     NUMSIDES = 4;
                     break;
-                case ("Triangle"):
+                case (TRIANGLE):
                     NUMSIDES = 3;
                     break;
                 }
