@@ -14,10 +14,8 @@ public abstract class Simulation {
 
   private static final int MIN_NEIGHBOR_EDGES = 2;
   private static final int MAX_NEIGHBOR_EDGES = 9;
-  private static final int CIRCLE = 360;
-  private static final int TRIANGLE = 180;
 
-  private static final Map<String, Integer> edgeTypes = Map.of("finite",1,"toroidal",2);
+  private static final Map<String, Integer> edgeTypes = Map.of("finite",1,"toroid",2);
 
   protected String SIMULATION_NAME;
   protected int GRID_WIDTH;
@@ -27,14 +25,12 @@ public abstract class Simulation {
   private File infoFile = new File("./Resources/simInfo.xml");
   private Map<String, String> configuration;
   private String ERROR_MESSAGE = "";
-  protected int cell1Count = 0;
-  protected int cell2Count = 0;
 
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
     if (validShape(shape) && edgeTypes.containsKey(edge)) {
       simulationGrid.setNeighbors(neighborhood,shape,edgeTypes.get(edge));
     } else {
-      System.out.println("YIKES - This neighborhood/shape/edge combination is invalid"); // come back and change to exception
+      System.out.println("This neighborhood/shape/edge combination is invalid");
     }
   }
 
@@ -52,25 +48,19 @@ public abstract class Simulation {
   }
 
   private boolean validShape(int shape) {
-    return ( ((shape-MIN_NEIGHBOR_EDGES)*TRIANGLE)*MIN_NEIGHBOR_EDGES % CIRCLE == 0 && shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
+    return ( shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
   }
 
   public void loadSimulationContents(File simFile, String simName, boolean random) {
-
     List<String> cellTypes = getCellTypes(simName);
     List<String> xmlvals = getXMLTags(cellTypes);
-
     XMLParser simParser = new XMLParser("config");
     configuration = simParser.getInfo(simFile, xmlvals);
-
     checkXMLFileError(configuration);
-
     SIMULATION_NAME = configuration.get("simulation");
     GRID_WIDTH = Integer.parseInt(configuration.get("width"));
     GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-
     simulationGrid = new ArrayGrid(GRID_WIDTH);
-
     initializeGrid(cellTypes, configuration, random, cellTypes.size()+1);
     init();
   }
@@ -110,29 +100,6 @@ public abstract class Simulation {
       xmlvals.addAll(List.of("num"+celltype, "state"+celltype,celltype));
     }
     return xmlvals;
-
-
-//    for (Map.Entry<String, String> entry : configuration.entrySet()) {
-//      if(entry.getValue().equals("")) {
-//        ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " is null";
-//        throw new XMLException("XML file value %s is null", entry.getKey());
-//      } else if (!entry.getKey().matches("title|author|simulation")) {
-//        if (entry.getValue().matches(".*[a-zA-Z]+.*")) {
-//          ERROR_MESSAGE = "XML file value " + entry.getKey().toUpperCase() + " has improper format";
-//          throw new XMLException("XML file value %s is improperly formatted", entry.getKey());
-//        }
-//      }
-//    }
-//
-//    SIMULATION_NAME = configuration.get("simulation");
-//    GRID_WIDTH = Integer.parseInt(configuration.get("width"));
-//    GRID_HEIGHT = Integer.parseInt(configuration.get("height"));
-//
-//    simulationGrid = new ArrayGrid(GRID_WIDTH);
-//
-//    initializeGrid(cellTypes, configuration, random, numtypes);
-//    init();
-
   }
 
   protected void initializeGrid(List<String> cellTypes, Map<String, String> configuration, boolean random, int range) {

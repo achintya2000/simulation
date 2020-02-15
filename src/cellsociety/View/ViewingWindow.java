@@ -61,7 +61,7 @@ public class ViewingWindow {
         mySimulation = simulation;
         mySimulation.loadSimulationContents(xml, simname,random);
         Neighbors = neighbors;
-        mySimulation.setSimulationParameters(Neighbors,numsides,"finite");
+        mySimulation.setSimulationParameters(Neighbors,numsides,environ);
         this.myGrid = new TilePane();
         this.myRoot = new BorderPane();
         this.setAmimation(timestep,Timeline.INDEFINITE);
