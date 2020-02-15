@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config config="config">
+    <title>CS308 Sim</title>
+    <author>Team 19</author>
+    <simulation>Fire</simulation>
+    <width>50</width>
+    <height>50</height>
+    <numcelltype0>5</numcelltype0>
+    <statecelltype0>0</statecelltype0>
+    <celltype0>[45,45][45,46][44,45][44,46][46,44][]</celltype0>
+    <numcelltype1>17</numcelltype1>
+    <statecelltype1>2</statecelltype1>
+    <celltype1>[25,25][25,26][25,24][26,27][26,24][26,26][28,28][28,26][28,27][28,25][27,27][27,26][1,1][1,2][3,1][3,2][5,1][]</celltype1>
+    <default>1</default>
+</config>
