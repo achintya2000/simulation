@@ -1,5 +1,6 @@
 package cellsociety.Controller;
 
+import java.io.File;
 import java.util.*;
 import javafx.scene.paint.Color;
 
@@ -17,6 +18,16 @@ public class Fire extends Simulation {
     private int empty = 0;
     private int tree = 1;
     private int burning = 2;
+
+
+    /**
+     * creates Fire object which is a Simulation
+     */
+
+    public Fire() {
+        loadSimulationContents(new File("./Resources/fire.xml"), "fire", true);
+    }
+
 
     @Override
     public void updateGrid() {

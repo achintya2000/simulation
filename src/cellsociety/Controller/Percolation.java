@@ -18,6 +18,9 @@ public class Percolation extends Simulation {
     private int percolated = 1;
     private int blocked = 2;
 
+    /*
+    * Creates Percolation object
+    * */
     public Percolation() {
         loadSimulationContents(new File("./Resources/percolation.xml"), "percolation", true);
     }
