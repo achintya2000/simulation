@@ -17,6 +17,19 @@ public class XMLBuilder {
 
     private Element myRootElement;
 
+ /**
+  * Used to build an XML file from current simulation state
+  * @param simulationName Value for name of simulation tag
+  * @param simWidth Value for simulation width tag
+  * @param simHeight Value for simulation height tag
+  * @param numCellType0 Value for num cell type 0 tag
+  * @param stateCellType0 Value for state cell type 0 tag
+  * @param cellType0 Value for cell type 0 tag
+  * @param numCellType1 Value for num cell type 1 tag
+  * @param stateCellType1 Value for state cell type 1 tag
+  * @param cellType1 Value for cell type 1 tag
+  * @param defaultVal Value for default tagßß
+  */
     public void buildXML(String simulationName, String simWidth, String simHeight, String numCellType0, String stateCellType0, String cellType0,
                           String numCellType1, String stateCellType1, String cellType1, String defaultVal) {
      try {
