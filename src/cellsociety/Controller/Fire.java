@@ -29,6 +29,9 @@ public class Fire extends Simulation {
     }
 
 
+    /**
+     * Updates grid according to Fire rules
+     */
     @Override
     public void updateGrid() {
         if (!simulationGrid.isNeighborhoodSet()) {
@@ -52,6 +55,10 @@ public class Fire extends Simulation {
         }
     }
 
+    /**
+     * Gets grid width for display
+     * @return grid width
+     */
     @Override
     public int getSimulationCols() {
         return GRID_WIDTH;

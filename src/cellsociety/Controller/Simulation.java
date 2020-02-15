@@ -26,6 +26,10 @@ public abstract class Simulation {
   private Map<String, String> configuration;
   private String ERROR_MESSAGE = "";
 
+  /**
+   * Allows user to set custom simulation parameters such as shape and edge type from UI
+   * @return
+   */
   public void setSimulationParameters(List<String> neighborhood, int shape, String edge) { // call after loadsimcontents!!
     if (validShape(shape) && edgeTypes.containsKey(edge)) {
       simulationGrid.setNeighbors(neighborhood,shape,edgeTypes.get(edge));
@@ -34,6 +38,10 @@ public abstract class Simulation {
     }
   }
 
+  /**
+   * Allows users to dynamically update cell types from UI
+   * @return
+   */
   public void addCells(int numNewCells, int state) {
     int iter = 0;
     int maxiter = 50*numNewCells;
@@ -51,6 +59,10 @@ public abstract class Simulation {
     return ( shape > MIN_NEIGHBOR_EDGES && shape < MAX_NEIGHBOR_EDGES );
   }
 
+  /**
+   * Loads contents of selected XML file for simulation
+   * @return
+   */
   public void loadSimulationContents(File simFile, String simName, boolean random) {
     List<String> cellTypes = getCellTypes(simName);
     List<String> xmlvals = getXMLTags(cellTypes);
@@ -137,6 +149,10 @@ public abstract class Simulation {
     }
   }
 
+  /**
+   * Save current state of simulation from UI
+   * @return
+   */
   public void saveCurrentState() {
     XMLBuilder xmlBuilder = new XMLBuilder();
     int numCellType0 = 0;
@@ -170,16 +186,33 @@ public abstract class Simulation {
                         Integer.toString(stateDefault));
   }
 
+  /**
+   * Returns color associated with a given cell state
+   * @return color
+   */
   public Color getGridColor(int r, int c) {
     return cellColorMap.get(simulationGrid.getCurrentState(r, c));
   }
 
+  /**
+   * Updates the grid according to rules of simulation
+   * @return
+   */
   public abstract void updateGrid();
 
+  /**
+   * Returns grid width
+   * @return grid width
+   */
   public abstract int getSimulationCols();
+
 
   protected abstract void init();
 
+  /**
+   * Gets error message to display in alert box
+   * @return string with specified xml tag
+   */
   public String getERROR_MESSAGE() {
     return ERROR_MESSAGE;
   }
