@@ -19,6 +19,9 @@ public class RPS extends Simulation {
 
     private static final int WIN_THRESH = 3;
 
+    /**
+     * Updates simulation grid based on rules for RPS game
+     */
     @Override
     public void updateGrid() {
         if (!simulationGrid.isNeighborhoodSet()) {
@@ -57,6 +60,10 @@ public class RPS extends Simulation {
         return winnerToLoser.get(candidateWinner) == candidateLoser;
     }
 
+    /**
+     * Gets the number of simulation columns
+     * @return int value of sim columns
+     */
     @Override
     public int getSimulationCols() {
         return GRID_WIDTH;

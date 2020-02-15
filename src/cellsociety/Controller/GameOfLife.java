@@ -29,6 +29,9 @@ public class GameOfLife extends Simulation {
         loadSimulationContents(new File("./Resources/gameoflife.xml"), "gameoflife", true);
     }
 
+    /**
+     * Updates simulation grid based on rules for game of life sim.
+     */
     @Override
     public void updateGrid() {
         if (!simulationGrid.isNeighborhoodSet()) {
@@ -47,6 +50,10 @@ public class GameOfLife extends Simulation {
         }
     }
 
+    /**
+     * Gets the number of simulation columns
+     * @return int value of sim columns
+     */
     @Override
     public int getSimulationCols() {
         return GRID_WIDTH;
