@@ -1,33 +1,33 @@
-# Simulation Design Final
-### Names
+# Design 
+### Names of all people who worked on the project
+- Sarah Gregorich (seg47)
+- Doherty Guirand (dg211)
+- Achintya Kumar (ask60)
+### Each person's role in developing the project
+- Sarah: Backend
+- Achintya: Backend & Frontend
+- Doherty: Frontend & Backend
+- Team members that wanted to gain experience in all aspects of the project were able to do, therefore many responsibilities were shared.
+### What are the project's design goals, specifically what kinds of new features did you want to make easy to add
+The use of interfaces, abstract classes, and increased reliance on resource files made extensions easy and code generally compact. Adding alternate data structures is easy – just make a new class that implements _Grid.java_ interface. Adding a new simulation is also easy – make a new subclass of Simulation which contains the logic for that simulation, create the appropriate XML file, and add it as a choice to the drop down menu. 
 
-## Team Roles and Responsibilities
+1.	New Simulations: As described above, adding a new Simulation took very little time or effort to accomplish. The code created in Basic was definitely prepared for multiple Simulation subclasses and life was made much easier by this during Complete. This is due to having an abstract Simulation class with all code that would have been duplicated across subclasses, as well as an easy template for a new XML file.
+2.	Custom Neighborhood: This was also pretty easy to add as it only required modifications to _Grid.checkNeighbors()_ and the creation of a _setNeighbors()_ class in Simulation so that custom parameters could be chosen by the user. Then in _UI.java_, it just had to add those selected neighbors to a list and pass it to a function when finished.
+### Describe the high-level design of your project, focusing on the purpose and interaction of the core classes
+1.	__Controller__: _Simulation.java_ is an abstract class which has a subclass for each of the simulations supported by our framework. This super class handles common tasks such as reading in an XML file, populating the grid, setting custom parameters for a simulation, and on-demand saving the current state of the simulation to an XML file. Each subclass overrides methods specific to a given simulation, such as _updateGrid()_ and _init()_, in order to create the necessary data structures to support a CA and update them according to game specific rules.
+2.	__Model__: The model package contains the _Grid.java_ interface and _ArrayGrid.java_ class. During basic, we wanted to be flexible in our data structure so that for Complete should we be asked to migrate to a new kind of data structure the only change necessary would be a new class which implemented the Grid interface. 
+3.	__View__: The view package contains _UI.java_ and _ViewingWindow.java_ which both support the GUI in displaying the animations and accepting inputs like configuration parameters or XML files. This package was perhaps the most challenging to implement as JavaFX still presented a learning curve to the team. However Basic was well implemented and further extensions were made for Complete.
 
- * Team Member #1
+Each of these packages work together to create the final animation. The controller package creates the simulation grid using model, which is then used by view during display. The controller is responsible for maintaining the correct copy of the grid according to the simulation rules, while view merely reads the grid in order to display. An instance of a class which implements Grid is a variable private to each animation, updated according to controller.
 
- * Team Member #2
-
- * Team Member #3
-
-
-## Design goals
-
-#### What Features are Easy to Add
-
-
-## High-level Design
-
-#### Core Classes
+### What assumptions or decisions were made to simplify your project's design, especially those that affected adding required features
+Assumptions or Simplifications: 
+- Assumption that grid shape would always be rectangular: we did not account for variability in grid shapes, despite accounting for variability in cell shape.
+This was to simplify our creation and display of the grid without compromising our ability to display multiple models.
+- Assumption that code would be able to correctly interpret different celltypes in the XML file: we did this to simplify our design of the XML files such that they are easy to create.
 
 
-## Assumptions that Affect the Design
-
-#### Features Affected by Assumptions
-
-
-## New Features HowTo
-
-#### Easy to Add Features
-
-#### Other Features not yet Done
-
+### Describe, in detail, how to add new features to your project, especially ones you were not able to complete by the deadline
+-	Simulation: With regards to Controller, the project did a great job on adding another simulation, a decent job at handling custom neighborhoods and different edge conditions, but struggled more on cell shapes with N edges. Adding an additional simulation (RPS) took less than an hour, as it simply required adding the logic to a new Simulation subclass, creating an XML file, and updating the drop down menu in _UI.java_. Custom neighborhoods only required creating a _setNeighbors()_ method in _Grid.java_, updating _checkNeighbors()_ to iterate over that list, and finally adding some defaults to the Simulation subclasses themselves. Different edge conditions was another easy extension of the checkNeighbors method, as implementing toroidal was as simple as replacing the neighborRow, neighborCol declarations with a call to a new function getOffset to determine which row, column to pull from. However cell shapes of N edges was more complex, as it required rethinking the Grid structure entirely. Using a triangle grid was straightforward, but for example a hexagon is more challenging because of the offset that each cell is at. Accommodating this would have meant creating the MapGrid.java class in order to have a list of neighbors/states. It would have also been helpful to use an anchor pane instead of grid pane to make display easier on the front end.
+-	Configuration: In terms of model, the extensions were also relatively easy. Error checking for file type was already being done in Basic as well as initial configs based on specific locations and states. Extending it to include concentration distributions was simply another method in _Simulation.java_. Allowing the users to save the current state of the XML file was also straightforward, not taking more than an hour of work to complete and requiring a new class in Simulation. Separate styling files were already in place for basic. 
+-	Visualization: These extensions to our View package were especially especially difficult. I’d been pending a sufficient amount of time on the back end to where I wasn’t sure what the best way to troubleshoot the front end was when we started running into problems. The graph displays but is not hooked up to the actual simulation numbers. The user can dynamically change the values of parameters – this was a somewhat easier task although it did involve some consideration. Allowing users to run multiple simulations at once was tough – we ran into a bug where the first simulation worked fine up until another was loaded, at which point that simulation’s properties would be overwritten by the new one. In the end troubleshooting didn’t help at all and we had to call it like it was. 
