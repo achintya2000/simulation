@@ -5,6 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Purpose: The purpose of this class is to implement the logic for the 2-D array version of the simulation grid.
+ * Assumptions: This class assumed the method signatures and parameters are defined properly in the interface and have all the required information
+ * needed to properly write the logic.
+ * Dependencies: This depends on standard java utils like HashMap, Map, and List.
+ * How to use: Use this in the Controller package in the Simulation abstract class after you load in the configuration variables from the XML file. Then
+ * you can make an instance of this class and use the methods defined to populate the simulation grid.
+ */
 public class ArrayGrid implements Grid {
 
     private static int mySize; //for all length calculations I used myArray.length and myArray[0].length just in case myArray is not a square
@@ -19,6 +27,11 @@ public class ArrayGrid implements Grid {
     private boolean isNeighborhoodSet = false;
     private static final int INVALID_INDEX = -5;
 
+    /**
+     * Constructor to create an ArrayGrid. This is the 2-D array that handles that holds the simulation variables
+     * and runs logic to find neighbors.
+     * @param size The size of the simulation grid.
+     */
     public ArrayGrid(int size) {
         mySize = size;
         myArray = new int[mySize][mySize];
@@ -29,11 +42,19 @@ public class ArrayGrid implements Grid {
         }
     }
 
+    /**
+     * Getter method to return size used to externally to create the rectangular grid with colors.
+     * @return Size of grid.
+     */
     @Override
     public int getSize() {
         return mySize;
     }
 
+    /**
+     * Method used to define default state in the 2-D array.
+     * @param state Int value that represents the default state.
+     */
     @Override
     public void initializeDefaultCell(int state) {
         for (int i = 0; i < mySize; i++) {
@@ -45,11 +66,23 @@ public class ArrayGrid implements Grid {
         }
     }
 
+    /**
+     * Method used to change state in a specified cell.
+     * @param row Row value of the cell.
+     * @param col Column value of the cell.
+     * @param newState New state to set that cell to.
+     */
     @Override
     public void updateCell(int row, int col, int newState) {
         myArray[row][col] = newState;
     }
 
+    /**
+     * Method to set which neighbors you need to check. Used for setting custom parameters.
+     * @param requestedNeighbors The neighbors you use to
+     * @param shape The shape of the grid's cells.
+     * @param edge The type of edge (toroidal or not).
+     */
     @Override
     public void setNeighbors(List<String> requestedNeighbors, int shape, int edge) {
         isNeighborhoodSet = true;
@@ -60,16 +93,32 @@ public class ArrayGrid implements Grid {
         }
     }
 
+    /**
+     * Getter method to check if custom neighbors are set or not.
+     * @return Whether or not custom neighbors are set.
+     */
     @Override
     public boolean isNeighborhoodSet() {
         return isNeighborhoodSet;
     }
 
+    /**
+     * Tells you in the grid how far away something is. For example south-west is mapped to -1,-1
+     * @param neighbor The direction neighbor should be.
+     * @return Array of how far away it is.
+     */
     @Override
     public Integer[] getOffset(String neighbor) {
         return currentNeighbors.get(neighbor);
     }
 
+    /**
+     * Checks the value of the neighbors of a cell
+     * @param row Cell's row value to check neighbors of
+     * @param col Cell's column value to check neighbors of
+     * @param atomicUpdate Tells you whether or not to use current or reference state
+     * @return Map of statuses of the neighbors
+     */
     @Override
     public  Map<String, Integer> checkNeighbors(int row, int col, boolean atomicUpdate){
         if (row==0 && col==0) {
@@ -138,22 +187,43 @@ public class ArrayGrid implements Grid {
         return new int[] {neighborRow, neighborCol};
     }
 
-
+    /**
+     * Get's the state of the current grid - one that is displayed to users.
+     * @param row Cell that we want to check's row
+     * @param col Cell that we want to check's column
+     * @return State of that cell
+     */
     @Override
     public int getCurrentState(int row, int col) {
         return myArray[row][col];
     }
 
+    /**
+     * Getter method for the grid.
+     * @return The 2-D grid that represents the simulation.
+     */
     @Override
     public int[][] getGrid() {
         return myArray;
     }
 
+    /**
+     * Return state of 2-D array's copy for logic.
+     * @param row Cell that we want to check's row
+     * @param col Cell that we want to check's column
+     * @return State of that cell
+     */
     @Override
     public int getReferenceState(int row, int col) {
         return myReferenceArray[row][col];
     }
 
+    /**
+     * Check if the cell passed in is in bounds of 2-D array.
+     * @param r Row value of the cell.
+     * @param c Column value of the cell.
+     * @return Returns true or false based on if value is in bounds of the grid.
+     */
     @Override
     public boolean inBounds(int r, int c){
         return (r < myArray.length && r >= 0 && c < myArray[0].length && c >= 0);
