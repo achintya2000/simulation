@@ -70,6 +70,11 @@ public class UI extends Application {
     private String ENVIRONMENT = "finite";
     private int NUMSIDES = 4;
 
+    /**
+     *
+     * @throws IOException
+     */
+
     public UI() throws IOException {
     }
 

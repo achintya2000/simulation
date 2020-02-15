@@ -18,11 +18,13 @@ public class GameOfLife extends Simulation {
     private int defaultEdge = finite;
     private static final int numtoLive = 2;
     private static final int numtoDie = 3;
-
     private static final int dead = 0;
     private static final int live = 1;
 
 
+    /**
+     * Creates GameofLife Simulaition Object
+     */
     public GameOfLife(){
         loadSimulationContents(new File("./Resources/gameoflife.xml"), "gameoflife", true);
     }
