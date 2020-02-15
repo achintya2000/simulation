@@ -24,10 +24,16 @@ public class Wator extends Simulation{
   private static final int shark_lives = 3;
   private static final int fishRepTime = 5;
 
+  /**
+   * Creates wator object
+   */
   public Wator(){
     loadSimulationContents(new File("./Resources/wator.xml"), "wator", true);
   }
 
+  /**
+   * Initializes color map and shark energy grid for simulation
+   */
   @Override
   protected void init() {
     cellColorMap = new HashMap<>();
@@ -50,6 +56,9 @@ public class Wator extends Simulation{
     }
   }
 
+  /**
+   * Updates simulation grid and shark energy grid according to game rules
+   */
   @Override
   public void updateGrid() {
     if (!simulationGrid.isNeighborhoodSet()) {
@@ -146,6 +155,10 @@ public class Wator extends Simulation{
 
   }
 
+  /**
+   * Allows UI to access grid width for display
+   * @return width of simulation grid
+   */
   @Override
   public int getSimulationCols() {
     return GRID_WIDTH;
