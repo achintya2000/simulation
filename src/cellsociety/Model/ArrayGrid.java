@@ -138,6 +138,48 @@ public class ArrayGrid implements Grid {
         return statusOfNeighbors;
     }
 
+    /**
+     * Get's the state of the current grid - one that is displayed to users.
+     * @param row Cell that we want to check's row
+     * @param col Cell that we want to check's column
+     * @return State of that cell
+     */
+    @Override
+    public int getCurrentState(int row, int col) {
+        return myArray[row][col];
+    }
+
+    /**
+     * Getter method for the grid.
+     * @return The 2-D grid that represents the simulation.
+     */
+    @Override
+    public int[][] getGrid() {
+        return myArray;
+    }
+
+    /**
+     * Return state of 2-D array's copy for logic.
+     * @param row Cell that we want to check's row
+     * @param col Cell that we want to check's column
+     * @return State of that cell
+     */
+    @Override
+    public int getReferenceState(int row, int col) {
+        return myReferenceArray[row][col];
+    }
+
+    /**
+     * Check if the cell passed in is in bounds of 2-D array.
+     * @param r Row value of the cell.
+     * @param c Column value of the cell.
+     * @return Returns true or false based on if value is in bounds of the grid.
+     */
+    @Override
+    public boolean inBounds(int r, int c){
+        return (r < myArray.length && r >= 0 && c < myArray[0].length && c >= 0);
+    }
+
     private void addNeighbor(boolean atomicUpdate, Map<String, Integer> statusOfNeighbors, String neighbor, int[] validNeighbors) {
         int neighborRow = validNeighbors[0];
         int neighborCol = validNeighbors[1];
@@ -185,47 +227,5 @@ public class ArrayGrid implements Grid {
             neighborCol = 0;
         }
         return new int[] {neighborRow, neighborCol};
-    }
-
-    /**
-     * Get's the state of the current grid - one that is displayed to users.
-     * @param row Cell that we want to check's row
-     * @param col Cell that we want to check's column
-     * @return State of that cell
-     */
-    @Override
-    public int getCurrentState(int row, int col) {
-        return myArray[row][col];
-    }
-
-    /**
-     * Getter method for the grid.
-     * @return The 2-D grid that represents the simulation.
-     */
-    @Override
-    public int[][] getGrid() {
-        return myArray;
-    }
-
-    /**
-     * Return state of 2-D array's copy for logic.
-     * @param row Cell that we want to check's row
-     * @param col Cell that we want to check's column
-     * @return State of that cell
-     */
-    @Override
-    public int getReferenceState(int row, int col) {
-        return myReferenceArray[row][col];
-    }
-
-    /**
-     * Check if the cell passed in is in bounds of 2-D array.
-     * @param r Row value of the cell.
-     * @param c Column value of the cell.
-     * @return Returns true or false based on if value is in bounds of the grid.
-     */
-    @Override
-    public boolean inBounds(int r, int c){
-        return (r < myArray.length && r >= 0 && c < myArray[0].length && c >= 0);
     }
 }
