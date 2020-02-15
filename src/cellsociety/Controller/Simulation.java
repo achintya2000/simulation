@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
  * new requirements because this centralized the reading and grid building so a new type will not work.
  * Dependencies: Depends on standard java utils like List, Map, Random, and File as well as our own model classes Grid and ArrayGrid.
  * Example: An example of how to use this is any of the other simulation files in this package. You must extend this abstract package
- * and
+ * and implement its methods in that child class.
  */
 public abstract class Simulation {
   private static final int MIN_NEIGHBOR_EDGES = 2;
