@@ -25,6 +25,9 @@ public class Percolation extends Simulation {
         loadSimulationContents(new File("./Resources/percolation.xml"), "percolation", true);
     }
 
+    /**
+     * Updates the simulation grid with rules specific to the percolation simulation..
+     */
     @Override
     public void updateGrid() {
         if (!simulationGrid.isNeighborhoodSet()) {
@@ -40,6 +43,10 @@ public class Percolation extends Simulation {
         }
     }
 
+    /**
+     * Gets the number of simulation columns
+     * @return int value of sim columns
+     */
     @Override
     public int getSimulationCols() {
         return GRID_WIDTH;
@@ -55,7 +62,7 @@ public class Percolation extends Simulation {
     }
 
 
-    public boolean closeToWater(int r, int c){
+    private boolean closeToWater(int r, int c){
         Map<String, Integer> statusOfNeighbors = simulationGrid.checkNeighbors(r,c,true);
         for (Map.Entry<String,Integer> entry : statusOfNeighbors.entrySet()) {
             if(entry.getValue() == percolated){
@@ -65,7 +72,7 @@ public class Percolation extends Simulation {
         return false;
     }
 
-    public boolean canFlow(int r, int c){
+    private boolean canFlow(int r, int c){
         return (simulationGrid.getReferenceState(r,c) != blocked);
     }
 
