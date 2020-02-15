@@ -20,10 +20,16 @@ public class Segregation extends Simulation {
   private int agent1 = 1;
   private int agent2 = 2;
 
+  /**
+   * Constructor to create new instance of segregation simulation
+   */
   public Segregation(){
     loadSimulationContents(new File("./Resources/segregation.xml"), "segregation", true);
   }
 
+  /**
+   * Updates simulation grid based on rules for a segregation simulation
+   */
   @Override
   public void updateGrid() {
       if (!simulationGrid.isNeighborhoodSet()) {
@@ -41,6 +47,10 @@ public class Segregation extends Simulation {
       }
   }
 
+  /**
+   * Gets the number of simulation columns
+   * @return int value of sim columns
+   */
   @Override
   public int getSimulationCols() {
     return GRID_WIDTH;
