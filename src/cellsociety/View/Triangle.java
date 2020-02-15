@@ -11,9 +11,11 @@ public class Triangle {
 
     /**
      *
-     *
-     ***/
-
+     * @param orientation - flipped or unflipped
+     * @param row - the row number
+     * @param col - the column number
+     * @param tileSize - the size of the tile
+     */
     public Triangle(boolean orientation, double row, double col, double tileSize) {
         myTriangle = new Polygon();
         int r = (int) row;
@@ -27,8 +29,17 @@ public class Triangle {
         myTriangle.getTransforms().add(new Rotate(90));
     }
 
+    /**
+     *
+     * @return triangle object
+     */
     public Polygon getPolygon() {
         return myTriangle;
     }
+
+    /**
+     *
+     * @return number asssigned to triangle (row * 10 + ol)
+     */
     public int getMyNumber(){return myNumber;}
 }

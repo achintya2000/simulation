@@ -57,6 +57,17 @@ public class ViewingWindow {
     private int NUMSIDES ;
     private Chart myChart;
 
+    /**
+     *
+     * @param simulation -  Simulation: the type of simulation that is running
+     * @param xml - File:the xml file
+     * @param simname - String: the simulation name
+     * @param random -  booleen: if the configuration is random or not
+     * @param neighbors - List: a list of neighbors being checked
+     * @param environ - String: Toroidal vs Finite
+     * @param numsides int: number of sides ie type of tile
+     */
+
     public ViewingWindow(Simulation simulation, File xml, String simname, boolean random, List<String> neighbors, String environ, int numsides){
         mySimulation = simulation;
         mySimulation.loadSimulationContents(xml, simname,random);

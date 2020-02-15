@@ -19,9 +19,14 @@ public class Fire extends Simulation {
     private static final float PROB_CATCH = .15F;
     private static final float PROB_GROW = .15F;
 
+    /**
+     * creates Fire object which is a Simulation
+     */
+
     public Fire() {
         loadSimulationContents(new File("./Resources/fire.xml"), "fire", true);
     }
+
 
     @Override
     public void updateGrid() {

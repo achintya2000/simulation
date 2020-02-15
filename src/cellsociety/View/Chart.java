@@ -37,11 +37,14 @@ public class Chart {
 
   private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
+  /**
+   * Chart constructor creates a new object when the user elects to see simulation data
+   */
   public Chart() {
     start(new Stage());
   }
 
-  public void updateChart() {
+  private void updateChart() {
     // put data onto graph per second
     scheduledExecutorService.scheduleAtFixedRate(() -> {
 
