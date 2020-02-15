@@ -15,7 +15,6 @@ public class Segregation extends Simulation {
   private int defaultShape = SQUARE;
   private int finite = 1;
   private int defaultEdge = finite;
-
   private int empty = 0;
   private int agent1 = 1;
   private int agent2 = 2;

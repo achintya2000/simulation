@@ -163,6 +163,4 @@ public class Wator extends Simulation{
   public int getSimulationCols() {
     return GRID_WIDTH;
   }
-
-
 }
