@@ -28,7 +28,7 @@ public class XMLBuilder {
   * @param numCellType1 Value for num cell type 1 tag
   * @param stateCellType1 Value for state cell type 1 tag
   * @param cellType1 Value for cell type 1 tag
-  * @param defaultVal Value for default tagßß
+  * @param defaultVal Value for default tag
   */
     public void buildXML(String simulationName, String simWidth, String simHeight, String numCellType0, String stateCellType0, String cellType0,
                           String numCellType1, String stateCellType1, String cellType1, String defaultVal) {
