@@ -6,7 +6,7 @@ sonar_analysis:
     - mvn -version
     - |
       mvn -X sonar:sonar \
-      -Dsonar.host.url=http://coursework.cs.duke.edu:9000 \
+      -Dsonar.host.url=http://coursework.cs.duke.edu:9001 \
       -Dsonar.sources=. -Dsonar.java.binaries=. \
       -Dsonar.exclusions=**/*.xml
   tags:
